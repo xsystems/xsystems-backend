@@ -1,0 +1,58 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>xsystems-backend-persistence</artifactId>
+    <packaging>jar</packaging>
+
+    <name>xSystems Backend Persistence</name>
+    <description>The persistence module of the backend of the xSystems web-application.</description>
+
+    <parent>
+        <groupId>org.xsystems</groupId>
+        <artifactId>xsystems-backend</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+	<properties>
+		<org.flywaydb.version>3.2</org.flywaydb.version>
+		<com.mchange.version>0.9.5</com.mchange.version>
+		<org.postgresql.version>9.4-1201-jdbc41</org.postgresql.version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>org.xsystems</groupId>
+        	<artifactId>xsystems-backend-api</artifactId>
+        </dependency>
+		<dependency>
+			<groupId>org.xsystems</groupId>
+        	<artifactId>xsystems-backend-configuration</artifactId>
+        </dependency>
+		<dependency>
+			<groupId>org.xsystems</groupId>
+        	<artifactId>xsystems-backend-naming</artifactId>
+        </dependency>
+
+		<dependency>
+		    <groupId>org.flywaydb</groupId>
+		    <artifactId>flyway-core</artifactId>
+		    <version>${org.flywaydb.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.mchange</groupId>
+			<artifactId>c3p0</artifactId>
+			<version>${com.mchange.version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.postgresql</groupId>
+		    <artifactId>postgresql</artifactId>
+		    <version>${org.postgresql.version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.eclipse.persistence</groupId>
+		    <artifactId>org.eclipse.persistence.jpa</artifactId>
+		    <version>2.6.0</version>
+		</dependency>
+	</dependencies>
+</project>

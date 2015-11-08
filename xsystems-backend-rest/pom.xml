@@ -1,0 +1,51 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>xsystems-backend-rest</artifactId>
+    <packaging>jar</packaging>
+
+    <name>xSystems Backend REST</name>
+    <description>The REST API of the backend of the xSystems web-application.</description>
+
+    <parent>
+        <groupId>org.xsystems</groupId>
+        <artifactId>xsystems-backend</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </parent>
+
+    <dependencies>
+		<dependency>
+			<groupId>org.xsystems</groupId>
+        	<artifactId>xsystems-backend-configuration</artifactId>
+        </dependency>
+    	<dependency>
+			<groupId>org.xsystems</groupId>
+        	<artifactId>xsystems-backend-core</artifactId>
+        </dependency>
+
+	    <dependency>
+	  		<groupId>javax.servlet</groupId>
+	  		<artifactId>javax.servlet-api</artifactId>
+	  	</dependency>
+	  	<dependency>
+	  		<groupId>org.glassfish.grizzly</groupId>
+	  		<artifactId>grizzly-http-servlet</artifactId>
+	  	</dependency>
+	  	<dependency>
+	  		<groupId>org.glassfish.jersey.containers</groupId>
+	  		<artifactId>jersey-container-servlet-core</artifactId>
+	  	</dependency>
+
+	  	<dependency>
+		    <groupId>org.glassfish.jersey.media</groupId>
+		    <artifactId>jersey-media-json-jackson</artifactId>
+		    <version>${org.glassfish.jersey.version}</version>
+		</dependency>
+		<dependency>
+		    <groupId>org.glassfish.jersey.containers</groupId>
+		    <artifactId>jersey-container-grizzly2-http</artifactId>
+		    <version>${org.glassfish.jersey.version}</version>
+		</dependency>
+    </dependencies>
+</project>
