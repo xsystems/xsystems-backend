@@ -1,5 +1,5 @@
 /**
- * The API of the backend of the xSystems web-application.
+ * The core of the backend of the xSystems web-application.
  * Copyright (C) 2015  xSystems
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,17 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.xsystems.backend.repository;
+package org.xsystems.backend.security;
 
-import org.xsystems.backend.specification.Specification;
+public class AuthenticationException extends Exception {
 
-public interface Repository<T> {
+	private static final long serialVersionUID = -4237528265628260379L;
 
-	void add(T t);
-
-	void remove(T t);
-
-	void update(T t);
-
-	T find(Specification<T> specification, Class<T> clazz) throws NotFoundException;
+	public AuthenticationException(final String message) {
+		super(message);
+	}
 }

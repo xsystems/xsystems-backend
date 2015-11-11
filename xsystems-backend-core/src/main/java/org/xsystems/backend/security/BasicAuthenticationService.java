@@ -23,41 +23,61 @@ import java.util.Base64.Decoder;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
+import javax.ws.rs.core.HttpHeaders;
 
 import org.xsystems.backend.entity.User;
+import org.xsystems.backend.repository.NotFoundException;
 import org.xsystems.backend.repository.Repository;
 import org.xsystems.backend.specification.HasCredentials;
 
 @ApplicationScoped
 public class BasicAuthenticationService {
 
+	static final String BASIC = "Basic ";
+
 	@Inject
 	Repository<User> repository;
 
-	public User authenticate(final String username, final String password) {
+	public User authenticate(final String username, final String password) throws AuthenticationException {
 		final HasCredentials hasCredentials = new HasCredentials(username, password);
-		final User user = this.repository.find(hasCredentials, User.class);
-
-		return user;
+		try {
+			return this.repository.find(hasCredentials, User.class);
+		} catch (final NotFoundException e) {
+			throw new AuthenticationException(e.getMessage());
+		}
 	}
 
-	public User authenticate(final String authorizationHeaderString) {
-		if (authorizationHeaderString == null || !authorizationHeaderString.startsWith("Basic ")) {
-			return null;
+	public User authenticate(final String authorizationHeaderString) throws AuthenticationException {
+		if (authorizationHeaderString == null) {
+			throw new AuthenticationException("The '" + HttpHeaders.AUTHORIZATION + "' header is absent.");
 		}
 
-		final String base64String = authorizationHeaderString.substring("Basic ".length());
-		final String decodedString = decodeBase64(base64String);
+		if (!authorizationHeaderString.startsWith(BASIC)) {
+			throw new AuthenticationException(
+					"The '" + HttpHeaders.AUTHORIZATION + "' header its value should start with '" + BASIC + "'.");
+		}
+
+		final String base64String = authorizationHeaderString.substring(BASIC.length());
+
+		final String decodedString;
+		try {
+			decodedString = decodeBase64(base64String);
+		} catch (final IllegalArgumentException e) {
+			throw new AuthenticationException("The '" + HttpHeaders.AUTHORIZATION
+					+ "' header its value contains an invalid base64 encoded string.");
+		}
+
 		final String[] values = decodedString.split(":");
 
-		if (values.length < 2) {
-			return null;
+		if (values.length != 2) {
+			throw new AuthenticationException(
+					"Unable to obtain credentials from the '" + HttpHeaders.AUTHORIZATION + "' header its value.");
 		}
 
 		return authenticate(values[0], values[1]);
 	}
 
-	String decodeBase64(final String base64String) {
+	String decodeBase64(final String base64String) throws IllegalArgumentException {
 		final Decoder decoder = Base64.getDecoder();
 		final byte[] decodedBytes = decoder.decode(base64String);
 		final String decodedString = new String(decodedBytes);

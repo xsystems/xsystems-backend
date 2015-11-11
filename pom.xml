@@ -77,12 +77,11 @@
         <license-maven-plugin.version>2.11</license-maven-plugin.version>
 
 		<org.xsystems.backend.version>0.0.1-SNAPSHOT</org.xsystems.backend.version>
-        <org.eclipse.m2e.version>1.0.0</org.eclipse.m2e.version>
+		
         <javax.servlet.verion>3.1.0</javax.servlet.verion>
-        <org.glassfish.hk2.version>2.4.0-b09</org.glassfish.hk2.version>
-        <org.glassfish.grizzly.version>2.3.18</org.glassfish.grizzly.version>
-        <org.glassfish.jersey.version>2.18</org.glassfish.jersey.version>
         <javax.enterprise.version>1.2</javax.enterprise.version>
+        <org.glassfish.grizzly.version>2.3.18</org.glassfish.grizzly.version>
+        <org.glassfish.jersey.version>2.22.1</org.glassfish.jersey.version>
 	</properties>
 
 	<dependencies>

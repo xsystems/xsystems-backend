@@ -18,9 +18,6 @@
  */
 package org.xsystems.backend.security;
 
-import static javax.ws.rs.core.HttpHeaders.WWW_AUTHENTICATE;
-import static javax.ws.rs.core.SecurityContext.BASIC_AUTH;
-
 import java.io.IOException;
 import java.net.URI;
 
@@ -31,8 +28,6 @@ import javax.ws.rs.container.ContainerRequestContext;
 import javax.ws.rs.container.ContainerRequestFilter;
 import javax.ws.rs.container.PreMatching;
 import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.Status;
 import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.ext.Provider;
@@ -54,25 +49,20 @@ public class BasicAuthenticationFilter implements ContainerRequestFilter {
 	BasicAuthenticationService basicAuthenticationService;
 
 	@Override
-	public void filter(final ContainerRequestContext containerRequestContext)
-			throws IOException {
-		final String authorizationHeaderString = containerRequestContext
-				.getHeaderString(HttpHeaders.AUTHORIZATION);
-		final User user = basicAuthenticationService
-				.authenticate(authorizationHeaderString);
+	public void filter(final ContainerRequestContext containerRequestContext) throws IOException {
+		final String authorizationHeaderString = containerRequestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
 
-		if (user != null) {
+		SecurityContext securityContext;
+		try {
+			final User user = this.basicAuthenticationService.authenticate(authorizationHeaderString);
 			final boolean isSecure = isSecure(containerRequestContext);
-			final SecurityContext securityContext = new BasicAuthenticationSecurityContext(
-					user, isSecure);
-			containerRequestContext.setSecurityContext(securityContext);
-		} else {
-			final Response response = Response
-					.status(Status.UNAUTHORIZED)
-					.header(WWW_AUTHENTICATE,
-							BASIC_AUTH + " realm=\"" + realm + "\"").build();
-			containerRequestContext.abortWith(response);
+			securityContext = new AuthenticatedSecurityContext(user, isSecure);
+		} catch (final AuthenticationException e) {
+			final String challenge = SecurityContext.BASIC_AUTH + " realm=\"" + this.realm + "\"";
+			securityContext = new NotAuthenticatedSecurityContext(e.getMessage(), challenge);
 		}
+
+		containerRequestContext.setSecurityContext(securityContext);
 	}
 
 	boolean isSecure(final ContainerRequestContext containerRequestContext) {

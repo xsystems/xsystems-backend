@@ -21,12 +21,12 @@ package org.xsystems.backend.repository;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 
 import org.xsystems.backend.specification.Specification;
 
 @Dependent
-// @ApplicationScoped
 public class RepositoryImpl<T> implements Repository<T> {
 
 	@Inject
@@ -48,10 +48,14 @@ public class RepositoryImpl<T> implements Repository<T> {
 	}
 
 	@Override
-	public T find(final Specification<T> specification, final Class<T> clazz) {
-		final String query = specification.toQuery();
-		final TypedQuery<T> typedQuery = this.entityManager.createQuery(query, clazz);
-		final T t = typedQuery.getSingleResult();
-		return t;
+	public T find(final Specification<T> specification, final Class<T> clazz) throws NotFoundException {
+		try {
+			final String query = specification.toQuery();
+			final TypedQuery<T> typedQuery = this.entityManager.createQuery(query, clazz);
+			final T t = typedQuery.getSingleResult();
+			return t;
+		} catch (final PersistenceException e) {
+			throw new NotFoundException(clazz);
+		}
 	}
 }

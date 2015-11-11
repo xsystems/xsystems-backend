@@ -20,44 +20,36 @@ package org.xsystems.backend.security;
 
 import java.security.Principal;
 
+import javax.ws.rs.NotAuthorizedException;
 import javax.ws.rs.core.SecurityContext;
 
-import org.xsystems.backend.entity.Role;
-import org.xsystems.backend.entity.User;
+public class NotAuthenticatedSecurityContext implements SecurityContext {
 
-public class BasicAuthenticationSecurityContext implements SecurityContext {
+	String message;
+	String challenge;
 
-	User user;
-	boolean isSecure;
-
-	BasicAuthenticationSecurityContext(final User user, final boolean isSecure) {
-		this.user = user;
-		this.isSecure = isSecure;
+	NotAuthenticatedSecurityContext(final String message, final String challenge) {
+		this.message = message;
+		this.challenge = challenge;
 	}
 
 	@Override
 	public Principal getUserPrincipal() {
-		return new Principal() {
-			@Override
-			public String getName() {
-				return user.getEmail();
-			}
-		};
+		throw new NotAuthorizedException(this.message, this.challenge);
 	}
 
 	@Override
 	public boolean isUserInRole(final String role) {
-		final Role userRole = user.getRole();
-		return role.equals(userRole.name());
+		throw new NotAuthorizedException(this.message, this.challenge);
 	}
 
 	@Override
 	public boolean isSecure() {
-		return isSecure;
+		throw new NotAuthorizedException(this.message, this.challenge);
 	}
 
 	@Override
 	public String getAuthenticationScheme() {
-		return SecurityContext.BASIC_AUTH;
+		throw new NotAuthorizedException(this.message, this.challenge);
 	}
 }

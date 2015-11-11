@@ -18,15 +18,18 @@
  */
 package org.xsystems.backend.repository;
 
-import org.xsystems.backend.specification.Specification;
+public class NotFoundException extends Exception {
 
-public interface Repository<T> {
+	private static final long serialVersionUID = -7544866107557371874L;
 
-	void add(T t);
+	Class<?> clazz;
 
-	void remove(T t);
+	public NotFoundException(final Class<?> clazz) {
+		this.clazz = clazz;
+	}
 
-	void update(T t);
-
-	T find(Specification<T> specification, Class<T> clazz) throws NotFoundException;
+	@Override
+	public String getMessage() {
+		return this.clazz.getSimpleName() + " not found.";
+	}
 }

@@ -1,5 +1,5 @@
 /**
- * The API of the backend of the xSystems web-application.
+ * The REST API of the backend of the xSystems web-application.
  * Copyright (C) 2015  xSystems
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,17 +16,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.xsystems.backend.repository;
+package org.xsystems.backend.dto;
 
-import org.xsystems.backend.specification.Specification;
+import java.io.Serializable;
 
-public interface Repository<T> {
+public class ErrorDto implements Serializable {
 
-	void add(T t);
+	private static final long serialVersionUID = -8926054870697103367L;
 
-	void remove(T t);
+	private String message;
 
-	void update(T t);
+	public String getMessage() {
+		return this.message;
+	}
 
-	T find(Specification<T> specification, Class<T> clazz) throws NotFoundException;
+	public void setMessage(final String message) {
+		this.message = message;
+	}
 }
