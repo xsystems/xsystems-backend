@@ -1,5 +1,5 @@
 /**
- * The REST API of the backend of the xSystems web-application.
+ * The persistence module of the backend of the xSystems web-application.
  * Copyright (C) 2015  xSystems
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,23 +16,23 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.xsystems.backend.resources;
+package org.xsystems.backend.converter;
 
 import java.net.URI;
-import java.net.URISyntaxException;
 
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.UriInfo;
+import javax.persistence.AttributeConverter;
+import javax.persistence.Converter;
 
-class BaseResource {
+@Converter(autoApply = true)
+public class UriConverter implements AttributeConverter<URI, String> {
 
-	static final String PATH = "";
+	@Override
+	public String convertToDatabaseColumn(final URI attribute) {
+		return attribute == null ? null : attribute.toASCIIString();
+	}
 
-	@Context
-	UriInfo uriInfo;
-
-
-    URI createImageUri(String id) throws URISyntaxException {
-        return uriInfo.getBaseUriBuilder().path(PATH).build(id);
-    }
+	@Override
+	public URI convertToEntityAttribute(final String dbData) {
+		return dbData == null ? null : URI.create(dbData);
+	}
 }

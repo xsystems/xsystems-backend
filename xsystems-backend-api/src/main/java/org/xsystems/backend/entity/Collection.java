@@ -20,12 +20,14 @@ package org.xsystems.backend.entity;
 
 import java.util.List;
 
-public interface Collection extends Entity<Long> {
+public interface Collection<T extends File> extends Entity<Long> {
 	String getName();
 
 	String getDescription();
 
+	FileType getType();
+
 	User getUser();
 
-	List<File> getFiles();
+	List<T> getElements();
 }

@@ -18,29 +18,24 @@
  */
 package org.xsystems.backend.io;
 
-import static java.nio.file.StandardCopyOption.REPLACE_EXISTING;
-
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.FileSystems;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardCopyOption;
 
-import javax.enterprise.context.ApplicationScoped;
+public class FileUtil {
 
+	public static Path createPath(final String first, final String... more) {
+		return FileSystems.getDefault().getPath(first, more);
+	}
 
-@ApplicationScoped
-public class FileService {
-
-    public Path createPath(String first, String... more) {
-        return FileSystems.getDefault().getPath(first, more);
-    }
-
-    public void moveFile (File file, Path path) throws IOException {
-        Path parent = path.getParent();
-        if (!Files.exists(parent)) {
-            Files.createDirectories(parent);
-        }
-        Files.move(file.toPath(), path, REPLACE_EXISTING);
-    }
+	public static void moveFile(final File file, final Path path) throws IOException {
+		final Path parent = path.getParent();
+		if (!Files.exists(parent)) {
+			Files.createDirectories(parent);
+		}
+		Files.move(file.toPath(), path, StandardCopyOption.REPLACE_EXISTING);
+	}
 }

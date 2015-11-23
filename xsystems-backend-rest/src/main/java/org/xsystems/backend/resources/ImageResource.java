@@ -18,12 +18,22 @@
  */
 package org.xsystems.backend.resources;
 
-import javax.ws.rs.Path;
+import java.net.URI;
+import java.net.URISyntaxException;
 
+import javax.ws.rs.Path;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.UriInfo;
 
 @Path(ImageResource.PATH)
-public class ImageResource extends BaseResource {
+public class ImageResource {
 
 	static final String PATH = ImagesResource.PATH + "/{id}";
 
+	@Context
+	UriInfo uriInfo;
+
+	URI createUri(final Long id) throws URISyntaxException {
+		return this.uriInfo.getBaseUriBuilder().path(PATH).build(id);
+	}
 }

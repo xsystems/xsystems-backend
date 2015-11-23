@@ -43,6 +43,10 @@
 			<groupId>org.xsystems</groupId>
         	<artifactId>xsystems-backend-core</artifactId>
         </dependency>
+    	<dependency>
+			<groupId>org.xsystems</groupId>
+        	<artifactId>xsystems-backend-persistence</artifactId>
+        </dependency>        
 
 	    <dependency>
 	  		<groupId>javax.servlet</groupId>

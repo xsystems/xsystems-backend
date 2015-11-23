@@ -18,18 +18,27 @@
  */
 package org.xsystems.backend.entity;
 
-import java.net.URI;
+public enum FileType {
 
-public interface File extends Entity<Long> {
-	String getName();
+	IMAGE(Values.IMAGE);
 
-	String getDescription();
+	private String value;
 
-	FileType getType();
+	private FileType(final String value) {
+		if (!this.name().equals(value)) {
+			throw new IllegalStateException(
+					"The value parameter must be the same as the Enum name, i.e.: " + this.name());
+		}
 
-	User getUser();
+		this.value = value;
+	}
 
-	URI getUri();
+	@Override
+	public String toString() {
+		return this.value;
+	}
 
-	void setUri(URI uri);
+	public static class Values {
+		public static final String IMAGE = "IMAGE";
+	}
 }

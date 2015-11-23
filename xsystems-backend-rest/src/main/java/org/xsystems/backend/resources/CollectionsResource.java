@@ -23,7 +23,6 @@ import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
 import javax.ws.rs.BadRequestException;
 import javax.ws.rs.Consumes;
@@ -33,59 +32,53 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import org.xsystems.backend.dto.CollectionDto;
 import org.xsystems.backend.dto.ImageDto;
+import org.xsystems.backend.entity.Collection;
 import org.xsystems.backend.entity.EntityMapper;
 import org.xsystems.backend.entity.Image;
-import org.xsystems.backend.entity.Role;
+import org.xsystems.backend.io.FileService;
 import org.xsystems.backend.repository.Repository;
 
-@Path(ImagesResource.PATH)
-public class ImagesResource {
+@Path(CollectionsResource.PATH)
+public class CollectionsResource {
 
-	private static final Logger LOGGER = Logger.getLogger(ImagesResource.class.getName());
+	private static final Logger LOGGER = Logger.getLogger(CollectionsResource.class.getName());
 
-	public static final String PATH = "/images";
-
-	@Inject
-	EntityMapper<Image, ImageDto> imageMapper;
+	public static final String PATH = "/collections";
 
 	@Inject
-	Repository<Image> imageRepository;
+	EntityMapper<Collection<Image>, CollectionDto<ImageDto>> imageCollectionMapper;
 
 	@Inject
-	ImageResource imageResource;
+	FileService<Image> imageFileService;
 
 	@Inject
-	FileDataResource fileDataResource;
+	Repository<Collection<Image>> imageCollectionRepository;
+
+	@Inject
+	CollectionResource collectionResource;
 
 	@POST
-	@RolesAllowed(Role.Values.ADMIN)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
-	public Response post(final ImageDto imageDto) {
-		final Image image = this.imageRepository.add(this.imageMapper.toEntity(imageDto));
+	public Response post(final CollectionDto<ImageDto> imageCollectionDto) {
+		final Collection<Image> imageCollection = this.imageCollectionMapper.toEntity(imageCollectionDto);
 
-		URI imageUri;
-		URI uri;
-		URI thumbnailUri;
-		try {
-			imageUri = this.imageResource.createUri(image.getId());
-			uri = this.fileDataResource.createUri(image.getId(), "image");
-			thumbnailUri = this.fileDataResource.createUri(image.getId(), "thumbnail");
-		} catch (final URISyntaxException e) {
-			LOGGER.log(Level.FINE, "Image identifier contains invalid characters.");
-			throw new BadRequestException("The image its identifier contains invalid characters.");
+		if (!this.imageFileService.hasOnlyExistingElements(imageCollection, Image.class)) {
+			throw new BadRequestException("One or more elements in the collection do not exist.");
 		}
 
-		image.setUri(uri);
-		image.setThumbnailUri(thumbnailUri);
+		this.imageCollectionRepository.add(imageCollection);
 
-		this.imageRepository.update(image);
+		URI collectionUri;
+		try {
+			collectionUri = this.collectionResource.createUri(imageCollection.getId());
+		} catch (final URISyntaxException e) {
+			LOGGER.log(Level.FINE, "Collection identifier contains invalid characters.");
+			throw new BadRequestException("The collection its identifier contains invalid characters.");
+		}
 
-		imageDto.setId(image.getId());
-		imageDto.setUri(uri);
-		imageDto.setThumbnailUri(thumbnailUri);
-
-		return Response.created(imageUri).entity(imageDto).build();
+		return Response.created(collectionUri).build();
 	}
 }

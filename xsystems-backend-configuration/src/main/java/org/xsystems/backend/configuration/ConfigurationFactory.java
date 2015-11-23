@@ -25,13 +25,11 @@ import java.net.URL;
 import java.util.Properties;
 
 import javax.annotation.PostConstruct;
-import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.inject.Produces;
 import javax.enterprise.inject.spi.InjectionPoint;
 
 import org.xsystems.backend.configuration.key.ConfigurationKey;
 
-@ApplicationScoped
 public class ConfigurationFactory {
 
 	static String DEFAULT_PROPERTIES_FILE = "/default.properties";
@@ -48,19 +46,16 @@ public class ConfigurationFactory {
 	}
 
 	String getValue(final String key) {
-		return properties.getProperty(key);
+		return this.properties.getProperty(key);
 	}
 
-	String getValue(
-			final Class<? extends ConfigurationKey> configurationKeyClass)
-			throws NoSuchMethodException, SecurityException,
-			InstantiationException, IllegalAccessException,
+	String getValue(final Class<? extends ConfigurationKey> configurationKeyClass)
+			throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException,
 			IllegalArgumentException, InvocationTargetException {
 		final Constructor<? extends ConfigurationKey> configurationKeyConstructor = configurationKeyClass
 				.getConstructor();
 
-		final ConfigurationKey configurationKey = configurationKeyConstructor
-				.newInstance();
+		final ConfigurationKey configurationKey = configurationKeyConstructor.newInstance();
 
 		final String key = configurationKey.getKey();
 
@@ -69,15 +64,11 @@ public class ConfigurationFactory {
 
 	@Produces
 	@Configuration
-	public String produceString(final InjectionPoint injectionPoint)
-			throws NoSuchMethodException, SecurityException,
-			InstantiationException, IllegalAccessException,
-			IllegalArgumentException, InvocationTargetException {
-		final Configuration configuration = injectionPoint.getAnnotated()
-				.getAnnotation(Configuration.class);
+	public String produceString(final InjectionPoint injectionPoint) throws NoSuchMethodException, SecurityException,
+			InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		final Configuration configuration = injectionPoint.getAnnotated().getAnnotation(Configuration.class);
 
-		final Class<? extends ConfigurationKey> configurationKeyClass = configuration
-				.key();
+		final Class<? extends ConfigurationKey> configurationKeyClass = configuration.key();
 
 		final String value = getValue(configurationKeyClass);
 
@@ -91,20 +82,16 @@ public class ConfigurationFactory {
 
 	@Produces
 	@Configuration
-	public Boolean produceBoolean(final InjectionPoint injectionPoint)
-			throws NoSuchMethodException, SecurityException,
-			InstantiationException, IllegalAccessException,
-			IllegalArgumentException, InvocationTargetException {
+	public Boolean produceBoolean(final InjectionPoint injectionPoint) throws NoSuchMethodException, SecurityException,
+			InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		final String value = produceString(injectionPoint);
 		return Boolean.parseBoolean(value);
 	}
 
 	@Produces
 	@Configuration
-	public Integer produceInteger(final InjectionPoint injectionPoint)
-			throws NoSuchMethodException, SecurityException,
-			InstantiationException, IllegalAccessException,
-			IllegalArgumentException, InvocationTargetException {
+	public Integer produceInteger(final InjectionPoint injectionPoint) throws NoSuchMethodException, SecurityException,
+			InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		final String value = produceString(injectionPoint);
 		return Integer.parseInt(value);
 	}

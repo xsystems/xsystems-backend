@@ -1,5 +1,5 @@
 /**
- * The persistence module of the backend of the xSystems web-application.
+ * The REST API of the backend of the xSystems web-application.
  * Copyright (C) 2015  xSystems
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,44 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.xsystems.backend.entity;
-
-import static javax.persistence.GenerationType.SEQUENCE;
+package org.xsystems.backend.dto;
 
 import java.io.Serializable;
 import java.net.URI;
 
-import javax.persistence.DiscriminatorColumn;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
-import javax.persistence.ManyToOne;
-import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
-@Entity
-@Table(name = "FILE")
-@DiscriminatorColumn(name = "TYPE")
-@Inheritance(strategy = InheritanceType.JOINED)
-public abstract class FileImpl extends BaseEntity<Long> implements File, Serializable {
+public class FileDto implements Serializable {
 
-	private static final long serialVersionUID = -5889211240420435044L;
+	private static final long serialVersionUID = 2090039409863975525L;
 
-	@Id
-	@GeneratedValue(strategy = SEQUENCE, generator = "FILE_ID_SEQ")
-	@SequenceGenerator(name = "FILE_ID_SEQ", sequenceName = "FILE_ID_SEQ")
 	private Long id;
+
 	private String name;
+
 	private String description;
 
-	@ManyToOne(targetEntity = UserImpl.class)
-	private User user;
+	private UserDto userDto;
 
 	private URI uri;
 
-	@Override
 	public Long getId() {
 		return this.id;
 	}
@@ -62,7 +45,6 @@ public abstract class FileImpl extends BaseEntity<Long> implements File, Seriali
 		this.id = id;
 	}
 
-	@Override
 	public String getName() {
 		return this.name;
 	}
@@ -71,7 +53,6 @@ public abstract class FileImpl extends BaseEntity<Long> implements File, Seriali
 		this.name = name;
 	}
 
-	@Override
 	public String getDescription() {
 		return this.description;
 	}
@@ -80,21 +61,19 @@ public abstract class FileImpl extends BaseEntity<Long> implements File, Seriali
 		this.description = description;
 	}
 
-	@Override
-	public User getUser() {
-		return this.user;
+	public UserDto getUserDto() {
+		return this.userDto;
 	}
 
-	public void setUser(final User user) {
-		this.user = user;
+	@JsonProperty("user")
+	public void setUserDto(final UserDto userDto) {
+		this.userDto = userDto;
 	}
 
-	@Override
 	public URI getUri() {
 		return this.uri;
 	}
 
-	@Override
 	public void setUri(final URI uri) {
 		this.uri = uri;
 	}

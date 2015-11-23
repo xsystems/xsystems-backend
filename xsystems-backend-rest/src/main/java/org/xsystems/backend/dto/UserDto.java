@@ -1,5 +1,5 @@
 /**
- * The API of the backend of the xSystems web-application.
+ * The REST API of the backend of the xSystems web-application.
  * Copyright (C) 2015  xSystems
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,20 +16,43 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.xsystems.backend.entity;
+package org.xsystems.backend.dto;
 
-import java.net.URI;
+import java.io.Serializable;
 
-public interface File extends Entity<Long> {
-	String getName();
+import org.xsystems.backend.entity.Role;
 
-	String getDescription();
+public class UserDto implements Serializable {
 
-	FileType getType();
+	private static final long serialVersionUID = -4940534397675675538L;
 
-	User getUser();
+	private Long id;
 
-	URI getUri();
+	private String email;
 
-	void setUri(URI uri);
+	private Role role;
+
+	public Long getId() {
+		return this.id;
+	}
+
+	public void setId(final Long id) {
+		this.id = id;
+	}
+
+	public String getEmail() {
+		return this.email;
+	}
+
+	public void setEmail(final String email) {
+		this.email = email;
+	}
+
+	public Role getRole() {
+		return this.role;
+	}
+
+	public void setRole(final Role role) {
+		this.role = role;
+	}
 }

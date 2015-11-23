@@ -27,24 +27,33 @@ import javax.persistence.TypedQuery;
 import org.xsystems.backend.specification.Specification;
 
 @Dependent
-public class RepositoryImpl<T> implements Repository<T> {
+class RepositoryImpl<T> implements Repository<T> {
 
 	@Inject
 	EntityManager entityManager;
 
 	@Override
-	public void add(final T user) {
-		this.entityManager.persist(user);
+	public T add(final T t) {
+		this.entityManager.getTransaction().begin();
+		this.entityManager.persist(t);
+		this.entityManager.getTransaction().commit();
+		return t;
 	}
 
 	@Override
-	public void remove(final T user) {
-		this.entityManager.remove(user);
+	public T remove(final T t) {
+		this.entityManager.getTransaction().begin();
+		this.entityManager.remove(t);
+		this.entityManager.getTransaction().commit();
+		return t;
 	}
 
 	@Override
-	public void update(final T user) {
-		this.entityManager.merge(user);
+	public T update(final T t) {
+		this.entityManager.getTransaction().begin();
+		this.entityManager.merge(t);
+		this.entityManager.getTransaction().commit();
+		return t;
 	}
 
 	@Override

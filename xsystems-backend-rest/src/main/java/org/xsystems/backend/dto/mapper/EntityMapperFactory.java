@@ -1,5 +1,5 @@
 /**
- * The API of the backend of the xSystems web-application.
+ * The REST API of the backend of the xSystems web-application.
  * Copyright (C) 2015  xSystems
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,20 +16,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.xsystems.backend.entity;
+package org.xsystems.backend.dto.mapper;
 
-import java.net.URI;
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Produces;
+import javax.inject.Inject;
 
-public interface File extends Entity<Long> {
-	String getName();
+import org.xsystems.backend.dto.ImageDto;
+import org.xsystems.backend.entity.EntityMapper;
+import org.xsystems.backend.entity.Image;
 
-	String getDescription();
+class EntityMapperFactory {
 
-	FileType getType();
+	@Inject
+	EntityMapper<Image, ImageDto> imageMapper;
 
-	User getUser();
-
-	URI getUri();
-
-	void setUri(URI uri);
+	@Produces
+	@ApplicationScoped
+	public CollectionMapper<Image, ImageDto> produceImageCollectionMapper() {
+		return new CollectionMapper<>(this.imageMapper);
+	}
 }

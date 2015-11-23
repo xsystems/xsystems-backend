@@ -1,5 +1,5 @@
 /**
- * The persistence module of the backend of the xSystems web-application.
+ * The REST API of the backend of the xSystems web-application.
  * Copyright (C) 2015  xSystems
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,21 +16,33 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.xsystems.backend.specification;
+package org.xsystems.backend.dto.mapper;
 
-import org.xsystems.backend.entity.Role;
+import javax.enterprise.context.ApplicationScoped;
+
+import org.xsystems.backend.dto.UserDto;
+import org.xsystems.backend.entity.EntityMapper;
 import org.xsystems.backend.entity.User;
 import org.xsystems.backend.entity.UserImpl;
 
-public class IsAdmin implements Specification<User> {
+@ApplicationScoped
+class UserMapper implements EntityMapper<User, UserDto> {
 
 	@Override
-	public boolean isSatisfiedBy(final User user) {
-		return Role.ADMIN.equals(user.getRole());
+	public User toEntity(final UserDto userDto) {
+		final UserImpl user = new UserImpl();
+		user.setId(userDto.getId());
+		user.setEmail(userDto.getEmail());
+		user.setRole(userDto.getRole());
+		return user;
 	}
 
 	@Override
-	public String toQuery() {
-		return "select user from " + UserImpl.class.getName() + " user where user.role=\"" + Role.Values.ADMIN + "\"";
+	public UserDto fromEntity(final User user) {
+		final UserDto userDto = new UserDto();
+		userDto.setId(user.getId());
+		userDto.setEmail(user.getEmail());
+		userDto.setRole(user.getRole());
+		return userDto;
 	}
 }

@@ -1,5 +1,5 @@
 /**
- * The API of the backend of the xSystems web-application.
+ * The persistence module of the backend of the xSystems web-application.
  * Copyright (C) 2015  xSystems
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,20 +16,27 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.xsystems.backend.entity;
+package org.xsystems.backend.specification;
 
-import java.net.URI;
+import org.xsystems.backend.entity.File;
 
-public interface File extends Entity<Long> {
-	String getName();
+public class FileHasId<T extends File> implements Specification<T> {
 
-	String getDescription();
+	Class<?> clazz;
+	Long id;
 
-	FileType getType();
+	public FileHasId(final Class<?> clazz, final Long id) {
+		this.clazz = clazz;
+		this.id = id;
+	}
 
-	User getUser();
+	@Override
+	public boolean isSatisfiedBy(final T t) {
+		return this.id.equals(t.getId());
+	}
 
-	URI getUri();
-
-	void setUri(URI uri);
+	@Override
+	public String toQuery() {
+		return "select entity from " + this.clazz.getName() + " entity where entity.id=\"" + this.id + "\"";
+	}
 }

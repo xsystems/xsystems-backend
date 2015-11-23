@@ -18,18 +18,9 @@
  */
 package org.xsystems.backend.entity;
 
-import java.net.URI;
+public interface EntityMapper<E extends Entity<?>, T> {
 
-public interface File extends Entity<Long> {
-	String getName();
+	E toEntity(T t);
 
-	String getDescription();
-
-	FileType getType();
-
-	User getUser();
-
-	URI getUri();
-
-	void setUri(URI uri);
+	T fromEntity(E entity);
 }

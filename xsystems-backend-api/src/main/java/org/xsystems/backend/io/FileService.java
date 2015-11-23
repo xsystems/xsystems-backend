@@ -16,20 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.xsystems.backend.entity;
+package org.xsystems.backend.io;
 
-import java.net.URI;
+import org.xsystems.backend.entity.Collection;
+import org.xsystems.backend.entity.File;
 
-public interface File extends Entity<Long> {
-	String getName();
+public interface FileService<T extends File> {
 
-	String getDescription();
-
-	FileType getType();
-
-	User getUser();
-
-	URI getUri();
-
-	void setUri(URI uri);
+	boolean hasOnlyExistingElements(final Collection<T> collection, Class<T> entityClazz);
 }

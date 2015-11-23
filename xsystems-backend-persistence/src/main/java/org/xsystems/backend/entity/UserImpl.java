@@ -46,20 +46,13 @@ public class UserImpl extends BaseEntity<Long> implements User, Serializable {
 
 	private String password;
 
-	/**
-	 * Required by the Java Persistence API (JPA)
-	 */
-	public UserImpl() {
-	}
-
-	public UserImpl(final String email, final Role role) {
-		this.email = email;
-		this.role = role;
-	}
-
 	@Override
 	public Long getId() {
 		return this.id;
+	}
+
+	public void setId(final Long id) {
+		this.id = id;
 	}
 
 	@Override
@@ -67,22 +60,22 @@ public class UserImpl extends BaseEntity<Long> implements User, Serializable {
 		return this.email;
 	}
 
+	public void setEmail(final String email) {
+		this.email = email;
+	}
+
 	@Override
 	public Role getRole() {
 		return this.role;
 	}
 
+	public void setRole(final Role role) {
+		this.role = role;
+	}
+
 	@Override
 	public String getPassword() {
 		return this.password;
-	}
-
-	public void setEmail(final String email) {
-		this.email = email;
-	}
-
-	public void setRole(final Role role) {
-		this.role = role;
 	}
 
 	/**

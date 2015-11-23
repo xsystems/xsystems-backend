@@ -21,45 +21,48 @@ package org.xsystems.backend.entity;
 import static javax.persistence.GenerationType.SEQUENCE;
 
 import java.io.Serializable;
-import java.net.URI;
+import java.util.List;
 
-import javax.persistence.DiscriminatorColumn;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.Inheritance;
-import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 @Entity
-@Table(name = "FILE")
-@DiscriminatorColumn(name = "TYPE")
-@Inheritance(strategy = InheritanceType.JOINED)
-public abstract class FileImpl extends BaseEntity<Long> implements File, Serializable {
+@Table(name = "COLLECTION")
+public class CollectionImpl<T extends File> implements Serializable, Collection<T> {
 
-	private static final long serialVersionUID = -5889211240420435044L;
+	private static final long serialVersionUID = -6598833751310766066L;
 
 	@Id
-	@GeneratedValue(strategy = SEQUENCE, generator = "FILE_ID_SEQ")
-	@SequenceGenerator(name = "FILE_ID_SEQ", sequenceName = "FILE_ID_SEQ")
+	@GeneratedValue(strategy = SEQUENCE, generator = "COLLECTION_ID_SEQ")
+	@SequenceGenerator(name = "COLLECTION_ID_SEQ", sequenceName = "COLLECTION_ID_SEQ")
 	private Long id;
 	private String name;
 	private String description;
 
+	@Enumerated(EnumType.STRING)
+	private FileType type;
+
 	@ManyToOne(targetEntity = UserImpl.class)
 	private User user;
 
-	private URI uri;
+	@ManyToMany(targetEntity = FileImpl.class)
+	@JoinTable(name = "COLLECTION_FILE", joinColumns = {
+			@JoinColumn(name = "COLLECTION_ID", referencedColumnName = "ID") }, inverseJoinColumns = {
+					@JoinColumn(name = "FILE_ID", referencedColumnName = "ID") })
+	private List<T> elements;
 
 	@Override
 	public Long getId() {
 		return this.id;
-	}
-
-	public void setId(final Long id) {
-		this.id = id;
 	}
 
 	@Override
@@ -81,6 +84,15 @@ public abstract class FileImpl extends BaseEntity<Long> implements File, Seriali
 	}
 
 	@Override
+	public FileType getType() {
+		return this.type;
+	}
+
+	public void setType(final FileType type) {
+		this.type = type;
+	}
+
+	@Override
 	public User getUser() {
 		return this.user;
 	}
@@ -90,12 +102,11 @@ public abstract class FileImpl extends BaseEntity<Long> implements File, Seriali
 	}
 
 	@Override
-	public URI getUri() {
-		return this.uri;
+	public List<T> getElements() {
+		return this.elements;
 	}
 
-	@Override
-	public void setUri(final URI uri) {
-		this.uri = uri;
+	public void setElements(final List<T> elements) {
+		this.elements = elements;
 	}
 }

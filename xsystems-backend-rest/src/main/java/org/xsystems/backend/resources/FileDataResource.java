@@ -20,44 +20,52 @@ package org.xsystems.backend.resources;
 
 import java.io.File;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
+import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import javax.ws.rs.core.UriInfo;
 
-import org.xsystems.backend.io.FileService;
-
+import org.xsystems.backend.io.FileUtil;
 
 @Path(FileDataResource.PATH)
-public class FileDataResource extends BaseResource {
+public class FileDataResource {
 
-    private static final Logger LOGGER = Logger.getLogger(FileDataResource.class.getName());
-    public static final String PATH = "files/{id}";
+	private static final Logger LOGGER = Logger.getLogger(FileDataResource.class.getName());
 
-    @Inject
-    FileService fileService;
+	public static final String PATH = "files/{id}/{representation}";
 
+	@Context
+	UriInfo uriInfo;
 
-    @PUT
-    @Consumes(MediaType.APPLICATION_OCTET_STREAM)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response put(@PathParam("id") final String id, File file) {
+	@PUT
+	@Consumes(MediaType.APPLICATION_OCTET_STREAM)
+	@Produces(MediaType.APPLICATION_JSON)
+	public Response put(@PathParam("id") final String id, @PathParam("representation") final String representation,
+			final File file) {
 
-    	String path = "";
+		// TODO Make this configurable.
+		final String path = "files";
 
-        try {
-            fileService.moveFile(file, fileService.createPath(path, id));
-        } catch (IOException e) {
-            LOGGER.log(Level.INFO, "Unable to move file to upload directory.", e);
-        }
+		try {
+			FileUtil.moveFile(file, FileUtil.createPath(path, id, representation));
+		} catch (final IOException e) {
+			LOGGER.log(Level.INFO, "Unable to move file to upload directory.", e);
+		}
 
-         return Response.accepted().build();
-    }
+		return Response.accepted().build();
+	}
+
+	URI createUri(final Long id, final String representation) throws URISyntaxException {
+		return this.uriInfo.getBaseUriBuilder().path(PATH).build(id, representation);
+	}
 }

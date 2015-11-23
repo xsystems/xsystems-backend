@@ -1,5 +1,5 @@
 /**
- * The API of the backend of the xSystems web-application.
+ * The REST API of the backend of the xSystems web-application.
  * Copyright (C) 2015  xSystems
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,20 +16,24 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.xsystems.backend.entity;
+package org.xsystems.backend.resources;
 
 import java.net.URI;
+import java.net.URISyntaxException;
 
-public interface File extends Entity<Long> {
-	String getName();
+import javax.ws.rs.Path;
+import javax.ws.rs.core.Context;
+import javax.ws.rs.core.UriInfo;
 
-	String getDescription();
+@Path(CollectionResource.PATH)
+public class CollectionResource {
 
-	FileType getType();
+	static final String PATH = CollectionsResource.PATH + "/{id}";
 
-	User getUser();
+	@Context
+	UriInfo uriInfo;
 
-	URI getUri();
-
-	void setUri(URI uri);
+	URI createUri(final Long id) throws URISyntaxException {
+		return this.uriInfo.getBaseUriBuilder().path(PATH).build(id);
+	}
 }
