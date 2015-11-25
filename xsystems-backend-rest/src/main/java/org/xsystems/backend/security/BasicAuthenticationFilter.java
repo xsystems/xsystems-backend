@@ -46,7 +46,7 @@ public class BasicAuthenticationFilter implements ContainerRequestFilter {
 	String realm;
 
 	@Inject
-	BasicAuthenticationService basicAuthenticationService;
+	AuthenticationService authenticationService;
 
 	@Override
 	public void filter(final ContainerRequestContext containerRequestContext) throws IOException {
@@ -54,7 +54,7 @@ public class BasicAuthenticationFilter implements ContainerRequestFilter {
 
 		SecurityContext securityContext;
 		try {
-			final User user = this.basicAuthenticationService.authenticate(authorizationHeaderString);
+			final User user = this.authenticationService.authenticate(authorizationHeaderString);
 			final boolean isSecure = isSecure(containerRequestContext);
 			securityContext = new AuthenticatedSecurityContext(user, isSecure);
 		} catch (final AuthenticationException e) {

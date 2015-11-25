@@ -1,5 +1,5 @@
 /**
- * The API of the backend of the xSystems web-application.
+ * The core of the backend of the xSystems web-application.
  * Copyright (C) 2015  xSystems
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,12 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.xsystems.backend.entity;
+package org.xsystems.backend.configuration.key;
 
-public interface User extends Entity<Long> {
-	String getEmail();
+public class SecurityPasswordHashSaltLengthKey implements ConfigurationKey {
 
-	Role getRole();
+	static final String KEY = "security.password.hash.saltLength";
 
-	String getPasswordHash();
+	@Override
+	public String getKey() {
+		return KEY;
+	}
 }

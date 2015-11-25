@@ -16,12 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.xsystems.backend.entity;
+package org.xsystems.backend.security;
 
-public interface User extends Entity<Long> {
-	String getEmail();
+public class AuthenticationException extends Exception {
 
-	Role getRole();
+	private static final long serialVersionUID = -4237528265628260379L;
 
-	String getPasswordHash();
+	public AuthenticationException(final String message) {
+		super(message);
+	}
 }

@@ -16,13 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.xsystems.backend.security;
+package org.xsystems.backend.configuration.key;
 
-public class AuthenticationException extends Exception {
+public class SecurityPasswordHashIterationsKey implements ConfigurationKey {
 
-	private static final long serialVersionUID = -4237528265628260379L;
+	static final String KEY = "security.password.hash.iterations";
 
-	public AuthenticationException(final String message) {
-		super(message);
+	@Override
+	public String getKey() {
+		return KEY;
 	}
 }

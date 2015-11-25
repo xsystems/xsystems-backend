@@ -44,7 +44,7 @@ public class UserImpl extends BaseEntity<Long> implements User, Serializable {
 	@Enumerated(EnumType.STRING)
 	private Role role;
 
-	private String password;
+	private String passwordHash;
 
 	@Override
 	public Long getId() {
@@ -74,14 +74,11 @@ public class UserImpl extends BaseEntity<Long> implements User, Serializable {
 	}
 
 	@Override
-	public String getPassword() {
-		return this.password;
+	public String getPasswordHash() {
+		return this.passwordHash;
 	}
 
-	/**
-	 * TODO Store as a hash.
-	 */
-	public void setPassword(final String password) {
-		this.password = password;
+	public void setPasswordHash(final String passwordHash) {
+		this.passwordHash = passwordHash;
 	}
 }

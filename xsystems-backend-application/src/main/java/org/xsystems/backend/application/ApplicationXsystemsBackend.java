@@ -19,6 +19,8 @@
 package org.xsystems.backend.application;
 
 import java.io.IOException;
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +47,7 @@ import org.xsystems.backend.entity.Role;
 import org.xsystems.backend.entity.User;
 import org.xsystems.backend.entity.UserImpl;
 import org.xsystems.backend.persistence.DataSourceManager;
+import org.xsystems.backend.security.AuthenticationService;
 
 public class ApplicationXsystemsBackend {
 
@@ -53,7 +56,7 @@ public class ApplicationXsystemsBackend {
 	final static Weld weld = new Weld();
 	final static WeldContainer weldContainer = weld.initialize();
 
-	public static void main(final String[] args) throws IOException {
+	public static void main(final String[] args) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
 
 		final ConfigurationService configurationService = weldContainer.instance().select(ConfigurationService.class)
 				.get();
@@ -132,13 +135,17 @@ public class ApplicationXsystemsBackend {
 		httpServer.start();
 	}
 
-	static void populateDatabaseWithDummyData() {
+	static void populateDatabaseWithDummyData() throws NoSuchAlgorithmException, InvalidKeySpecException {
 		final EntityManager entityManager = weldContainer.instance().select(EntityManager.class).get();
+		final AuthenticationService authenticationService = weldContainer.instance().select(AuthenticationService.class)
+				.get();
+
+		final String passwordHash = authenticationService.hashPassword("1234");
 
 		final List<User> users = new ArrayList<>();
 		final UserImpl user1 = new UserImpl();
 		user1.setEmail("foo@bar.baz");
-		user1.setPassword("1234");
+		user1.setPasswordHash(passwordHash);
 		user1.setRole(Role.ADMIN);
 		users.add(user1);
 

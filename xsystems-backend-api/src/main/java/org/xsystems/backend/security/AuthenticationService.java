@@ -16,12 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.xsystems.backend.entity;
+package org.xsystems.backend.security;
 
-public interface User extends Entity<Long> {
-	String getEmail();
+import java.security.NoSuchAlgorithmException;
+import java.security.spec.InvalidKeySpecException;
 
-	Role getRole();
+import org.xsystems.backend.entity.User;
 
-	String getPasswordHash();
+public interface AuthenticationService {
+
+	User authenticate(String authorizationHeaderString) throws AuthenticationException;
+
+	User authenticate(String username, String password) throws AuthenticationException;
+
+	String hashPassword(String password) throws NoSuchAlgorithmException, InvalidKeySpecException;
 }
