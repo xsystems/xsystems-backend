@@ -29,7 +29,7 @@ import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
-@Entity
+@Entity(name = "User")
 @Table(name = "\"user\"")
 public class UserImpl extends BaseEntity<Long> implements User, Serializable {
 

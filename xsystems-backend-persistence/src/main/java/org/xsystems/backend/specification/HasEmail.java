@@ -19,7 +19,6 @@
 package org.xsystems.backend.specification;
 
 import org.xsystems.backend.entity.User;
-import org.xsystems.backend.entity.UserImpl;
 
 public class HasEmail implements Specification<User> {
 
@@ -36,6 +35,6 @@ public class HasEmail implements Specification<User> {
 
 	@Override
 	public String toQuery() {
-		return "select user from " + UserImpl.class.getName() + " user where user.email=\"" + this.email + "\"";
+		return "select user from " + User.class.getSimpleName() + " user where user.email=\"" + this.email + "\"";
 	}
 }

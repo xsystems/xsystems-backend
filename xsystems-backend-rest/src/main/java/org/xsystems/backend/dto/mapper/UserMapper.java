@@ -30,6 +30,10 @@ class UserMapper implements EntityMapper<User, UserDto> {
 
 	@Override
 	public User toEntity(final UserDto userDto) {
+		if (userDto == null) {
+			return null;
+		}
+
 		final UserImpl user = new UserImpl();
 		user.setId(userDto.getId());
 		user.setEmail(userDto.getEmail());

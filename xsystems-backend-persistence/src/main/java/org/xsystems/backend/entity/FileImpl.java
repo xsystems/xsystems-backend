@@ -22,19 +22,30 @@ import static javax.persistence.GenerationType.SEQUENCE;
 
 import java.io.Serializable;
 import java.net.URI;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
+import javax.persistence.CollectionTable;
+import javax.persistence.Column;
+import javax.persistence.Convert;
 import javax.persistence.DiscriminatorColumn;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Inheritance;
 import javax.persistence.InheritanceType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapKeyColumn;
+import javax.persistence.MapKeyEnumerated;
 import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
 
-@Entity
-@Table(name = "FILE")
+import org.xsystems.backend.converter.UriConverter;
+
+@Entity(name = "File")
 @DiscriminatorColumn(name = "TYPE")
 @Inheritance(strategy = InheritanceType.JOINED)
 public abstract class FileImpl extends BaseEntity<Long> implements File, Serializable {
@@ -51,7 +62,17 @@ public abstract class FileImpl extends BaseEntity<Long> implements File, Seriali
 	@ManyToOne(targetEntity = UserImpl.class)
 	private User user;
 
-	private URI uri;
+	@ElementCollection
+	@Column(name = "URI")
+	@MapKeyEnumerated(EnumType.STRING)
+	@MapKeyColumn(name = "REPRESENTATION")
+	@Convert(converter = UriConverter.class)
+	@CollectionTable(name = "REPRESENTATION", joinColumns = @JoinColumn(name = "FILE_ID") )
+	private final Map<Representation, URI> representations;
+
+	public FileImpl() {
+		this.representations = new ConcurrentHashMap<>();
+	}
 
 	@Override
 	public Long getId() {
@@ -90,12 +111,22 @@ public abstract class FileImpl extends BaseEntity<Long> implements File, Seriali
 	}
 
 	@Override
-	public URI getUri() {
-		return this.uri;
+	public Set<Representation> getRepresentations() {
+		return this.representations.keySet();
 	}
 
 	@Override
-	public void setUri(final URI uri) {
-		this.uri = uri;
+	public URI getUri(final Representation representation) {
+		return this.representations.get(representation);
+	}
+
+	@Override
+	public void setUri(final Representation representation, final URI uri) {
+		if (representation.isApplicableFor(getType())) {
+			this.representations.put(representation, uri);
+		} else {
+			throw new UnsupportedOperationException("The representation '" + representation.getDisplayName()
+					+ "' is not applicable for a file type of '" + getType() + "'.");
+		}
 	}
 }

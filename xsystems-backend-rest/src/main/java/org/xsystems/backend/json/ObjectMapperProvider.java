@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.xsystems.backend.providers;
+package org.xsystems.backend.json;
 
 import javax.ws.rs.ext.ContextResolver;
 import javax.ws.rs.ext.Provider;
@@ -34,6 +34,8 @@ public class ObjectMapperProvider implements ContextResolver<ObjectMapper> {
 		this.objectMapper = new ObjectMapper();
 		this.objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
 		this.objectMapper.enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);
+		this.objectMapper.enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);
+		this.objectMapper.enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING);
 		this.objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
 	}
 

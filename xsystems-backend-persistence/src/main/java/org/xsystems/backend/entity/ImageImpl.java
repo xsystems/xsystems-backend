@@ -18,35 +18,19 @@
  */
 package org.xsystems.backend.entity;
 
-import java.net.URI;
-
 import javax.persistence.DiscriminatorValue;
 import javax.persistence.Entity;
-import javax.persistence.Table;
 
-@Entity
-@Table(name = "IMAGE")
+@Entity(name = "Image")
 @DiscriminatorValue(ImageImpl.TYPE)
 public class ImageImpl extends FileImpl implements Image {
 
 	private static final long serialVersionUID = -2292326025847356420L;
-
-	private URI thumbnailUri;
 
 	static final String TYPE = FileType.Values.IMAGE;
 
 	@Override
 	public FileType getType() {
 		return FileType.valueOf(TYPE);
-	}
-
-	@Override
-	public URI getThumbnailUri() {
-		return this.thumbnailUri;
-	}
-
-	@Override
-	public void setThumbnailUri(final URI thumbnailUri) {
-		this.thumbnailUri = thumbnailUri;
 	}
 }

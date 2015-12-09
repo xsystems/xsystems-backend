@@ -19,19 +19,9 @@
 package org.xsystems.backend.dto;
 
 import java.io.Serializable;
-import java.net.URI;
 
 public class ImageDto extends FileDto implements Serializable {
 
 	private static final long serialVersionUID = -6555118753137756584L;
 
-	private URI thumbnailUri;
-
-	public URI getThumbnailUri() {
-		return this.thumbnailUri;
-	}
-
-	public void setThumbnailUri(final URI thumbnailUri) {
-		this.thumbnailUri = thumbnailUri;
-	}
 }

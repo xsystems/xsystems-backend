@@ -19,9 +19,6 @@
 package org.xsystems.backend.resources;
 
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import javax.inject.Inject;
 import javax.ws.rs.BadRequestException;
@@ -38,12 +35,11 @@ import org.xsystems.backend.entity.Collection;
 import org.xsystems.backend.entity.EntityMapper;
 import org.xsystems.backend.entity.Image;
 import org.xsystems.backend.io.FileService;
+import org.xsystems.backend.io.UriService;
 import org.xsystems.backend.repository.Repository;
 
 @Path(CollectionsResource.PATH)
 public class CollectionsResource {
-
-	private static final Logger LOGGER = Logger.getLogger(CollectionsResource.class.getName());
 
 	public static final String PATH = "/collections";
 
@@ -57,7 +53,7 @@ public class CollectionsResource {
 	Repository<Collection<Image>> imageCollectionRepository;
 
 	@Inject
-	CollectionResource collectionResource;
+	UriService uriService;
 
 	@POST
 	@Consumes(MediaType.APPLICATION_JSON)
@@ -71,13 +67,7 @@ public class CollectionsResource {
 
 		this.imageCollectionRepository.add(imageCollection);
 
-		URI collectionUri;
-		try {
-			collectionUri = this.collectionResource.createUri(imageCollection.getId());
-		} catch (final URISyntaxException e) {
-			LOGGER.log(Level.FINE, "Collection identifier contains invalid characters.");
-			throw new BadRequestException("The collection its identifier contains invalid characters.");
-		}
+		final URI collectionUri = this.uriService.createEntityUri(imageCollection);
 
 		return Response.created(collectionUri).build();
 	}

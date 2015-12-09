@@ -1,5 +1,5 @@
 /**
- * The persistence module of the backend of the xSystems web-application.
+ * The API of the backend of the xSystems web-application.
  * Copyright (C) 2015  xSystems
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,20 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.xsystems.backend.specification;
+package org.xsystems.backend.io;
 
-import org.xsystems.backend.entity.Role;
-import org.xsystems.backend.entity.User;
+import java.net.URI;
 
-public class IsAdmin implements Specification<User> {
+import org.xsystems.backend.entity.Entity;
+import org.xsystems.backend.entity.File;
 
-	@Override
-	public boolean isSatisfiedBy(final User user) {
-		return Role.ADMIN.equals(user.getRole());
-	}
+public interface UriService {
 
-	@Override
-	public String toQuery() {
-		return "select user from " + User.class.getSimpleName() + " user where user.role=\"" + Role.Values.ADMIN + "\"";
-	}
+	URI createEntityUri(Entity<?> enity);
+
+	void createDataUris(File file);
 }

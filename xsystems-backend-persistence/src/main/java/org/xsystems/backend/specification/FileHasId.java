@@ -22,10 +22,10 @@ import org.xsystems.backend.entity.File;
 
 public class FileHasId<T extends File> implements Specification<T> {
 
-	Class<?> clazz;
+	Class<? extends File> clazz;
 	Long id;
 
-	public FileHasId(final Class<?> clazz, final Long id) {
+	public FileHasId(final Class<? extends File> clazz, final Long id) {
 		this.clazz = clazz;
 		this.id = id;
 	}
@@ -37,6 +37,6 @@ public class FileHasId<T extends File> implements Specification<T> {
 
 	@Override
 	public String toQuery() {
-		return "select entity from " + this.clazz.getName() + " entity where entity.id=\"" + this.id + "\"";
+		return "select entity from " + this.clazz.getSimpleName() + " entity where entity.id=\"" + this.id + "\"";
 	}
 }

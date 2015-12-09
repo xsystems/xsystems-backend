@@ -18,6 +18,12 @@
  */
 package org.xsystems.backend.dto.mapper;
 
+import java.net.URI;
+import java.util.Collections;
+import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 
@@ -26,6 +32,7 @@ import org.xsystems.backend.dto.UserDto;
 import org.xsystems.backend.entity.EntityMapper;
 import org.xsystems.backend.entity.Image;
 import org.xsystems.backend.entity.ImageImpl;
+import org.xsystems.backend.entity.Representation;
 import org.xsystems.backend.entity.User;
 
 @ApplicationScoped
@@ -41,8 +48,14 @@ class ImageMapper implements EntityMapper<Image, ImageDto> {
 		image.setName(imageDto.getName());
 		image.setDescription(imageDto.getDescription());
 		image.setUser(this.userMapper.toEntity(imageDto.getUserDto()));
-		image.setUri(imageDto.getUri());
-		image.setThumbnailUri(imageDto.getThumbnailUri());
+
+		final Map<Representation, URI> representationMap = imageDto.getRepresentations();
+		final Set<Representation> representations = representationMap == null ? Collections.emptySet()
+				: representationMap.keySet();
+		for (final Representation representation : representations) {
+			image.setUri(representation, representationMap.get(representation));
+		}
+
 		return image;
 	}
 
@@ -53,8 +66,13 @@ class ImageMapper implements EntityMapper<Image, ImageDto> {
 		imageDto.setName(image.getName());
 		imageDto.setDescription(image.getDescription());
 		imageDto.setUserDto(this.userMapper.fromEntity(image.getUser()));
-		imageDto.setUri(image.getUri());
-		imageDto.setThumbnailUri(image.getThumbnailUri());
+
+		final Map<Representation, URI> representations = new ConcurrentHashMap<>();
+		for (final Representation representation : image.getRepresentations()) {
+			representations.put(representation, image.getUri(representation));
+		}
+		imageDto.setRepresentations(representations);
+
 		return imageDto;
 	}
 }

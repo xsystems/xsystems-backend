@@ -19,6 +19,7 @@
 package org.xsystems.backend.entity;
 
 import java.net.URI;
+import java.util.Set;
 
 public interface File extends Entity<Long> {
 	String getName();
@@ -29,7 +30,9 @@ public interface File extends Entity<Long> {
 
 	User getUser();
 
-	URI getUri();
+	Set<Representation> getRepresentations();
 
-	void setUri(URI uri);
+	URI getUri(Representation representation);
+
+	void setUri(Representation representation, URI uri);
 }

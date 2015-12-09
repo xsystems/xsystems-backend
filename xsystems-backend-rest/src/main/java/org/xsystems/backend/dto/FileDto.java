@@ -20,6 +20,9 @@ package org.xsystems.backend.dto;
 
 import java.io.Serializable;
 import java.net.URI;
+import java.util.Map;
+
+import org.xsystems.backend.entity.Representation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -35,7 +38,7 @@ public class FileDto implements Serializable {
 
 	private UserDto userDto;
 
-	private URI uri;
+	private Map<Representation, URI> representations;
 
 	public Long getId() {
 		return this.id;
@@ -70,11 +73,11 @@ public class FileDto implements Serializable {
 		this.userDto = userDto;
 	}
 
-	public URI getUri() {
-		return this.uri;
+	public Map<Representation, URI> getRepresentations() {
+		return this.representations;
 	}
 
-	public void setUri(final URI uri) {
-		this.uri = uri;
+	public void setRepresentations(final Map<Representation, URI> representations) {
+		this.representations = representations;
 	}
 }

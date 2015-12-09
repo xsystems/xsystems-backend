@@ -16,26 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.xsystems.backend.io;
+package org.xsystems.backend.configuration.key;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.FileSystems;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
+public class IoFilePathKey implements ConfigurationKey {
 
-public class FileUtil {
+	static final String KEY = "io.file.path";
 
-	public static Path createPath(final String first, final String... more) {
-		return FileSystems.getDefault().getPath(first, more);
-	}
-
-	public static void moveFile(final File file, final Path path) throws IOException {
-		final Path parent = path.getParent();
-		if (!Files.exists(parent)) {
-			Files.createDirectories(parent);
-		}
-		Files.move(file.toPath(), path, StandardCopyOption.REPLACE_EXISTING);
+	@Override
+	public String getKey() {
+		return KEY;
 	}
 }

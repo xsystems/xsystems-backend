@@ -19,13 +19,11 @@
 package org.xsystems.backend.resources;
 
 import java.net.URI;
-import java.net.URISyntaxException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.annotation.security.RolesAllowed;
 import javax.inject.Inject;
-import javax.ws.rs.BadRequestException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -36,13 +34,13 @@ import javax.ws.rs.core.Response;
 import org.xsystems.backend.dto.ImageDto;
 import org.xsystems.backend.entity.EntityMapper;
 import org.xsystems.backend.entity.Image;
+import org.xsystems.backend.entity.Representation;
 import org.xsystems.backend.entity.Role;
+import org.xsystems.backend.io.UriService;
 import org.xsystems.backend.repository.Repository;
 
 @Path(ImagesResource.PATH)
 public class ImagesResource {
-
-	private static final Logger LOGGER = Logger.getLogger(ImagesResource.class.getName());
 
 	public static final String PATH = "/images";
 
@@ -53,39 +51,29 @@ public class ImagesResource {
 	Repository<Image> imageRepository;
 
 	@Inject
-	ImageResource imageResource;
-
-	@Inject
-	FileDataResource fileDataResource;
+	UriService uriService;
 
 	@POST
 	@RolesAllowed(Role.Values.ADMIN)
 	@Consumes(MediaType.APPLICATION_JSON)
 	@Produces(MediaType.APPLICATION_JSON)
 	public Response post(final ImageDto imageDto) {
-		final Image image = this.imageRepository.add(this.imageMapper.toEntity(imageDto));
+		Image image = this.imageMapper.toEntity(imageDto);
 
-		URI imageUri;
-		URI uri;
-		URI thumbnailUri;
-		try {
-			imageUri = this.imageResource.createUri(image.getId());
-			uri = this.fileDataResource.createUri(image.getId(), "image");
-			thumbnailUri = this.fileDataResource.createUri(image.getId(), "thumbnail");
-		} catch (final URISyntaxException e) {
-			LOGGER.log(Level.FINE, "Image identifier contains invalid characters.");
-			throw new BadRequestException("The image its identifier contains invalid characters.");
-		}
+		image = this.imageRepository.add(image);
 
-		image.setUri(uri);
-		image.setThumbnailUri(thumbnailUri);
+		this.uriService.createDataUris(image);
 
 		this.imageRepository.update(image);
 
 		imageDto.setId(image.getId());
-		imageDto.setUri(uri);
-		imageDto.setThumbnailUri(thumbnailUri);
+		final Map<Representation, URI> representations = new ConcurrentHashMap<>();
+		for (final Representation representation : image.getRepresentations()) {
+			representations.put(representation, image.getUri(representation));
+		}
+		imageDto.setRepresentations(representations);
 
+		final URI imageUri = this.uriService.createEntityUri(image);
 		return Response.created(imageUri).entity(imageDto).build();
 	}
 }

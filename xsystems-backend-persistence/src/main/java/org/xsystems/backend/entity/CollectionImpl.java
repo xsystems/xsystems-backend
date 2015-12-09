@@ -33,10 +33,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.SequenceGenerator;
-import javax.persistence.Table;
 
-@Entity
-@Table(name = "COLLECTION")
+@Entity(name = "Collection")
 public class CollectionImpl<T extends File> implements Serializable, Collection<T> {
 
 	private static final long serialVersionUID = -6598833751310766066L;

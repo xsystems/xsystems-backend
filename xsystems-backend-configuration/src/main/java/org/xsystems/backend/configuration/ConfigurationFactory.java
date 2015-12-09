@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 import java.net.URL;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Properties;
 
 import javax.annotation.PostConstruct;
@@ -94,6 +96,16 @@ public class ConfigurationFactory {
 			InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
 		final String value = produceString(injectionPoint);
 		return Integer.parseInt(value);
+	}
+
+	@Produces
+	@Configuration
+	public Path producePath(final InjectionPoint injectionPoint) throws NoSuchMethodException, SecurityException,
+			InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+		final String value = produceString(injectionPoint);
+		final String homePath = System.getProperty("user.home");
+		final String filePath = value.replaceFirst("^~", homePath);
+		return Paths.get(filePath);
 	}
 
 	void loadConfiguration(final String... fileNames) throws IOException {
