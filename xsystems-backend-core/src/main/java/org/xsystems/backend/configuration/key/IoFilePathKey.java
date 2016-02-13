@@ -20,10 +20,10 @@ package org.xsystems.backend.configuration.key;
 
 public class IoFilePathKey implements ConfigurationKey {
 
-	static final String KEY = "io.file.path";
+    static final String KEY = "io.file.path";
 
-	@Override
-	public String getKey() {
-		return KEY;
-	}
+    @Override
+    public String getKey() {
+        return KEY;
+    }
 }

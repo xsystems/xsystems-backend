@@ -33,52 +33,52 @@ import javax.persistence.Table;
 @Table(name = "\"user\"")
 public class UserImpl extends BaseEntity<Long> implements User, Serializable {
 
-	private static final long serialVersionUID = 2345751995743137490L;
+    private static final long serialVersionUID = 2345751995743137490L;
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_ID_SEQ")
-	@SequenceGenerator(name = "USER_ID_SEQ", sequenceName = "USER_ID_SEQ")
-	private Long id;
-	private String email;
+    @Id
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_ID_SEQ")
+    @SequenceGenerator(name = "USER_ID_SEQ", sequenceName = "USER_ID_SEQ")
+    private Long id;
+    private String email;
 
-	@Enumerated(EnumType.STRING)
-	private Role role;
+    @Enumerated(EnumType.STRING)
+    private Role role;
 
-	private String passwordHash;
+    private String passwordHash;
 
-	@Override
-	public Long getId() {
-		return this.id;
-	}
+    @Override
+    public Long getId() {
+        return this.id;
+    }
 
-	public void setId(final Long id) {
-		this.id = id;
-	}
+    public void setId(final Long id) {
+        this.id = id;
+    }
 
-	@Override
-	public String getEmail() {
-		return this.email;
-	}
+    @Override
+    public String getEmail() {
+        return this.email;
+    }
 
-	public void setEmail(final String email) {
-		this.email = email;
-	}
+    public void setEmail(final String email) {
+        this.email = email;
+    }
 
-	@Override
-	public Role getRole() {
-		return this.role;
-	}
+    @Override
+    public Role getRole() {
+        return this.role;
+    }
 
-	public void setRole(final Role role) {
-		this.role = role;
-	}
+    public void setRole(final Role role) {
+        this.role = role;
+    }
 
-	@Override
-	public String getPasswordHash() {
-		return this.passwordHash;
-	}
+    @Override
+    public String getPasswordHash() {
+        return this.passwordHash;
+    }
 
-	public void setPasswordHash(final String passwordHash) {
-		this.passwordHash = passwordHash;
-	}
+    public void setPasswordHash(final String passwordHash) {
+        this.passwordHash = passwordHash;
+    }
 }

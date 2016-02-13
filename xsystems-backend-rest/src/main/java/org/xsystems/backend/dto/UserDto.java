@@ -24,35 +24,35 @@ import org.xsystems.backend.entity.Role;
 
 public class UserDto implements Serializable {
 
-	private static final long serialVersionUID = -4940534397675675538L;
+    private static final long serialVersionUID = -4940534397675675538L;
 
-	private Long id;
+    private Long id;
 
-	private String email;
+    private String email;
 
-	private Role role;
+    private Role role;
 
-	public Long getId() {
-		return this.id;
-	}
+    public Long getId() {
+        return this.id;
+    }
 
-	public void setId(final Long id) {
-		this.id = id;
-	}
+    public void setId(final Long id) {
+        this.id = id;
+    }
 
-	public String getEmail() {
-		return this.email;
-	}
+    public String getEmail() {
+        return this.email;
+    }
 
-	public void setEmail(final String email) {
-		this.email = email;
-	}
+    public void setEmail(final String email) {
+        this.email = email;
+    }
 
-	public Role getRole() {
-		return this.role;
-	}
+    public Role getRole() {
+        return this.role;
+    }
 
-	public void setRole(final Role role) {
-		this.role = role;
-	}
+    public void setRole(final Role role) {
+        this.role = role;
+    }
 }

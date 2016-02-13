@@ -34,92 +34,92 @@ import org.xsystems.backend.configuration.key.ConfigurationKey;
 
 public class ConfigurationFactory {
 
-	static String DEFAULT_PROPERTIES_FILE = "/default.properties";
+    static String DEFAULT_PROPERTIES_FILE = "/default.properties";
 
-	Properties properties;
+    Properties properties;
 
-	@PostConstruct
-	void postConstruct() {
-		try {
-			loadConfiguration(DEFAULT_PROPERTIES_FILE);
-		} catch (final IOException e) {
-			throw new IllegalStateException(e);
-		}
-	}
+    @PostConstruct
+    void postConstruct() {
+        try {
+            loadConfiguration(DEFAULT_PROPERTIES_FILE);
+        } catch (final IOException e) {
+            throw new IllegalStateException(e);
+        }
+    }
 
-	String getValue(final String key) {
-		return this.properties.getProperty(key);
-	}
+    String getValue(final String key) {
+        return this.properties.getProperty(key);
+    }
 
-	String getValue(final Class<? extends ConfigurationKey> configurationKeyClass)
-			throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException,
-			IllegalArgumentException, InvocationTargetException {
-		final Constructor<? extends ConfigurationKey> configurationKeyConstructor = configurationKeyClass
-				.getConstructor();
+    String getValue(final Class<? extends ConfigurationKey> configurationKeyClass)
+            throws NoSuchMethodException, SecurityException, InstantiationException, IllegalAccessException,
+            IllegalArgumentException, InvocationTargetException {
+        final Constructor<? extends ConfigurationKey> configurationKeyConstructor = configurationKeyClass
+                .getConstructor();
 
-		final ConfigurationKey configurationKey = configurationKeyConstructor.newInstance();
+        final ConfigurationKey configurationKey = configurationKeyConstructor.newInstance();
 
-		final String key = configurationKey.getKey();
+        final String key = configurationKey.getKey();
 
-		return getValue(key);
-	}
+        return getValue(key);
+    }
 
-	@Produces
-	@Configuration
-	public String produceString(final InjectionPoint injectionPoint) throws NoSuchMethodException, SecurityException,
-			InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		final Configuration configuration = injectionPoint.getAnnotated().getAnnotation(Configuration.class);
+    @Produces
+    @Configuration
+    public String produceString(final InjectionPoint injectionPoint) throws NoSuchMethodException, SecurityException,
+            InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        final Configuration configuration = injectionPoint.getAnnotated().getAnnotation(Configuration.class);
 
-		final Class<? extends ConfigurationKey> configurationKeyClass = configuration.key();
+        final Class<? extends ConfigurationKey> configurationKeyClass = configuration.key();
 
-		final String value = getValue(configurationKeyClass);
+        final String value = getValue(configurationKeyClass);
 
-		if (value == null) {
-			final String key = injectionPoint.getMember().getName();
-			return getValue(key);
-		}
+        if (value == null) {
+            final String key = injectionPoint.getMember().getName();
+            return getValue(key);
+        }
 
-		return value;
-	}
+        return value;
+    }
 
-	@Produces
-	@Configuration
-	public Boolean produceBoolean(final InjectionPoint injectionPoint) throws NoSuchMethodException, SecurityException,
-			InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		final String value = produceString(injectionPoint);
-		return Boolean.parseBoolean(value);
-	}
+    @Produces
+    @Configuration
+    public Boolean produceBoolean(final InjectionPoint injectionPoint) throws NoSuchMethodException, SecurityException,
+            InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        final String value = produceString(injectionPoint);
+        return Boolean.parseBoolean(value);
+    }
 
-	@Produces
-	@Configuration
-	public Integer produceInteger(final InjectionPoint injectionPoint) throws NoSuchMethodException, SecurityException,
-			InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		final String value = produceString(injectionPoint);
-		return Integer.parseInt(value);
-	}
+    @Produces
+    @Configuration
+    public Integer produceInteger(final InjectionPoint injectionPoint) throws NoSuchMethodException, SecurityException,
+            InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        final String value = produceString(injectionPoint);
+        return Integer.parseInt(value);
+    }
 
-	@Produces
-	@Configuration
-	public Path producePath(final InjectionPoint injectionPoint) throws NoSuchMethodException, SecurityException,
-			InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
-		final String value = produceString(injectionPoint);
-		final String homePath = System.getProperty("user.home");
-		final String filePath = value.replaceFirst("^~", homePath);
-		return Paths.get(filePath);
-	}
+    @Produces
+    @Configuration
+    public Path producePath(final InjectionPoint injectionPoint) throws NoSuchMethodException, SecurityException,
+            InstantiationException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
+        final String value = produceString(injectionPoint);
+        final String homePath = System.getProperty("user.home");
+        final String filePath = value.replaceFirst("^~", homePath);
+        return Paths.get(filePath);
+    }
 
-	void loadConfiguration(final String... fileNames) throws IOException {
-		this.properties = new Properties();
-		for (final String fileName : fileNames) {
-			final Properties properties = loadProperties(fileName);
-			this.properties.putAll(properties);
-		}
-	}
+    void loadConfiguration(final String... fileNames) throws IOException {
+        this.properties = new Properties();
+        for (final String fileName : fileNames) {
+            final Properties properties = loadProperties(fileName);
+            this.properties.putAll(properties);
+        }
+    }
 
-	Properties loadProperties(final String filename) throws IOException {
-		final Properties properties = new Properties();
-		final URL url = Properties.class.getResource(filename);
-		properties.load(url.openStream());
-		return properties;
-	}
+    Properties loadProperties(final String filename) throws IOException {
+        final Properties properties = new Properties();
+        final URL url = Properties.class.getResource(filename);
+        properties.load(url.openStream());
+        return properties;
+    }
 }

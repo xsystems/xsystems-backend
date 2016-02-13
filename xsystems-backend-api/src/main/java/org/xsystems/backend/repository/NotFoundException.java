@@ -20,16 +20,16 @@ package org.xsystems.backend.repository;
 
 public class NotFoundException extends Exception {
 
-	private static final long serialVersionUID = -7544866107557371874L;
+    private static final long serialVersionUID = -7544866107557371874L;
 
-	Class<?> clazz;
+    Class<?> clazz;
 
-	public NotFoundException(final Class<?> clazz) {
-		this.clazz = clazz;
-	}
+    public NotFoundException(final Class<?> clazz) {
+        this.clazz = clazz;
+    }
 
-	@Override
-	public String getMessage() {
-		return this.clazz.getSimpleName() + " not found.";
-	}
+    @Override
+    public String getMessage() {
+        return this.clazz.getSimpleName() + " not found.";
+    }
 }

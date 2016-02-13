@@ -22,17 +22,17 @@ import java.net.URI;
 import java.util.Set;
 
 public interface File extends Entity<Long> {
-	String getName();
+    String getName();
 
-	String getDescription();
+    String getDescription();
 
-	FileType getType();
+    FileType getType();
 
-	User getUser();
+    User getUser();
 
-	Set<Representation> getRepresentations();
+    Set<Representation> getRepresentations();
 
-	URI getUri(Representation representation);
+    URI getUri(Representation representation);
 
-	void setUri(Representation representation, URI uri);
+    void setUri(Representation representation, URI uri);
 }

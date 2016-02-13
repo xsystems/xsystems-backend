@@ -25,9 +25,9 @@ import org.xsystems.backend.entity.User;
 
 public interface AuthenticationService {
 
-	User authenticate(String authorizationHeaderString) throws AuthenticationException;
+    User authenticate(String authorizationHeaderString) throws AuthenticationException;
 
-	User authenticate(String username, String password) throws AuthenticationException;
+    User authenticate(String username, String password) throws AuthenticationException;
 
-	String hashPassword(String password) throws NoSuchAlgorithmException, InvalidKeySpecException;
+    String hashPassword(String password) throws NoSuchAlgorithmException, InvalidKeySpecException;
 }

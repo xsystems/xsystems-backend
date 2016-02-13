@@ -23,13 +23,13 @@ import org.xsystems.backend.entity.User;
 
 public class IsAdmin implements Specification<User> {
 
-	@Override
-	public boolean isSatisfiedBy(final User user) {
-		return Role.ADMIN.equals(user.getRole());
-	}
+    @Override
+    public boolean isSatisfiedBy(final User user) {
+        return Role.ADMIN.equals(user.getRole());
+    }
 
-	@Override
-	public String toQuery() {
-		return "select user from " + User.class.getSimpleName() + " user where user.role=\"" + Role.Values.ADMIN + "\"";
-	}
+    @Override
+    public String toQuery() {
+        return "select user from " + User.class.getSimpleName() + " user where user.role=\"" + Role.Values.ADMIN + "\"";
+    }
 }

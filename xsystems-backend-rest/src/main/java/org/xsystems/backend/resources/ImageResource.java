@@ -22,5 +22,5 @@ import javax.ws.rs.Path;
 
 @Path(ImageResource.PATH)
 public class ImageResource {
-	public static final String PATH = ImagesResource.PATH + "/{id}";
+    public static final String PATH = ImagesResource.PATH + "/{id}";
 }

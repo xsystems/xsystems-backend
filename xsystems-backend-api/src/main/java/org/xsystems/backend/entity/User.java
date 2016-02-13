@@ -19,9 +19,9 @@
 package org.xsystems.backend.entity;
 
 public interface User extends Entity<Long> {
-	String getEmail();
+    String getEmail();
 
-	Role getRole();
+    Role getRole();
 
-	String getPasswordHash();
+    String getPasswordHash();
 }

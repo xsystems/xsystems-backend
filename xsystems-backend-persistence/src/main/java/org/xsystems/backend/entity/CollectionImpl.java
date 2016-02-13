@@ -37,74 +37,74 @@ import javax.persistence.SequenceGenerator;
 @Entity(name = "Collection")
 public class CollectionImpl<T extends File> implements Serializable, Collection<T> {
 
-	private static final long serialVersionUID = -6598833751310766066L;
+    private static final long serialVersionUID = -6598833751310766066L;
 
-	@Id
-	@GeneratedValue(strategy = SEQUENCE, generator = "COLLECTION_ID_SEQ")
-	@SequenceGenerator(name = "COLLECTION_ID_SEQ", sequenceName = "COLLECTION_ID_SEQ")
-	private Long id;
-	private String name;
-	private String description;
+    @Id
+    @GeneratedValue(strategy = SEQUENCE, generator = "COLLECTION_ID_SEQ")
+    @SequenceGenerator(name = "COLLECTION_ID_SEQ", sequenceName = "COLLECTION_ID_SEQ")
+    private Long id;
+    private String name;
+    private String description;
 
-	@Enumerated(EnumType.STRING)
-	private FileType type;
+    @Enumerated(EnumType.STRING)
+    private FileType type;
 
-	@ManyToOne(targetEntity = UserImpl.class)
-	private User user;
+    @ManyToOne(targetEntity = UserImpl.class)
+    private User user;
 
-	@ManyToMany(targetEntity = FileImpl.class)
-	@JoinTable(name = "COLLECTION_FILE", joinColumns = {
-			@JoinColumn(name = "COLLECTION_ID", referencedColumnName = "ID") }, inverseJoinColumns = {
-					@JoinColumn(name = "FILE_ID", referencedColumnName = "ID") })
-	private List<T> elements;
+    @ManyToMany(targetEntity = FileImpl.class)
+    @JoinTable(name = "COLLECTION_FILE", joinColumns = {
+            @JoinColumn(name = "COLLECTION_ID", referencedColumnName = "ID") }, inverseJoinColumns = {
+                    @JoinColumn(name = "FILE_ID", referencedColumnName = "ID") })
+    private List<T> elements;
 
-	@Override
-	public Long getId() {
-		return this.id;
-	}
+    @Override
+    public Long getId() {
+        return this.id;
+    }
 
-	@Override
-	public String getName() {
-		return this.name;
-	}
+    @Override
+    public String getName() {
+        return this.name;
+    }
 
-	public void setName(final String name) {
-		this.name = name;
-	}
+    public void setName(final String name) {
+        this.name = name;
+    }
 
-	@Override
-	public String getDescription() {
-		return this.description;
-	}
+    @Override
+    public String getDescription() {
+        return this.description;
+    }
 
-	public void setDescription(final String description) {
-		this.description = description;
-	}
+    public void setDescription(final String description) {
+        this.description = description;
+    }
 
-	@Override
-	public FileType getType() {
-		return this.type;
-	}
+    @Override
+    public FileType getType() {
+        return this.type;
+    }
 
-	public void setType(final FileType type) {
-		this.type = type;
-	}
+    public void setType(final FileType type) {
+        this.type = type;
+    }
 
-	@Override
-	public User getUser() {
-		return this.user;
-	}
+    @Override
+    public User getUser() {
+        return this.user;
+    }
 
-	public void setUser(final User user) {
-		this.user = user;
-	}
+    public void setUser(final User user) {
+        this.user = user;
+    }
 
-	@Override
-	public List<T> getElements() {
-		return this.elements;
-	}
+    @Override
+    public List<T> getElements() {
+        return this.elements;
+    }
 
-	public void setElements(final List<T> elements) {
-		this.elements = elements;
-	}
+    public void setElements(final List<T> elements) {
+        this.elements = elements;
+    }
 }

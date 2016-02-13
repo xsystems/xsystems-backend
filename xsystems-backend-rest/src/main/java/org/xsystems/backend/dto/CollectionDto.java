@@ -27,56 +27,56 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class CollectionDto<T extends FileDto> implements Serializable {
 
-	private static final long serialVersionUID = -2974801863915348482L;
+    private static final long serialVersionUID = -2974801863915348482L;
 
-	private String name;
+    private String name;
 
-	private String description;
+    private String description;
 
-	private FileType type;
+    private FileType type;
 
-	private UserDto userDto;
+    private UserDto userDto;
 
-	private List<T> elements;
+    private List<T> elements;
 
-	public String getName() {
-		return this.name;
-	}
+    public String getName() {
+        return this.name;
+    }
 
-	public void setName(final String name) {
-		this.name = name;
-	}
+    public void setName(final String name) {
+        this.name = name;
+    }
 
-	public String getDescription() {
-		return this.description;
-	}
+    public String getDescription() {
+        return this.description;
+    }
 
-	public void setDescription(final String description) {
-		this.description = description;
-	}
+    public void setDescription(final String description) {
+        this.description = description;
+    }
 
-	public FileType getType() {
-		return this.type;
-	}
+    public FileType getType() {
+        return this.type;
+    }
 
-	public void setType(final FileType type) {
-		this.type = type;
-	}
+    public void setType(final FileType type) {
+        this.type = type;
+    }
 
-	public UserDto getUserDto() {
-		return this.userDto;
-	}
+    public UserDto getUserDto() {
+        return this.userDto;
+    }
 
-	@JsonProperty("user")
-	public void setUserDto(final UserDto userDto) {
-		this.userDto = userDto;
-	}
+    @JsonProperty("user")
+    public void setUserDto(final UserDto userDto) {
+        this.userDto = userDto;
+    }
 
-	public List<T> getElements() {
-		return this.elements;
-	}
+    public List<T> getElements() {
+        return this.elements;
+    }
 
-	public void setElements(final List<T> elements) {
-		this.elements = elements;
-	}
+    public void setElements(final List<T> elements) {
+        this.elements = elements;
+    }
 }

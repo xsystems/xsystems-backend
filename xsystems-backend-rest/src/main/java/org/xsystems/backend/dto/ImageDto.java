@@ -22,6 +22,6 @@ import java.io.Serializable;
 
 public class ImageDto extends FileDto implements Serializable {
 
-	private static final long serialVersionUID = -6555118753137756584L;
+    private static final long serialVersionUID = -6555118753137756584L;
 
 }

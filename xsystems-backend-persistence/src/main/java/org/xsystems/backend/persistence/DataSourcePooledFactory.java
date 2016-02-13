@@ -40,48 +40,48 @@ import com.mchange.v2.c3p0.DataSources;
 
 public class DataSourcePooledFactory {
 
-	private static final Logger LOGGER = Logger
-			.getLogger(DataSourcePooledFactory.class.getName());
+    private static final Logger LOGGER = Logger
+            .getLogger(DataSourcePooledFactory.class.getName());
 
-	@Inject
-	@Configuration(key = PersistenceDriverKey.class)
-	String driver;
+    @Inject
+    @Configuration(key = PersistenceDriverKey.class)
+    String driver;
 
-	@Inject
-	@Configuration(key = PersistenceUrlKey.class)
-	String url;
+    @Inject
+    @Configuration(key = PersistenceUrlKey.class)
+    String url;
 
-	@Inject
-	@Configuration(key = PersistenceUserKey.class)
-	String user;
+    @Inject
+    @Configuration(key = PersistenceUserKey.class)
+    String user;
 
-	@Inject
-	@Configuration(key = PersistencePasswordKey.class)
-	String password;
+    @Inject
+    @Configuration(key = PersistencePasswordKey.class)
+    String password;
 
-	@Produces
-	@ApplicationScoped
-	public DataSource produce() {
-		ComboPooledDataSource comboPooledDataSource = null;
-		try {
-			comboPooledDataSource = new ComboPooledDataSource();
-			comboPooledDataSource.setDriverClass(driver);
-			comboPooledDataSource.setJdbcUrl(url);
-			comboPooledDataSource.setUser(user);
-			comboPooledDataSource.setPassword(password);
-		} catch (final PropertyVetoException e) {
-			LOGGER.log(Level.SEVERE, "Unable to create DataSource.", e);
-			throw new IllegalStateException(e);
-		}
+    @Produces
+    @ApplicationScoped
+    public DataSource produce() {
+        ComboPooledDataSource comboPooledDataSource = null;
+        try {
+            comboPooledDataSource = new ComboPooledDataSource();
+            comboPooledDataSource.setDriverClass(driver);
+            comboPooledDataSource.setJdbcUrl(url);
+            comboPooledDataSource.setUser(user);
+            comboPooledDataSource.setPassword(password);
+        } catch (final PropertyVetoException e) {
+            LOGGER.log(Level.SEVERE, "Unable to create DataSource.", e);
+            throw new IllegalStateException(e);
+        }
 
-		return comboPooledDataSource;
-	}
+        return comboPooledDataSource;
+    }
 
-	public void dispose(@Disposes final DataSource instance) {
-		try {
-			DataSources.destroy(instance);
-		} catch (final SQLException e) {
-			LOGGER.log(Level.WARNING, "Unable to destroy DataSource.", e);
-		}
-	}
+    public void dispose(@Disposes final DataSource instance) {
+        try {
+            DataSources.destroy(instance);
+        } catch (final SQLException e) {
+            LOGGER.log(Level.WARNING, "Unable to destroy DataSource.", e);
+        }
+    }
 }

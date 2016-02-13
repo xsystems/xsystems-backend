@@ -34,26 +34,26 @@ import org.xsystems.backend.resources.ImageResource;
 
 public class UriServiceImpl implements UriService {
 
-	@Context
-	UriInfo uriInfo;
+    @Context
+    UriInfo uriInfo;
 
-	@Override
-	public URI createEntityUri(final Entity<?> enity) {
-		if (enity instanceof Collection<?>) {
-			return this.uriInfo.getBaseUriBuilder().path(CollectionResource.PATH).build(enity.getId());
-		} else if (enity instanceof Image) {
-			return this.uriInfo.getBaseUriBuilder().path(ImageResource.PATH).build(enity.getId());
-		} else {
-			throw new IllegalStateException("Unknown entity type.");
-		}
-	}
+    @Override
+    public URI createEntityUri(final Entity<?> enity) {
+        if (enity instanceof Collection<?>) {
+            return this.uriInfo.getBaseUriBuilder().path(CollectionResource.PATH).build(enity.getId());
+        } else if (enity instanceof Image) {
+            return this.uriInfo.getBaseUriBuilder().path(ImageResource.PATH).build(enity.getId());
+        } else {
+            throw new IllegalStateException("Unknown entity type.");
+        }
+    }
 
-	@Override
-	public void createDataUris(final File file) {
-		for (final Representation representation : Representation.getRepresentationsFor(file.getType())) {
-			final URI uri = this.uriInfo.getBaseUriBuilder().path(DataResource.PATH).build(file.getId(),
-					representation.getDisplayName());
-			file.setUri(representation, uri);
-		}
-	}
+    @Override
+    public void createDataUris(final File file) {
+        for (final Representation representation : Representation.getRepresentationsFor(file.getType())) {
+            final URI uri = this.uriInfo.getBaseUriBuilder().path(DataResource.PATH).build(file.getId(),
+                    representation.getDisplayName());
+            file.setUri(representation, uri);
+        }
+    }
 }

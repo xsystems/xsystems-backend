@@ -28,19 +28,19 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 @Provider
 public class ObjectMapperProvider implements ContextResolver<ObjectMapper> {
 
-	final ObjectMapper objectMapper;
+    final ObjectMapper objectMapper;
 
-	public ObjectMapperProvider() {
-		this.objectMapper = new ObjectMapper();
-		this.objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
-		this.objectMapper.enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);
-		this.objectMapper.enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);
-		this.objectMapper.enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING);
-		this.objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
-	}
+    public ObjectMapperProvider() {
+        this.objectMapper = new ObjectMapper();
+        this.objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+        this.objectMapper.enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);
+        this.objectMapper.enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);
+        this.objectMapper.enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING);
+        this.objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+    }
 
-	@Override
-	public ObjectMapper getContext(final Class<?> type) {
-		return this.objectMapper;
-	}
+    @Override
+    public ObjectMapper getContext(final Class<?> type) {
+        return this.objectMapper;
+    }
 }

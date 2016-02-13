@@ -25,7 +25,7 @@ import org.xsystems.backend.entity.File;
 
 public interface UriService {
 
-	URI createEntityUri(Entity<?> enity);
+    URI createEntityUri(Entity<?> enity);
 
-	void createDataUris(File file);
+    void createDataUris(File file);
 }

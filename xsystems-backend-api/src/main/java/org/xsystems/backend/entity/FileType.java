@@ -20,25 +20,25 @@ package org.xsystems.backend.entity;
 
 public enum FileType {
 
-	IMAGE(Values.IMAGE);
+    IMAGE(Values.IMAGE);
 
-	private String value;
+    private String value;
 
-	private FileType(final String value) {
-		if (!this.name().equals(value)) {
-			throw new IllegalStateException(
-					"The value parameter must be the same as the Enum name, i.e.: " + this.name());
-		}
+    private FileType(final String value) {
+        if (!this.name().equals(value)) {
+            throw new IllegalStateException(
+                    "The value parameter must be the same as the Enum name, i.e.: " + this.name());
+        }
 
-		this.value = value;
-	}
+        this.value = value;
+    }
 
-	@Override
-	public String toString() {
-		return this.value;
-	}
+    @Override
+    public String toString() {
+        return this.value;
+    }
 
-	public static class Values {
-		public static final String IMAGE = "IMAGE";
-	}
+    public static class Values {
+        public static final String IMAGE = "IMAGE";
+    }
 }

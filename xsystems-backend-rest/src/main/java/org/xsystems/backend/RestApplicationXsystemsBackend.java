@@ -27,23 +27,23 @@ import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 @ApplicationPath(RestApplicationXsystemsBackend.PATH)
 public class RestApplicationXsystemsBackend extends ResourceConfig {
 
-	public static final String PATH = "/";
+    public static final String PATH = "/";
 
-	String name;
+    String name;
 
 
-	public RestApplicationXsystemsBackend(String name) {
-		super();
+    public RestApplicationXsystemsBackend(String name) {
+        super();
 
-		this.name = name;
+        this.name = name;
 
-		packages("org.xsystems.backend");
-		register(JacksonFeature.class);
-		register(RolesAllowedDynamicFeature.class);
-		setApplicationName(name);
-	}
+        packages("org.xsystems.backend");
+        register(JacksonFeature.class);
+        register(RolesAllowedDynamicFeature.class);
+        setApplicationName(name);
+    }
 
-	public String getName() {
-		return name;
-	}
+    public String getName() {
+        return name;
+    }
 }

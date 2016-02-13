@@ -28,25 +28,25 @@ import org.xsystems.backend.entity.UserImpl;
 @ApplicationScoped
 class UserMapper implements EntityMapper<User, UserDto> {
 
-	@Override
-	public User toEntity(final UserDto userDto) {
-		if (userDto == null) {
-			return null;
-		}
+    @Override
+    public User toEntity(final UserDto userDto) {
+        if (userDto == null) {
+            return null;
+        }
 
-		final UserImpl user = new UserImpl();
-		user.setId(userDto.getId());
-		user.setEmail(userDto.getEmail());
-		user.setRole(userDto.getRole());
-		return user;
-	}
+        final UserImpl user = new UserImpl();
+        user.setId(userDto.getId());
+        user.setEmail(userDto.getEmail());
+        user.setRole(userDto.getRole());
+        return user;
+    }
 
-	@Override
-	public UserDto fromEntity(final User user) {
-		final UserDto userDto = new UserDto();
-		userDto.setId(user.getId());
-		userDto.setEmail(user.getEmail());
-		userDto.setRole(user.getRole());
-		return userDto;
-	}
+    @Override
+    public UserDto fromEntity(final User user) {
+        final UserDto userDto = new UserDto();
+        userDto.setId(user.getId());
+        userDto.setEmail(user.getEmail());
+        userDto.setRole(user.getRole());
+        return userDto;
+    }
 }

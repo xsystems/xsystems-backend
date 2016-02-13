@@ -20,10 +20,10 @@ package org.xsystems.backend.configuration.key;
 
 public class PersistenceMigrationSeparatorKey implements ConfigurationKey {
 
-	static final String KEY = "persistence.migrationSeparator";
+    static final String KEY = "persistence.migrationSeparator";
 
-	@Override
-	public String getKey() {
-		return KEY;
-	}
+    @Override
+    public String getKey() {
+        return KEY;
+    }
 }

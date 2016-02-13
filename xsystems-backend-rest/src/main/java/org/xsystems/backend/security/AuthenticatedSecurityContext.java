@@ -27,37 +27,37 @@ import org.xsystems.backend.entity.User;
 
 public class AuthenticatedSecurityContext implements SecurityContext {
 
-	User user;
-	boolean isSecure;
+    User user;
+    boolean isSecure;
 
-	AuthenticatedSecurityContext(final User user, final boolean isSecure) {
-		this.user = user;
-		this.isSecure = isSecure;
-	}
+    AuthenticatedSecurityContext(final User user, final boolean isSecure) {
+        this.user = user;
+        this.isSecure = isSecure;
+    }
 
-	@Override
-	public Principal getUserPrincipal() {
-		return new Principal() {
-			@Override
-			public String getName() {
-				return AuthenticatedSecurityContext.this.user.getEmail();
-			}
-		};
-	}
+    @Override
+    public Principal getUserPrincipal() {
+        return new Principal() {
+            @Override
+            public String getName() {
+                return AuthenticatedSecurityContext.this.user.getEmail();
+            }
+        };
+    }
 
-	@Override
-	public boolean isUserInRole(final String role) {
-		final Role userRole = this.user.getRole();
-		return role.equals(userRole.name());
-	}
+    @Override
+    public boolean isUserInRole(final String role) {
+        final Role userRole = this.user.getRole();
+        return role.equals(userRole.name());
+    }
 
-	@Override
-	public boolean isSecure() {
-		return this.isSecure;
-	}
+    @Override
+    public boolean isSecure() {
+        return this.isSecure;
+    }
 
-	@Override
-	public String getAuthenticationScheme() {
-		return SecurityContext.BASIC_AUTH;
-	}
+    @Override
+    public String getAuthenticationScheme() {
+        return SecurityContext.BASIC_AUTH;
+    }
 }

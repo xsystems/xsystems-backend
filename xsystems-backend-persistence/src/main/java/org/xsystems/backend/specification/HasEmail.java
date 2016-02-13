@@ -22,19 +22,19 @@ import org.xsystems.backend.entity.User;
 
 public class HasEmail implements Specification<User> {
 
-	String email;
+    String email;
 
-	public HasEmail(final String email) {
-		this.email = email;
-	}
+    public HasEmail(final String email) {
+        this.email = email;
+    }
 
-	@Override
-	public boolean isSatisfiedBy(final User user) {
-		return this.email.equals(user.getEmail());
-	}
+    @Override
+    public boolean isSatisfiedBy(final User user) {
+        return this.email.equals(user.getEmail());
+    }
 
-	@Override
-	public String toQuery() {
-		return "select user from " + User.class.getSimpleName() + " user where user.email=\"" + this.email + "\"";
-	}
+    @Override
+    public String toQuery() {
+        return "select user from " + User.class.getSimpleName() + " user where user.email=\"" + this.email + "\"";
+    }
 }

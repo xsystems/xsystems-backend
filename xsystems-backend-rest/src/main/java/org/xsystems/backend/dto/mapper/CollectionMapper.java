@@ -32,44 +32,44 @@ import org.xsystems.backend.entity.User;
 
 class CollectionMapper<E extends File, F extends FileDto> implements EntityMapper<Collection<E>, CollectionDto<F>> {
 
-	EntityMapper<User, UserDto> userMapper = new UserMapper();
+    EntityMapper<User, UserDto> userMapper = new UserMapper();
 
-	EntityMapper<E, F> fileMapper;
+    EntityMapper<E, F> fileMapper;
 
-	CollectionMapper(final EntityMapper<E, F> fileMapper) {
-		this.fileMapper = fileMapper;
-	}
+    CollectionMapper(final EntityMapper<E, F> fileMapper) {
+        this.fileMapper = fileMapper;
+    }
 
-	@Override
-	public Collection<E> toEntity(final CollectionDto<F> collectionDto) {
-		final CollectionImpl<E> collection = new CollectionImpl<>();
-		collection.setName(collectionDto.getName());
-		collection.setDescription(collectionDto.getDescription());
-		collection.setType(collectionDto.getType());
-		collection.setUser(this.userMapper.toEntity(collectionDto.getUserDto()));
+    @Override
+    public Collection<E> toEntity(final CollectionDto<F> collectionDto) {
+        final CollectionImpl<E> collection = new CollectionImpl<>();
+        collection.setName(collectionDto.getName());
+        collection.setDescription(collectionDto.getDescription());
+        collection.setType(collectionDto.getType());
+        collection.setUser(this.userMapper.toEntity(collectionDto.getUserDto()));
 
-		final List<E> elements = new ArrayList<>();
-		for (final F elementDto : collectionDto.getElements()) {
-			elements.add(this.fileMapper.toEntity(elementDto));
-		}
-		collection.setElements(elements);
+        final List<E> elements = new ArrayList<>();
+        for (final F elementDto : collectionDto.getElements()) {
+            elements.add(this.fileMapper.toEntity(elementDto));
+        }
+        collection.setElements(elements);
 
-		return collection;
-	}
+        return collection;
+    }
 
-	@Override
-	public CollectionDto<F> fromEntity(final Collection<E> collection) {
-		final CollectionDto<F> collectionDto = new CollectionDto<>();
-		collectionDto.setName(collection.getName());
-		collectionDto.setDescription(collection.getDescription());
-		collectionDto.setUserDto(this.userMapper.fromEntity(collection.getUser()));
+    @Override
+    public CollectionDto<F> fromEntity(final Collection<E> collection) {
+        final CollectionDto<F> collectionDto = new CollectionDto<>();
+        collectionDto.setName(collection.getName());
+        collectionDto.setDescription(collection.getDescription());
+        collectionDto.setUserDto(this.userMapper.fromEntity(collection.getUser()));
 
-		final List<F> elementDtos = new ArrayList<>();
-		for (final E element : collection.getElements()) {
-			elementDtos.add(this.fileMapper.fromEntity(element));
-		}
-		collectionDto.setElements(elementDtos);
+        final List<F> elementDtos = new ArrayList<>();
+        for (final E element : collection.getElements()) {
+            elementDtos.add(this.fileMapper.fromEntity(element));
+        }
+        collectionDto.setElements(elementDtos);
 
-		return collectionDto;
-	}
+        return collectionDto;
+    }
 }

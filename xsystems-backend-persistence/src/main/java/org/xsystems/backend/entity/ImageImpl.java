@@ -25,12 +25,12 @@ import javax.persistence.Entity;
 @DiscriminatorValue(ImageImpl.TYPE)
 public class ImageImpl extends FileImpl implements Image {
 
-	private static final long serialVersionUID = -2292326025847356420L;
+    private static final long serialVersionUID = -2292326025847356420L;
 
-	static final String TYPE = FileType.Values.IMAGE;
+    static final String TYPE = FileType.Values.IMAGE;
 
-	@Override
-	public FileType getType() {
-		return FileType.valueOf(TYPE);
-	}
+    @Override
+    public FileType getType() {
+        return FileType.valueOf(TYPE);
+    }
 }

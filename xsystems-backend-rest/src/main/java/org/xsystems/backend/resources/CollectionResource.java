@@ -22,5 +22,5 @@ import javax.ws.rs.Path;
 
 @Path(CollectionResource.PATH)
 public class CollectionResource {
-	public static final String PATH = CollectionsResource.PATH + "/{id}";
+    public static final String PATH = CollectionsResource.PATH + "/{id}";
 }

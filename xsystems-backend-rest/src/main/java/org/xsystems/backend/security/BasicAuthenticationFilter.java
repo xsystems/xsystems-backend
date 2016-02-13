@@ -41,33 +41,33 @@ import org.xsystems.backend.entity.User;
 @Priority(Priorities.AUTHENTICATION)
 public class BasicAuthenticationFilter implements ContainerRequestFilter {
 
-	@Inject
-	@Configuration(key = SecurityRealmKey.class)
-	String realm;
+    @Inject
+    @Configuration(key = SecurityRealmKey.class)
+    String realm;
 
-	@Inject
-	AuthenticationService authenticationService;
+    @Inject
+    AuthenticationService authenticationService;
 
-	@Override
-	public void filter(final ContainerRequestContext containerRequestContext) throws IOException {
-		final String authorizationHeaderString = containerRequestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
+    @Override
+    public void filter(final ContainerRequestContext containerRequestContext) throws IOException {
+        final String authorizationHeaderString = containerRequestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
 
-		SecurityContext securityContext;
-		try {
-			final User user = this.authenticationService.authenticate(authorizationHeaderString);
-			final boolean isSecure = isSecure(containerRequestContext);
-			securityContext = new AuthenticatedSecurityContext(user, isSecure);
-		} catch (final AuthenticationException e) {
-			final String challenge = SecurityContext.BASIC_AUTH + " realm=\"" + this.realm + "\"";
-			securityContext = new NotAuthenticatedSecurityContext(e.getMessage(), challenge);
-		}
+        SecurityContext securityContext;
+        try {
+            final User user = this.authenticationService.authenticate(authorizationHeaderString);
+            final boolean isSecure = isSecure(containerRequestContext);
+            securityContext = new AuthenticatedSecurityContext(user, isSecure);
+        } catch (final AuthenticationException e) {
+            final String challenge = SecurityContext.BASIC_AUTH + " realm=\"" + this.realm + "\"";
+            securityContext = new NotAuthenticatedSecurityContext(e.getMessage(), challenge);
+        }
 
-		containerRequestContext.setSecurityContext(securityContext);
-	}
+        containerRequestContext.setSecurityContext(securityContext);
+    }
 
-	boolean isSecure(final ContainerRequestContext containerRequestContext) {
-		final UriInfo uriInfo = containerRequestContext.getUriInfo();
-		final URI requestUri = uriInfo.getRequestUri();
-		return "https".equals(requestUri.getScheme());
-	}
+    boolean isSecure(final ContainerRequestContext containerRequestContext) {
+        final UriInfo uriInfo = containerRequestContext.getUriInfo();
+        final URI requestUri = uriInfo.getRequestUri();
+        return "https".equals(requestUri.getScheme());
+    }
 }

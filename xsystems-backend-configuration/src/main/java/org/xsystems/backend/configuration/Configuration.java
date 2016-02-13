@@ -40,6 +40,6 @@ import org.xsystems.backend.configuration.key.DefaultKey;
 @Documented
 public @interface Configuration {
 
-	@Nonbinding
-	Class<? extends ConfigurationKey> key() default DefaultKey.class;
+    @Nonbinding
+    Class<? extends ConfigurationKey> key() default DefaultKey.class;
 }

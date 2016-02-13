@@ -24,9 +24,9 @@ import org.xsystems.backend.configuration.key.ConfigurationKey;
 
 public interface ConfigurationService {
 
-	void configure();
+    void configure();
 
-	String getValue(Class<? extends ConfigurationKey> configurationKeyClass);
+    String getValue(Class<? extends ConfigurationKey> configurationKeyClass);
 
-	List<ConfigurationKey> getConfigurationKeys();
+    List<ConfigurationKey> getConfigurationKeys();
 }

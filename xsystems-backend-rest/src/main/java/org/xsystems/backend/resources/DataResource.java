@@ -41,47 +41,47 @@ import org.xsystems.backend.specification.FileHasId;
 @Path(DataResource.PATH)
 public class DataResource {
 
-	public static final String PATH = "data/{id}/{representation}";
+    public static final String PATH = "data/{id}/{representation}";
 
-	@Inject
-	private FileService<org.xsystems.backend.entity.File> fileService;
+    @Inject
+    private FileService<org.xsystems.backend.entity.File> fileService;
 
-	@Inject
-	private Repository<File> fileRepository;
+    @Inject
+    private Repository<File> fileRepository;
 
-	@PUT
-	@Consumes(MediaType.APPLICATION_OCTET_STREAM)
-	public Response put(@PathParam("id") final Long id,
-			@PathParam("representation") final Representation representation, final java.io.File data) {
-		File file;
-		try {
-			file = this.fileRepository.find(new FileHasId<File>(File.class, id), File.class);
-		} catch (final NotFoundException e) {
-			throw new javax.ws.rs.NotFoundException();
-		}
+    @PUT
+    @Consumes(MediaType.APPLICATION_OCTET_STREAM)
+    public Response put(@PathParam("id") final Long id,
+            @PathParam("representation") final Representation representation, final java.io.File data) {
+        File file;
+        try {
+            file = this.fileRepository.find(new FileHasId<File>(File.class, id), File.class);
+        } catch (final NotFoundException e) {
+            throw new javax.ws.rs.NotFoundException();
+        }
 
-		if (!representation.isApplicableFor(file.getType())) {
-			throw new javax.ws.rs.NotFoundException();
-		}
+        if (!representation.isApplicableFor(file.getType())) {
+            throw new javax.ws.rs.NotFoundException();
+        }
 
-		final boolean isStoredSuccesful = this.fileService.storeData(data, id.toString(), representation.toString());
-		if (isStoredSuccesful) {
-			return Response.ok().build();
-		} else {
-			throw new InternalServerErrorException("Unable to store the data.");
-		}
-	}
+        final boolean isStoredSuccesful = this.fileService.storeData(data, id.toString(), representation.toString());
+        if (isStoredSuccesful) {
+            return Response.ok().build();
+        } else {
+            throw new InternalServerErrorException("Unable to store the data.");
+        }
+    }
 
-	@GET
-	@Produces(MediaType.APPLICATION_OCTET_STREAM)
-	public Response get(@PathParam("id") final String id,
-			@PathParam("representation") final Representation representation) {
-		final java.io.File data;
-		try {
-			data = this.fileService.retrieveData(id, representation.toString());
-		} catch (final InvalidPathException e) {
-			throw new javax.ws.rs.NotFoundException();
-		}
-		return Response.ok(data, MediaType.APPLICATION_OCTET_STREAM).build();
-	}
+    @GET
+    @Produces(MediaType.APPLICATION_OCTET_STREAM)
+    public Response get(@PathParam("id") final String id,
+            @PathParam("representation") final Representation representation) {
+        final java.io.File data;
+        try {
+            data = this.fileService.retrieveData(id, representation.toString());
+        } catch (final InvalidPathException e) {
+            throw new javax.ws.rs.NotFoundException();
+        }
+        return Response.ok(data, MediaType.APPLICATION_OCTET_STREAM).build();
+    }
 }

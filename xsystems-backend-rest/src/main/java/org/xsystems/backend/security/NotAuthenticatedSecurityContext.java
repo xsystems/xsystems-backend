@@ -25,31 +25,31 @@ import javax.ws.rs.core.SecurityContext;
 
 public class NotAuthenticatedSecurityContext implements SecurityContext {
 
-	String message;
-	String challenge;
+    String message;
+    String challenge;
 
-	NotAuthenticatedSecurityContext(final String message, final String challenge) {
-		this.message = message;
-		this.challenge = challenge;
-	}
+    NotAuthenticatedSecurityContext(final String message, final String challenge) {
+        this.message = message;
+        this.challenge = challenge;
+    }
 
-	@Override
-	public Principal getUserPrincipal() {
-		throw new NotAuthorizedException(this.message, this.challenge);
-	}
+    @Override
+    public Principal getUserPrincipal() {
+        throw new NotAuthorizedException(this.message, this.challenge);
+    }
 
-	@Override
-	public boolean isUserInRole(final String role) {
-		throw new NotAuthorizedException(this.message, this.challenge);
-	}
+    @Override
+    public boolean isUserInRole(final String role) {
+        throw new NotAuthorizedException(this.message, this.challenge);
+    }
 
-	@Override
-	public boolean isSecure() {
-		throw new NotAuthorizedException(this.message, this.challenge);
-	}
+    @Override
+    public boolean isSecure() {
+        throw new NotAuthorizedException(this.message, this.challenge);
+    }
 
-	@Override
-	public String getAuthenticationScheme() {
-		throw new NotAuthorizedException(this.message, this.challenge);
-	}
+    @Override
+    public String getAuthenticationScheme() {
+        throw new NotAuthorizedException(this.message, this.challenge);
+    }
 }

@@ -24,48 +24,48 @@ import java.util.List;
 import java.util.StringJoiner;
 
 public enum Representation {
-	IMAGE("image", FileType.IMAGE), THUMBNAIL("thumbnail", FileType.IMAGE);
+    IMAGE("image", FileType.IMAGE), THUMBNAIL("thumbnail", FileType.IMAGE);
 
-	String displayName;
-	List<FileType> fileTypes;
+    String displayName;
+    List<FileType> fileTypes;
 
-	Representation(final String displayName, final FileType... fileTypes) {
-		this.displayName = displayName;
-		this.fileTypes = Arrays.asList(fileTypes);
-	}
+    Representation(final String displayName, final FileType... fileTypes) {
+        this.displayName = displayName;
+        this.fileTypes = Arrays.asList(fileTypes);
+    }
 
-	public String getDisplayName() {
-		return this.displayName;
-	}
+    public String getDisplayName() {
+        return this.displayName;
+    }
 
-	public boolean isApplicableFor(final FileType fileType) {
-		return this.fileTypes.contains(fileType);
-	}
+    public boolean isApplicableFor(final FileType fileType) {
+        return this.fileTypes.contains(fileType);
+    }
 
-	@Override
-	public String toString() {
-		return this.displayName;
-	}
+    @Override
+    public String toString() {
+        return this.displayName;
+    }
 
-	public static List<Representation> getRepresentationsFor(final FileType fileType) {
-		final List<Representation> representations = new ArrayList<>();
-		for (final Representation representation : values()) {
-			if (representation.isApplicableFor(fileType)) {
-				representations.add(representation);
-			}
-		}
-		return representations;
-	}
+    public static List<Representation> getRepresentationsFor(final FileType fileType) {
+        final List<Representation> representations = new ArrayList<>();
+        for (final Representation representation : values()) {
+            if (representation.isApplicableFor(fileType)) {
+                representations.add(representation);
+            }
+        }
+        return representations;
+    }
 
-	public static Representation fromString(final String value) {
-		final StringJoiner displayNames = new StringJoiner(", ");
-		for (final Representation representation : values()) {
-			final String displayName = representation.getDisplayName();
-			if (displayName.equals(value)) {
-				return representation;
-			}
-			displayNames.add(displayName);
-		}
-		throw new IllegalArgumentException("The argument 'value' MUST be one of: " + displayNames + ".");
-	}
+    public static Representation fromString(final String value) {
+        final StringJoiner displayNames = new StringJoiner(", ");
+        for (final Representation representation : values()) {
+            final String displayName = representation.getDisplayName();
+            if (displayName.equals(value)) {
+                return representation;
+            }
+            displayNames.add(displayName);
+        }
+        throw new IllegalArgumentException("The argument 'value' MUST be one of: " + displayNames + ".");
+    }
 }

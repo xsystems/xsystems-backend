@@ -32,31 +32,31 @@ import org.xsystems.backend.configuration.key.ServerPortKey;
 
 public class HttpServerFactory {
 
-	@Inject
-	@Configuration(key = ServerNameKey.class)
-	String name;
+    @Inject
+    @Configuration(key = ServerNameKey.class)
+    String name;
 
-	@Inject
-	@Configuration(key = ServerHostKey.class)
-	String host;
+    @Inject
+    @Configuration(key = ServerHostKey.class)
+    String host;
 
-	@Inject
-	@Configuration(key = ServerPortKey.class)
-	Integer port;
+    @Inject
+    @Configuration(key = ServerPortKey.class)
+    Integer port;
 
-	@Produces
-	@Singleton
-	public HttpServer produce() {
-		final NetworkListener networkListener = new NetworkListener(name, host,
-				port);
+    @Produces
+    @Singleton
+    public HttpServer produce() {
+        final NetworkListener networkListener = new NetworkListener(name, host,
+                port);
 
-		final HttpServer httpServer = new HttpServer();
-		httpServer.addListener(networkListener);
+        final HttpServer httpServer = new HttpServer();
+        httpServer.addListener(networkListener);
 
-		return httpServer;
-	}
+        return httpServer;
+    }
 
-	public void dispose(@Disposes final HttpServer httpServer) {
-		httpServer.shutdown();
-	}
+    public void dispose(@Disposes final HttpServer httpServer) {
+        httpServer.shutdown();
+    }
 }

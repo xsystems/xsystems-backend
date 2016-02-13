@@ -28,12 +28,12 @@ import org.xsystems.backend.entity.Image;
 
 class EntityMapperFactory {
 
-	@Inject
-	EntityMapper<Image, ImageDto> imageMapper;
+    @Inject
+    EntityMapper<Image, ImageDto> imageMapper;
 
-	@Produces
-	@ApplicationScoped
-	public CollectionMapper<Image, ImageDto> produceImageCollectionMapper() {
-		return new CollectionMapper<>(this.imageMapper);
-	}
+    @Produces
+    @ApplicationScoped
+    public CollectionMapper<Image, ImageDto> produceImageCollectionMapper() {
+        return new CollectionMapper<>(this.imageMapper);
+    }
 }

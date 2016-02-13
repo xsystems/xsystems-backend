@@ -30,23 +30,23 @@ import org.xsystems.backend.configuration.key.WebappContextDisplayNameKey;
 
 public class WebappContextFactory {
 
-	@Inject
-	@Configuration(key = WebappContextDisplayNameKey.class)
-	String displayName;
+    @Inject
+    @Configuration(key = WebappContextDisplayNameKey.class)
+    String displayName;
 
-	@Inject
-	@Configuration(key = WebappContextContextPathKey.class)
-	String contextPath;
+    @Inject
+    @Configuration(key = WebappContextContextPathKey.class)
+    String contextPath;
 
-	@Produces
-	@ApplicationScoped
-	public WebappContext produce() {
-		final WebappContext webappContext = new WebappContext(displayName,
-				contextPath);
-		return webappContext;
-	}
+    @Produces
+    @ApplicationScoped
+    public WebappContext produce() {
+        final WebappContext webappContext = new WebappContext(displayName,
+                contextPath);
+        return webappContext;
+    }
 
-	public void dispose(@Disposes final WebappContext webappContext) {
-		webappContext.undeploy();
-	}
+    public void dispose(@Disposes final WebappContext webappContext) {
+        webappContext.undeploy();
+    }
 }

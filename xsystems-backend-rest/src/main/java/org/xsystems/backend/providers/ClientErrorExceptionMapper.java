@@ -29,14 +29,14 @@ import org.xsystems.backend.dto.ErrorDto;
 @Provider
 public class ClientErrorExceptionMapper implements ExceptionMapper<ClientErrorException> {
 
-	@Override
-	public Response toResponse(final ClientErrorException clientErrorException) {
-		final Response response = clientErrorException.getResponse();
-		final String message = clientErrorException.getMessage();
+    @Override
+    public Response toResponse(final ClientErrorException clientErrorException) {
+        final Response response = clientErrorException.getResponse();
+        final String message = clientErrorException.getMessage();
 
-		final ErrorDto errorDto = new ErrorDto();
-		errorDto.setMessage(message);
+        final ErrorDto errorDto = new ErrorDto();
+        errorDto.setMessage(message);
 
-		return Response.fromResponse(response).entity(errorDto).type(MediaType.APPLICATION_JSON).build();
-	}
+        return Response.fromResponse(response).entity(errorDto).type(MediaType.APPLICATION_JSON).build();
+    }
 }

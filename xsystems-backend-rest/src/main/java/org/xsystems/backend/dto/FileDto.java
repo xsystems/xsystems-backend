@@ -28,56 +28,56 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class FileDto implements Serializable {
 
-	private static final long serialVersionUID = 2090039409863975525L;
+    private static final long serialVersionUID = 2090039409863975525L;
 
-	private Long id;
+    private Long id;
 
-	private String name;
+    private String name;
 
-	private String description;
+    private String description;
 
-	private UserDto userDto;
+    private UserDto userDto;
 
-	private Map<Representation, URI> representations;
+    private Map<Representation, URI> representations;
 
-	public Long getId() {
-		return this.id;
-	}
+    public Long getId() {
+        return this.id;
+    }
 
-	public void setId(final Long id) {
-		this.id = id;
-	}
+    public void setId(final Long id) {
+        this.id = id;
+    }
 
-	public String getName() {
-		return this.name;
-	}
+    public String getName() {
+        return this.name;
+    }
 
-	public void setName(final String name) {
-		this.name = name;
-	}
+    public void setName(final String name) {
+        this.name = name;
+    }
 
-	public String getDescription() {
-		return this.description;
-	}
+    public String getDescription() {
+        return this.description;
+    }
 
-	public void setDescription(final String description) {
-		this.description = description;
-	}
+    public void setDescription(final String description) {
+        this.description = description;
+    }
 
-	public UserDto getUserDto() {
-		return this.userDto;
-	}
+    public UserDto getUserDto() {
+        return this.userDto;
+    }
 
-	@JsonProperty("user")
-	public void setUserDto(final UserDto userDto) {
-		this.userDto = userDto;
-	}
+    @JsonProperty("user")
+    public void setUserDto(final UserDto userDto) {
+        this.userDto = userDto;
+    }
 
-	public Map<Representation, URI> getRepresentations() {
-		return this.representations;
-	}
+    public Map<Representation, URI> getRepresentations() {
+        return this.representations;
+    }
 
-	public void setRepresentations(final Map<Representation, URI> representations) {
-		this.representations = representations;
-	}
+    public void setRepresentations(final Map<Representation, URI> representations) {
+        this.representations = representations;
+    }
 }

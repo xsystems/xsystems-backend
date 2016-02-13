@@ -35,41 +35,41 @@ import org.xsystems.backend.configuration.key.LoggingLevelKey;
 @ApplicationScoped
 public class ConfigurationServiceImpl implements ConfigurationService {
 
-	@Inject
-	@Configuration(key = LoggingLevelKey.class)
-	String level;
+    @Inject
+    @Configuration(key = LoggingLevelKey.class)
+    String level;
 
-	@Inject
-	ConfigurationFactory configurationFactory;
+    @Inject
+    ConfigurationFactory configurationFactory;
 
-	@Inject
-	@Any
-	Instance<ConfigurationKey> configurationKeyInstances;
+    @Inject
+    @Any
+    Instance<ConfigurationKey> configurationKeyInstances;
 
-	@Override
-	public void configure() {
-		Logger.getLogger("").setLevel(Level.parse(this.level));
-	}
+    @Override
+    public void configure() {
+        Logger.getLogger("").setLevel(Level.parse(this.level));
+    }
 
-	@Override
-	public String getValue(final Class<? extends ConfigurationKey> configurationKeyClass) {
-		try {
-			return this.configurationFactory.getValue(configurationKeyClass);
-		} catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException
-				| IllegalArgumentException | InvocationTargetException e) {
-			// TODO Logging
-			return null;
-		}
-	}
+    @Override
+    public String getValue(final Class<? extends ConfigurationKey> configurationKeyClass) {
+        try {
+            return this.configurationFactory.getValue(configurationKeyClass);
+        } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException
+                | IllegalArgumentException | InvocationTargetException e) {
+            // TODO Logging
+            return null;
+        }
+    }
 
-	@Override
-	public List<ConfigurationKey> getConfigurationKeys() {
-		final List<ConfigurationKey> configurationKeys = new ArrayList<>();
+    @Override
+    public List<ConfigurationKey> getConfigurationKeys() {
+        final List<ConfigurationKey> configurationKeys = new ArrayList<>();
 
-		for (final ConfigurationKey configurationKey : this.configurationKeyInstances) {
-			configurationKeys.add(configurationKey);
-		}
+        for (final ConfigurationKey configurationKey : this.configurationKeyInstances) {
+            configurationKeys.add(configurationKey);
+        }
 
-		return configurationKeys;
-	}
+        return configurationKeys;
+    }
 }

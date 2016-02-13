@@ -22,11 +22,11 @@ import org.xsystems.backend.specification.Specification;
 
 public interface Repository<T> {
 
-	T add(T t);
+    T add(T t);
 
-	T remove(T t);
+    T remove(T t);
 
-	T update(T t);
+    T update(T t);
 
-	T find(Specification<T> specification, Class<T> clazz) throws NotFoundException;
+    T find(Specification<T> specification, Class<T> clazz) throws NotFoundException;
 }

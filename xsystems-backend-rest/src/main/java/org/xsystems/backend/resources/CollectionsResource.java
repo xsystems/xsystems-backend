@@ -41,34 +41,34 @@ import org.xsystems.backend.repository.Repository;
 @Path(CollectionsResource.PATH)
 public class CollectionsResource {
 
-	public static final String PATH = "/collections";
+    public static final String PATH = "/collections";
 
-	@Inject
-	EntityMapper<Collection<Image>, CollectionDto<ImageDto>> imageCollectionMapper;
+    @Inject
+    EntityMapper<Collection<Image>, CollectionDto<ImageDto>> imageCollectionMapper;
 
-	@Inject
-	FileService<Image> imageFileService;
+    @Inject
+    FileService<Image> imageFileService;
 
-	@Inject
-	Repository<Collection<Image>> imageCollectionRepository;
+    @Inject
+    Repository<Collection<Image>> imageCollectionRepository;
 
-	@Inject
-	UriService uriService;
+    @Inject
+    UriService uriService;
 
-	@POST
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response post(final CollectionDto<ImageDto> imageCollectionDto) {
-		final Collection<Image> imageCollection = this.imageCollectionMapper.toEntity(imageCollectionDto);
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response post(final CollectionDto<ImageDto> imageCollectionDto) {
+        final Collection<Image> imageCollection = this.imageCollectionMapper.toEntity(imageCollectionDto);
 
-		if (!this.imageFileService.hasOnlyExistingElements(imageCollection, Image.class)) {
-			throw new BadRequestException("One or more elements in the collection do not exist.");
-		}
+        if (!this.imageFileService.hasOnlyExistingElements(imageCollection, Image.class)) {
+            throw new BadRequestException("One or more elements in the collection do not exist.");
+        }
 
-		this.imageCollectionRepository.add(imageCollection);
+        this.imageCollectionRepository.add(imageCollection);
 
-		final URI collectionUri = this.uriService.createEntityUri(imageCollection);
+        final URI collectionUri = this.uriService.createEntityUri(imageCollection);
 
-		return Response.created(collectionUri).build();
-	}
+        return Response.created(collectionUri).build();
+    }
 }

@@ -20,7 +20,7 @@ package org.xsystems.backend.entity;
 
 public interface EntityMapper<E extends Entity<?>, T> {
 
-	E toEntity(T t);
+    E toEntity(T t);
 
-	T fromEntity(E entity);
+    T fromEntity(E entity);
 }

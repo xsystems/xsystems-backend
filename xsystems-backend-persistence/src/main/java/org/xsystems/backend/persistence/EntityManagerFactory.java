@@ -31,31 +31,31 @@ import org.xsystems.backend.configuration.key.PersistenceUnitNameKey;
 
 public class EntityManagerFactory {
 
-	@Inject
-	@Configuration(key = PersistenceUnitNameKey.class)
-	String persistenceUnitName;
+    @Inject
+    @Configuration(key = PersistenceUnitNameKey.class)
+    String persistenceUnitName;
 
-	@Produces
-	@ApplicationScoped
-	public EntityManager produce(final DataSource dataSource) throws NamingException {
+    @Produces
+    @ApplicationScoped
+    public EntityManager produce(final DataSource dataSource) throws NamingException {
 
-		final EntityManager entityManager = PersistenceUtil.createEntityManager(dataSource,
-				"java:app/xsystems-backend-persistence/DataSource", this.persistenceUnitName);
+        final EntityManager entityManager = PersistenceUtil.createEntityManager(dataSource,
+                "java:app/xsystems-backend-persistence/DataSource", this.persistenceUnitName);
 
-		// TODO The below implementation is preferred over the current
-		// implementation, if the below is possible.
+        // TODO The below implementation is preferred over the current
+        // implementation, if the below is possible.
 
-		// final Map<String, Object> properties = new ConcurrentHashMap<>();
-		// properties.put("javax.persistence.dataSource", dataSource);
-		//
-		// final EntityManager entityManager = Persistence
-		// .createEntityManagerFactory(persistenceUnitName, properties)
-		// .createEntityManager();
+        // final Map<String, Object> properties = new ConcurrentHashMap<>();
+        // properties.put("javax.persistence.dataSource", dataSource);
+        //
+        // final EntityManager entityManager = Persistence
+        // .createEntityManagerFactory(persistenceUnitName, properties)
+        // .createEntityManager();
 
-		return entityManager;
-	}
+        return entityManager;
+    }
 
-	public void dispose(@Disposes final EntityManager entityManager) {
-		entityManager.close();
-	}
+    public void dispose(@Disposes final EntityManager entityManager) {
+        entityManager.close();
+    }
 }

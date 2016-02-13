@@ -42,38 +42,38 @@ import org.xsystems.backend.repository.Repository;
 @Path(ImagesResource.PATH)
 public class ImagesResource {
 
-	public static final String PATH = "/images";
+    public static final String PATH = "/images";
 
-	@Inject
-	EntityMapper<Image, ImageDto> imageMapper;
+    @Inject
+    EntityMapper<Image, ImageDto> imageMapper;
 
-	@Inject
-	Repository<Image> imageRepository;
+    @Inject
+    Repository<Image> imageRepository;
 
-	@Inject
-	UriService uriService;
+    @Inject
+    UriService uriService;
 
-	@POST
-	@RolesAllowed(Role.Values.ADMIN)
-	@Consumes(MediaType.APPLICATION_JSON)
-	@Produces(MediaType.APPLICATION_JSON)
-	public Response post(final ImageDto imageDto) {
-		Image image = this.imageMapper.toEntity(imageDto);
+    @POST
+    @RolesAllowed(Role.Values.ADMIN)
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response post(final ImageDto imageDto) {
+        Image image = this.imageMapper.toEntity(imageDto);
 
-		image = this.imageRepository.add(image);
+        image = this.imageRepository.add(image);
 
-		this.uriService.createDataUris(image);
+        this.uriService.createDataUris(image);
 
-		this.imageRepository.update(image);
+        this.imageRepository.update(image);
 
-		imageDto.setId(image.getId());
-		final Map<Representation, URI> representations = new ConcurrentHashMap<>();
-		for (final Representation representation : image.getRepresentations()) {
-			representations.put(representation, image.getUri(representation));
-		}
-		imageDto.setRepresentations(representations);
+        imageDto.setId(image.getId());
+        final Map<Representation, URI> representations = new ConcurrentHashMap<>();
+        for (final Representation representation : image.getRepresentations()) {
+            representations.put(representation, image.getUri(representation));
+        }
+        imageDto.setRepresentations(representations);
 
-		final URI imageUri = this.uriService.createEntityUri(image);
-		return Response.created(imageUri).entity(imageDto).build();
-	}
+        final URI imageUri = this.uriService.createEntityUri(image);
+        return Response.created(imageUri).entity(imageDto).build();
+    }
 }
