@@ -18,12 +18,12 @@
  */
 package org.xsystems.backend.configuration.key;
 
+import org.xsystems.backend.configuration.Configuration;
+
 public class DefaultKey implements ConfigurationKey {
 
     @Override
     public String getKey() {
-        throw new IllegalStateException("The "
-                + ConfigurationKey.class.getSimpleName()
-                + " annotation requires an key element.");
+        throw new IllegalStateException("The " + Configuration.class.getSimpleName() + " annotation requires a key element.");
     }
 }

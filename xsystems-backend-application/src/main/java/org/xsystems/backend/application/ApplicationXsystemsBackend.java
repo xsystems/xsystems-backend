@@ -24,7 +24,6 @@ import java.security.spec.InvalidKeySpecException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringJoiner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.stream.Collectors;
@@ -51,30 +50,29 @@ import org.xsystems.backend.security.AuthenticationService;
 
 public class ApplicationXsystemsBackend {
 
-    static final Logger LOGGER = Logger.getLogger(ApplicationXsystemsBackend.class.getName());
+    private static final Logger LOGGER = Logger.getLogger(ApplicationXsystemsBackend.class.getName());
 
-    final static Weld weld = new Weld();
-    final static WeldContainer weldContainer = weld.initialize();
+    private final static Weld WELD = new Weld();
+    private final static WeldContainer WELD_CONTAINER = WELD.initialize();
 
     public static void main(final String[] args) throws IOException, NoSuchAlgorithmException, InvalidKeySpecException {
 
-        final ConfigurationService configurationService = weldContainer.instance().select(ConfigurationService.class)
-                .get();
-        configurationService.configure();
-
         if (args.length != 1) {
-            final StringJoiner runModeNames = new StringJoiner(", ");
-            for (final RunMode runMode : RunMode.values()) {
-                runModeNames.add(runMode.getName());
-            }
-
-            LOGGER.log(Level.SEVERE,
-                    "One parameter is required, which may take the following values: " + runModeNames + ".");
-
+            LOGGER.log(Level.SEVERE, "One parameter is required, which may take the following values: " + RunMode.runModesAsString() + ".");
             System.exit(1);
         }
 
-        final RunMode runMode = RunMode.getByName(args[0]);
+        final ConfigurationService configurationService = WELD_CONTAINER.instance().select(ConfigurationService.class)
+                .get();
+        configurationService.configure();
+
+        RunMode runMode = null;
+        try {
+            runMode = RunMode.getByName(args[0]);
+        } catch (EnumConstantNotPresentException e) {
+            LOGGER.log(Level.SEVERE, "Parameter '" + e.constantName() + "' is invalid.");
+            System.exit(1);
+        }
 
         switch (runMode) {
         case NORMAL:
@@ -94,17 +92,17 @@ public class ApplicationXsystemsBackend {
             printConfigurationKeys(configurationService);
             break;
         default:
-            LOGGER.log(Level.WARNING, "The run mode " + runMode.getName() + " is not yet supported.");
+            LOGGER.log(Level.SEVERE, "The run mode " + runMode.getName() + " is not yet supported.");
             System.exit(1);
             break;
         }
 
-        weld.shutdown();
+        WELD.shutdown();
     }
 
     static void generateSchema() {
-        final DataSourceManager dataSourceManager = weldContainer.instance().select(DataSourceManager.class).get();
-        final DataSource dataSource = weldContainer.instance().select(DataSource.class).get();
+        final DataSourceManager dataSourceManager = WELD_CONTAINER.instance().select(DataSourceManager.class).get();
+        final DataSource dataSource = WELD_CONTAINER.instance().select(DataSource.class).get();
 
         try {
             dataSourceManager.generateSchema(dataSource);
@@ -114,15 +112,15 @@ public class ApplicationXsystemsBackend {
     }
 
     static void migrateDatabase() {
-        final DataSourceManager dataSourceManager = weldContainer.instance().select(DataSourceManager.class).get();
-        final DataSource dataSource = weldContainer.instance().select(DataSource.class).get();
+        final DataSourceManager dataSourceManager = WELD_CONTAINER.instance().select(DataSourceManager.class).get();
+        final DataSource dataSource = WELD_CONTAINER.instance().select(DataSource.class).get();
 
         dataSourceManager.migrate(dataSource);
     }
 
     static void startApplication(final ConfigurationService configurationService) throws IOException {
-        final WebappContext webappContext = weldContainer.instance().select(WebappContext.class).get();
-        final HttpServer httpServer = weldContainer.instance().select(HttpServer.class).get();
+        final WebappContext webappContext = WELD_CONTAINER.instance().select(WebappContext.class).get();
+        final HttpServer httpServer = WELD_CONTAINER.instance().select(HttpServer.class).get();
 
         final String applicationName = configurationService.getValue(ApplicationNameKey.class);
         final RestApplicationXsystemsBackend applicationXsystemsBackend = new RestApplicationXsystemsBackend(
@@ -136,8 +134,8 @@ public class ApplicationXsystemsBackend {
     }
 
     static void populateDatabaseWithDummyData() throws NoSuchAlgorithmException, InvalidKeySpecException {
-        final EntityManager entityManager = weldContainer.instance().select(EntityManager.class).get();
-        final AuthenticationService authenticationService = weldContainer.instance().select(AuthenticationService.class)
+        final EntityManager entityManager = WELD_CONTAINER.instance().select(EntityManager.class).get();
+        final AuthenticationService authenticationService = WELD_CONTAINER.instance().select(AuthenticationService.class)
                 .get();
 
         final String passwordHash = authenticationService.hashPassword("1234");

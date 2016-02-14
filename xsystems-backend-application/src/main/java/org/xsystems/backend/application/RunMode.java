@@ -18,6 +18,9 @@
  */
 package org.xsystems.backend.application;
 
+import java.util.StringJoiner;
+import java.util.logging.Level;
+
 public enum RunMode {
 
     NORMAL("normal"),
@@ -48,5 +51,14 @@ public enum RunMode {
         }
 
         throw new EnumConstantNotPresentException(RunMode.class, name);
+    }
+
+    public static String runModesAsString() {
+        final StringJoiner runModeNames = new StringJoiner(", ");
+        for (final RunMode runMode : RunMode.values()) {
+            runModeNames.add(runMode.getName());
+        }
+
+        return runModeNames.toString();
     }
 }

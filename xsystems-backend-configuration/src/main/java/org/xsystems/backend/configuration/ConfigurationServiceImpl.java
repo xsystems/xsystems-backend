@@ -35,6 +35,8 @@ import org.xsystems.backend.configuration.key.LoggingLevelKey;
 @ApplicationScoped
 public class ConfigurationServiceImpl implements ConfigurationService {
 
+    private static final Logger LOGGER = Logger.getLogger(ConfigurationServiceImpl.class.getName());
+
     @Inject
     @Configuration(key = LoggingLevelKey.class)
     String level;
@@ -57,7 +59,7 @@ public class ConfigurationServiceImpl implements ConfigurationService {
             return this.configurationFactory.getValue(configurationKeyClass);
         } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException
                 | IllegalArgumentException | InvocationTargetException e) {
-            // TODO Logging
+            LOGGER.log(Level.WARNING, "Failed to get value for configuration key.", e);
             return null;
         }
     }

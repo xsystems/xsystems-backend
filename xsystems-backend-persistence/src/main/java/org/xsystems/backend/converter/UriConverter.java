@@ -23,7 +23,7 @@ import java.net.URI;
 import javax.persistence.AttributeConverter;
 import javax.persistence.Converter;
 
-// TODO Auto apply also on @ElementCollection
+// XXX Auto apply also on @ElementCollection
 @Converter(autoApply = true)
 public class UriConverter implements AttributeConverter<URI, String> {
 
