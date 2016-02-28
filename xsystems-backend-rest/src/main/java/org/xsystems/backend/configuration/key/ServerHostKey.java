@@ -1,5 +1,5 @@
 /**
- * The core of the backend of the xSystems web-application.
+ * The REST API of the backend of the xSystems web-application.
  * Copyright (C) 2015-2016  xSystems
  *
  * This program is free software: you can redistribute it and/or modify
@@ -18,9 +18,9 @@
  */
 package org.xsystems.backend.configuration.key;
 
-public class WebappContextDisplayNameKey implements ConfigurationKey {
+public class ServerHostKey implements ConfigurationKey {
 
-    static final String KEY = "webapp-context.displayName";
+    static final String KEY = "server.host";
 
     @Override
     public String getKey() {

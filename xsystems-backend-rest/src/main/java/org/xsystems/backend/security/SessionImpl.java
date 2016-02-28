@@ -1,5 +1,5 @@
 /**
- * The core of the backend of the xSystems web-application.
+ * The REST API of the backend of the xSystems web-application.
  * Copyright (C) 2015-2016  xSystems
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,14 +16,28 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.xsystems.backend.configuration.key;
+package org.xsystems.backend.security;
 
-public class WebappContextContextPathKey implements ConfigurationKey {
+import java.io.Serializable;
 
-    static final String KEY = "webapp-context.contextPath";
+import javax.enterprise.context.SessionScoped;
+
+import org.xsystems.backend.entity.User;
+
+@SessionScoped
+class SessionImpl implements Session, Serializable {
+
+    private static final long serialVersionUID = -5923651906582528513L;
+
+    private User user;
 
     @Override
-    public String getKey() {
-        return KEY;
+    public User getUser() {
+        return this.user;
+    }
+
+    @Override
+    public void setUser(final User user) {
+        this.user = user;
     }
 }

@@ -1,5 +1,5 @@
 /**
- * The core of the backend of the xSystems web-application.
+ * The API of the backend of the xSystems web-application.
  * Copyright (C) 2015-2016  xSystems
  *
  * This program is free software: you can redistribute it and/or modify
@@ -16,14 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.xsystems.backend.configuration.key;
+package org.xsystems.backend.server;
 
-public class ServerHostKey implements ConfigurationKey {
+public interface WebContainer {
 
-    static final String KEY = "server.host";
+    boolean start();
 
-    @Override
-    public String getKey() {
-        return KEY;
-    }
+    boolean stop();
 }

@@ -1,7 +1,7 @@
 <!--
 
     The REST API of the backend of the xSystems web-application.
-    Copyright (C) 2015  xSystems
+    Copyright (C) 2015-2016  xSystems
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -52,24 +52,36 @@
 	  		<groupId>javax.servlet</groupId>
 	  		<artifactId>javax.servlet-api</artifactId>
 	  	</dependency>
-	  	<dependency>
-	  		<groupId>org.glassfish.grizzly</groupId>
-	  		<artifactId>grizzly-http-servlet</artifactId>
-	  	</dependency>
+		<dependency>
+			<groupId>javax.ws.rs</groupId>
+			<artifactId>javax.ws.rs-api</artifactId>
+		</dependency>
+
 	  	<dependency>
 	  		<groupId>org.glassfish.jersey.containers</groupId>
 	  		<artifactId>jersey-container-servlet-core</artifactId>
 	  	</dependency>
-
 	  	<dependency>
 		    <groupId>org.glassfish.jersey.media</groupId>
 		    <artifactId>jersey-media-json-jackson</artifactId>
-		    <version>${org.glassfish.jersey.version}</version>
 		</dependency>
 		<dependency>
-		    <groupId>org.glassfish.jersey.containers</groupId>
-		    <artifactId>jersey-container-grizzly2-http</artifactId>
-		    <version>${org.glassfish.jersey.version}</version>
+			<groupId>org.glassfish.jersey.ext.cdi</groupId>
+			<artifactId>jersey-cdi1x</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.tomcat.embed</groupId>
+			<artifactId>tomcat-embed-logging-juli</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.jboss.weld.servlet</groupId>
+			<artifactId>weld-servlet-core</artifactId>
 		</dependency>
     </dependencies>
 </project>

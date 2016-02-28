@@ -18,25 +18,36 @@
  */
 package org.xsystems.backend.providers;
 
-import javax.ws.rs.ClientErrorException;
+import org.xsystems.backend.configuration.Configuration;
+import org.xsystems.backend.configuration.key.ServerNameKey;
+import org.xsystems.backend.dto.ErrorDto;
+
+import javax.inject.Inject;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-import org.xsystems.backend.dto.ErrorDto;
 
 @Provider
-public class ClientErrorExceptionMapper implements ExceptionMapper<ClientErrorException> {
+public class DefaultExceptionMapper implements ExceptionMapper<Exception> {
+
+    private static final Logger LOGGER = Logger.getLogger(DefaultExceptionMapper.class.getName());
+
+    @Inject
+    @Configuration(key = ServerNameKey.class)
+    private String name;
+
 
     @Override
-    public Response toResponse(final ClientErrorException clientErrorException) {
-        final Response response = clientErrorException.getResponse();
-        final String message = clientErrorException.getMessage();
+    public Response toResponse(Exception exception) {
+        LOGGER.log(Level.WARNING, "Exception caught that propagated to the top of web-application: " + name, exception);
 
         final ErrorDto errorDto = new ErrorDto();
-        errorDto.setMessage(message);
+        errorDto.setMessage("Oops, something went wrong :/");
 
-        return Response.fromResponse(response).entity(errorDto).type(MediaType.APPLICATION_JSON).build();
+        return Response.serverError().entity(errorDto).type(MediaType.APPLICATION_JSON).build();
     }
 }

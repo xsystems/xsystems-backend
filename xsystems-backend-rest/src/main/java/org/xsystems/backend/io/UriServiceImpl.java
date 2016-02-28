@@ -20,6 +20,7 @@ package org.xsystems.backend.io;
 
 import java.net.URI;
 
+import javax.enterprise.context.RequestScoped;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.UriInfo;
 
@@ -32,6 +33,7 @@ import org.xsystems.backend.resources.CollectionResource;
 import org.xsystems.backend.resources.DataResource;
 import org.xsystems.backend.resources.ImageResource;
 
+@RequestScoped
 public class UriServiceImpl implements UriService {
 
     @Context

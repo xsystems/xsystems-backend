@@ -54,7 +54,7 @@ class FileServiceImpl<T extends File> implements FileService<T> {
         final List<T> elements = collection.getElements();
         for (final T element : elements) {
             try {
-                this.fileRepository.find(new FileHasId<T>(element.getClass(), element.getId()), entityClazz);
+                this.fileRepository.find(new FileHasId<T>(entityClazz, element.getId()), entityClazz);
             } catch (final NotFoundException e) {
                 return false;
             }

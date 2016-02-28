@@ -28,6 +28,7 @@ import java.util.Base64.Encoder;
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
 import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.core.HttpHeaders;
 
@@ -40,7 +41,7 @@ import org.xsystems.backend.repository.NotFoundException;
 import org.xsystems.backend.repository.Repository;
 import org.xsystems.backend.specification.HasEmail;
 
-@ApplicationScoped
+@RequestScoped
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     @Inject

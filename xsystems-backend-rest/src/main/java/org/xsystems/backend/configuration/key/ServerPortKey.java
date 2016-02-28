@@ -1,5 +1,5 @@
 /**
- * The core of the backend of the xSystems web-application.
+ * The REST API of the backend of the xSystems web-application.
  * Copyright (C) 2015-2016  xSystems
  *
  * This program is free software: you can redistribute it and/or modify

@@ -32,14 +32,9 @@ import javax.persistence.EntityManager;
 import javax.persistence.EntityTransaction;
 import javax.sql.DataSource;
 
-import org.glassfish.grizzly.http.server.HttpServer;
-import org.glassfish.grizzly.servlet.WebappContext;
-import org.glassfish.jersey.servlet.ServletContainer;
 import org.jboss.weld.environment.se.Weld;
 import org.jboss.weld.environment.se.WeldContainer;
-import org.xsystems.backend.RestApplicationXsystemsBackend;
 import org.xsystems.backend.configuration.ConfigurationService;
-import org.xsystems.backend.configuration.key.ApplicationNameKey;
 import org.xsystems.backend.configuration.key.ConfigurationKey;
 import org.xsystems.backend.configuration.key.DefaultKey;
 import org.xsystems.backend.entity.Role;
@@ -47,6 +42,7 @@ import org.xsystems.backend.entity.User;
 import org.xsystems.backend.entity.UserImpl;
 import org.xsystems.backend.persistence.DataSourceManager;
 import org.xsystems.backend.security.AuthenticationService;
+import org.xsystems.backend.server.WebContainer;
 
 public class ApplicationXsystemsBackend {
 
@@ -76,8 +72,7 @@ public class ApplicationXsystemsBackend {
 
         switch (runMode) {
         case NORMAL:
-            startApplication(configurationService);
-            System.in.read();
+            startApplication();
             break;
         case SCHEMA_GENERATION:
             generateSchema();
@@ -118,19 +113,11 @@ public class ApplicationXsystemsBackend {
         dataSourceManager.migrate(dataSource);
     }
 
-    static void startApplication(final ConfigurationService configurationService) throws IOException {
-        final WebappContext webappContext = WELD_CONTAINER.instance().select(WebappContext.class).get();
-        final HttpServer httpServer = WELD_CONTAINER.instance().select(HttpServer.class).get();
-
-        final String applicationName = configurationService.getValue(ApplicationNameKey.class);
-        final RestApplicationXsystemsBackend applicationXsystemsBackend = new RestApplicationXsystemsBackend(
-                applicationName);
-
-        webappContext.addServlet(applicationXsystemsBackend.getName(),
-                new ServletContainer(applicationXsystemsBackend));
-        webappContext.deploy(httpServer);
-
-        httpServer.start();
+    static void startApplication() throws IOException {
+        WebContainer webContainer = WELD_CONTAINER.instance().select(WebContainer.class).get();
+        webContainer.start();
+        System.in.read();
+        webContainer.stop();
     }
 
     static void populateDatabaseWithDummyData() throws NoSuchAlgorithmException, InvalidKeySpecException {

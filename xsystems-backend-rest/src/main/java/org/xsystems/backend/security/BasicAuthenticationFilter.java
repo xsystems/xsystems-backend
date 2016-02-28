@@ -48,13 +48,23 @@ public class BasicAuthenticationFilter implements ContainerRequestFilter {
     @Inject
     AuthenticationService authenticationService;
 
+    @Inject
+    Session session;
+
+
     @Override
     public void filter(final ContainerRequestContext containerRequestContext) throws IOException {
-        final String authorizationHeaderString = containerRequestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
-
         SecurityContext securityContext;
         try {
-            final User user = this.authenticationService.authenticate(authorizationHeaderString);
+            final User user;
+            if (this.session.getUser() == null) {
+                final String authorizationHeaderString = containerRequestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
+                user = this.authenticationService.authenticate(authorizationHeaderString);
+                this.session.setUser(user);
+            } else {
+                user = this.session.getUser();
+            }
+
             final boolean isSecure = isSecure(containerRequestContext);
             securityContext = new AuthenticatedSecurityContext(user, isSecure);
         } catch (final AuthenticationException e) {
