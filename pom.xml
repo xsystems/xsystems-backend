@@ -183,42 +183,25 @@
     <build>
         <plugins>
             <plugin>
-                <groupId>com.mycila</groupId>
-                <artifactId>license-maven-plugin</artifactId>
-                <version>${license-maven-plugin.version}</version>
-                <configuration>
-                    <header>src/main/resources/gpl-3.0-header-template.txt</header>
-                    <properties>
-                        <organization>xSystems</organization>
-                    </properties>
-                </configuration>
-                <dependencies>
-                  <dependency>
-                    <groupId>com.mycila</groupId>
-                    <artifactId>license-maven-plugin-git</artifactId>
-                    <version>${license-maven-plugin.version}</version>
-                  </dependency>
-                </dependencies>             
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>check</goal>
-                        </goals>
-                    </execution>
-                </executions>
+							<groupId>com.mycila</groupId>
+							<artifactId>license-maven-plugin</artifactId>
             </plugin>
+						<plugin>
+							<groupId>org.apache.maven.plugins</groupId>
+							<artifactId>maven-checkstyle-plugin</artifactId>
+						</plugin>
         </plugins>    
 		<pluginManagement>
 			<plugins>
-                <plugin>
-                    <groupId>org.apache.maven.plugins</groupId>
-                    <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.3</version>
-                    <configuration>
-                        <source>1.8</source>
-                        <target>1.8</target>
-                    </configuration>
-                </plugin>
+				<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-compiler-plugin</artifactId>
+						<version>3.3</version>
+						<configuration>
+								<source>1.8</source>
+								<target>1.8</target>
+						</configuration>
+				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-jar-plugin</artifactId>
@@ -228,6 +211,53 @@
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-assembly-plugin</artifactId>
 					<version>2.6</version>
+				</plugin>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-checkstyle-plugin</artifactId>
+					<version>2.17</version>
+					<executions>
+						<execution>
+							<id>validate</id>
+							<configuration>
+								<configLocation>google_checks.xml</configLocation>
+								<consoleOutput>true</consoleOutput>
+								<failsOnError>true</failsOnError>
+							</configuration>
+							<phase>validate</phase>
+							<goals>
+								<goal>check</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>com.mycila</groupId>
+					<artifactId>license-maven-plugin</artifactId>
+					<version>${license-maven-plugin.version}</version>
+					<configuration>
+						<header>src/main/resources/gpl-3.0-header-template.txt</header>
+						<properties>
+							<organization>xSystems</organization>
+						</properties>
+						<mapping>
+							<java>SLASHSTAR_STYLE</java>
+						</mapping>
+					</configuration>
+					<dependencies>
+						<dependency>
+							<groupId>com.mycila</groupId>
+							<artifactId>license-maven-plugin-git</artifactId>
+							<version>${license-maven-plugin.version}</version>
+						</dependency>
+					</dependencies>
+					<executions>
+						<execution>
+							<goals>
+								<goal>check</goal>
+							</goals>
+						</execution>
+					</executions>
 				</plugin>
 			</plugins>
 		</pluginManagement>

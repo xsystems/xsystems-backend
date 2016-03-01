@@ -1,4 +1,4 @@
-/**
+/*
  * The core of the backend of the xSystems web-application.
  * Copyright (C) 2015-2016  xSystems
  *
