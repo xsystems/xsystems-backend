@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 package org.xsystems.backend.io;
 
 import org.xsystems.backend.entity.Collection;
@@ -23,10 +24,10 @@ import org.xsystems.backend.entity.File;
 
 public interface FileService<T extends File> {
 
-    // TODO Make the usage of a class in the signature obsolete.
-    boolean hasOnlyExistingElements(final Collection<T> collection, Class<T> entityClazz);
+  // TODO Make the usage of a class in the signature obsolete.
+  boolean hasOnlyExistingElements(final Collection<T> collection, Class<T> entityClazz);
 
-    boolean storeData(java.io.File data, String... id);
+  boolean storeData(java.io.File data, String... id);
 
-    java.io.File retrieveData(String... id);
+  java.io.File retrieveData(String... id);
 }

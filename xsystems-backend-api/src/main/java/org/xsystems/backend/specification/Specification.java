@@ -16,11 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 package org.xsystems.backend.specification;
 
 public interface Specification<T> {
 
-    boolean isSatisfiedBy(T t);
+  boolean isSatisfiedBy(T type);
 
-    String toQuery();
+  String toQuery();
 }

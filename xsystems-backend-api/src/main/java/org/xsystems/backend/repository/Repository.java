@@ -16,17 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 package org.xsystems.backend.repository;
 
 import org.xsystems.backend.specification.Specification;
 
 public interface Repository<T> {
 
-    T add(T t);
+  T add(T type);
 
-    T remove(T t);
+  T remove(T type);
 
-    T update(T t);
+  T update(T type);
 
-    T find(Specification<T> specification, Class<T> clazz) throws NotFoundException;
+  T find(Specification<T> specification, Class<T> clazz) throws NotFoundException;
 }

@@ -16,11 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 package org.xsystems.backend.server;
 
 public interface WebContainer {
 
-    boolean start();
+  boolean start();
 
-    boolean stop();
+  boolean stop();
 }

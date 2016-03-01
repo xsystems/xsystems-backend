@@ -16,13 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 package org.xsystems.backend.security;
 
 public class AuthenticationException extends Exception {
 
-    private static final long serialVersionUID = -4237528265628260379L;
+  private static final long serialVersionUID = -4237528265628260379L;
 
-    public AuthenticationException(final String message) {
-        super(message);
-    }
+  public AuthenticationException(final String message) {
+      super(message);
+  }
 }

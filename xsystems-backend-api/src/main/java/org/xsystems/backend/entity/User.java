@@ -16,12 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 package org.xsystems.backend.entity;
 
 public interface User extends Entity<Long> {
-    String getEmail();
+  String getEmail();
 
-    Role getRole();
+  Role getRole();
 
-    String getPasswordHash();
+  String getPasswordHash();
 }

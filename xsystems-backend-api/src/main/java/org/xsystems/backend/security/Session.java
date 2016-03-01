@@ -16,13 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 package org.xsystems.backend.security;
 
 import org.xsystems.backend.entity.User;
 
 public interface Session {
 
-    User getUser();
+  User getUser();
 
-    void setUser(User user);
+  void setUser(User user);
 }

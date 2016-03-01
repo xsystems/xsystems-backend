@@ -16,18 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 package org.xsystems.backend.entity;
 
 import java.util.List;
 
 public interface Collection<T extends File> extends Entity<Long> {
-    String getName();
+  String getName();
 
-    String getDescription();
+  String getDescription();
 
-    FileType getType();
+  FileType getType();
 
-    User getUser();
+  User getUser();
 
-    List<T> getElements();
+  List<T> getElements();
 }

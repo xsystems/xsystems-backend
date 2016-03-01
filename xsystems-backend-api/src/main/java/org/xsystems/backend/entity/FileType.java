@@ -16,29 +16,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 package org.xsystems.backend.entity;
 
 public enum FileType {
 
-    IMAGE(Values.IMAGE);
+  IMAGE(Values.IMAGE);
 
-    private String value;
+  private String value;
 
-    private FileType(final String value) {
-        if (!this.name().equals(value)) {
-            throw new IllegalStateException(
-                    "The value parameter must be the same as the Enum name, i.e.: " + this.name());
-        }
-
-        this.value = value;
+  FileType(final String value) {
+    if (!this.name().equals(value)) {
+      throw new IllegalStateException(
+              "The value parameter must be the same as the Enum name, i.e.: " + this.name());
     }
 
-    @Override
-    public String toString() {
-        return this.value;
-    }
+    this.value = value;
+  }
 
-    public static class Values {
-        public static final String IMAGE = "IMAGE";
-    }
+  @Override
+  public String toString() {
+    return this.value;
+  }
+
+  public static class Values {
+    public static final String IMAGE = "IMAGE";
+  }
 }

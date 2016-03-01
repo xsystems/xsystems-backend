@@ -16,29 +16,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 package org.xsystems.backend.entity;
 
 public enum Role {
-    USER(Values.USER), ADMIN(Values.ADMIN);
+  USER(Values.USER), ADMIN(Values.ADMIN);
 
-    private String value;
+  private String value;
 
-    private Role(final String value) {
-        if (!this.name().equals(value)) {
-            throw new IllegalStateException(
-                    "The value parameter must be the same as the Enum name, i.e.: " + this.name());
-        }
-
-        this.value = value;
+  private Role(final String value) {
+    if (!this.name().equals(value)) {
+      throw new IllegalStateException(
+          "The value parameter must be the same as the Enum name, i.e.: " + this.name());
     }
 
-    @Override
-    public String toString() {
-        return this.value;
-    }
+    this.value = value;
+  }
 
-    public static class Values {
-        public static final String USER = "USER";
-        public static final String ADMIN = "ADMIN";
-    }
+  @Override
+  public String toString() {
+    return this.value;
+  }
+
+  public static class Values {
+    public static final String USER = "USER";
+    public static final String ADMIN = "ADMIN";
+  }
 }

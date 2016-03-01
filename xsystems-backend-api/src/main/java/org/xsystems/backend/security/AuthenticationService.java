@@ -16,18 +16,19 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 package org.xsystems.backend.security;
+
+import org.xsystems.backend.entity.User;
 
 import java.security.NoSuchAlgorithmException;
 import java.security.spec.InvalidKeySpecException;
 
-import org.xsystems.backend.entity.User;
-
 public interface AuthenticationService {
 
-    User authenticate(String authorizationHeaderString) throws AuthenticationException;
+  User authenticate(String authorizationHeaderString) throws AuthenticationException;
 
-    User authenticate(String username, String password) throws AuthenticationException;
+  User authenticate(String username, String password) throws AuthenticationException;
 
-    String hashPassword(String password) throws NoSuchAlgorithmException, InvalidKeySpecException;
+  String hashPassword(String password) throws NoSuchAlgorithmException, InvalidKeySpecException;
 }

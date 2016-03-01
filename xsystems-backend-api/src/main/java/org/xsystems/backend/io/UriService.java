@@ -16,16 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.xsystems.backend.io;
 
-import java.net.URI;
+package org.xsystems.backend.io;
 
 import org.xsystems.backend.entity.Entity;
 import org.xsystems.backend.entity.File;
 
+import java.net.URI;
+
 public interface UriService {
 
-    URI createEntityUri(Entity<?> enity);
+  URI createEntityUri(Entity<?> enity);
 
-    void createDataUris(File file);
+  void createDataUris(File file);
 }
