@@ -16,49 +16,61 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 package org.xsystems.backend.application;
 
 import java.util.StringJoiner;
-import java.util.logging.Level;
+
 
 public enum RunMode {
 
-    NORMAL("normal"),
+  NORMAL("normal"),
 
-    SCHEMA_GENERATION("schema-generation"),
+  SCHEMA_GENERATION("schema-generation"),
 
-    DATABASE_MIGRATION("database-migration"),
+  DATABASE_MIGRATION("database-migration"),
 
-    POPULATE_DATABASE("populate"),
+  POPULATE_DATABASE("populate"),
 
-    CONFIGURATION_KEYS("configuration-keys");
+  CONFIGURATION_KEYS("configuration-keys");
 
-    String name;
+  String name;
 
-    private RunMode(final String name) {
-        this.name = name;
+  RunMode(final String name) {
+    this.name = name;
+  }
+
+  String getName() {
+    return name;
+  }
+
+  /**
+   * Map the name of a {@link RunMode} to the {@link RunMode}.
+   *
+   * @param name is a name that correspond to a {@link RunMode}.
+   * @return the {@link RunMode} corresponding to the name.
+   */
+  public static RunMode getByName(final String name) {
+    for (final RunMode runMode : values()) {
+      if (runMode.getName().equals(name)) {
+        return runMode;
+      }
     }
 
-    String getName() {
-        return name;
+    throw new EnumConstantNotPresentException(RunMode.class, name);
+  }
+
+  /**
+   * Concatenates all {@link RunMode}s as a ", " (comma space) separated {@link String}.
+   *
+   * @return the concatenated {@link String} of all {@link RunMode}s.
+   */
+  public static String runModesAsString() {
+    final StringJoiner runModeNames = new StringJoiner(", ");
+    for (final RunMode runMode : RunMode.values()) {
+      runModeNames.add(runMode.getName());
     }
 
-    public static RunMode getByName(final String name) {
-        for (final RunMode runMode : values()) {
-            if (runMode.getName().equals(name)) {
-                return runMode;
-            }
-        }
-
-        throw new EnumConstantNotPresentException(RunMode.class, name);
-    }
-
-    public static String runModesAsString() {
-        final StringJoiner runModeNames = new StringJoiner(", ");
-        for (final RunMode runMode : RunMode.values()) {
-            runModeNames.add(runMode.getName());
-        }
-
-        return runModeNames.toString();
-    }
+    return runModeNames.toString();
+  }
 }
