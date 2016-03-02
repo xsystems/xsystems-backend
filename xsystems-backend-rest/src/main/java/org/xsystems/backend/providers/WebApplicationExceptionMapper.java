@@ -16,7 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 package org.xsystems.backend.providers;
+
+import org.xsystems.backend.dto.ErrorDto;
 
 import javax.ws.rs.WebApplicationException;
 import javax.ws.rs.core.MediaType;
@@ -24,20 +27,19 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
 
-import org.xsystems.backend.dto.ErrorDto;
-
 
 @Provider
-public class WebApplicationExceptionMapper implements ExceptionMapper<WebApplicationException> {
+class WebApplicationExceptionMapper implements ExceptionMapper<WebApplicationException> {
 
-    @Override
-    public Response toResponse(final WebApplicationException webApplicationException) {
-        final Response response = webApplicationException.getResponse();
-        final String message = webApplicationException.getMessage();
+  @Override
+  public Response toResponse(final WebApplicationException webApplicationException) {
+    final Response response = webApplicationException.getResponse();
+    final String message = webApplicationException.getMessage();
 
-        final ErrorDto errorDto = new ErrorDto();
-        errorDto.setMessage(message);
+    final ErrorDto errorDto = new ErrorDto();
+    errorDto.setMessage(message);
 
-        return Response.fromResponse(response).entity(errorDto).type(MediaType.APPLICATION_JSON).build();
-    }
+    return Response.fromResponse(response).entity(errorDto).type(MediaType.APPLICATION_JSON)
+        .build();
+  }
 }

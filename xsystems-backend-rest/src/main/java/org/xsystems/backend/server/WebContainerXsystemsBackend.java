@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 package org.xsystems.backend.server;
 
 import org.apache.catalina.Context;
@@ -26,80 +27,86 @@ import org.glassfish.jersey.servlet.ServletContainer;
 import org.jboss.weld.environment.servlet.Listener;
 import org.xsystems.backend.RestApplicationXsystemsBackend;
 import org.xsystems.backend.configuration.Configuration;
-import org.xsystems.backend.configuration.key.*;
+import org.xsystems.backend.configuration.key.ServerContextPathKey;
+import org.xsystems.backend.configuration.key.ServerHostKey;
+import org.xsystems.backend.configuration.key.ServerNameKey;
+import org.xsystems.backend.configuration.key.ServerPortKey;
+
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import javax.annotation.PostConstruct;
 import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.servlet.Servlet;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
 
 @ApplicationScoped
 class WebContainerXsystemsBackend implements WebContainer {
 
-    private static final Logger LOGGER = Logger.getLogger(WebContainerXsystemsBackend.class.getName());
+  private static final Logger LOGGER = Logger.getLogger(
+      WebContainerXsystemsBackend.class.getName());
+
+  @Inject
+  @Configuration(key = ServerNameKey.class)
+  private String name;
+
+  @Inject
+  @Configuration(key = ServerHostKey.class)
+  private String host;
+
+  @Inject
+  @Configuration(key = ServerPortKey.class)
+  private Integer port;
+
+  @Inject
+  @Configuration(key = ServerContextPathKey.class)
+  private String contextPath;
+
+  private Tomcat tomcat;
 
 
-    @Inject
-    @Configuration(key = ServerNameKey.class)
-    private String name;
+  @PostConstruct
+  private void postConstruct() {
+    tomcat = new Tomcat();
+    tomcat.setHostname(host);
+    tomcat.setPort(port);
 
-    @Inject
-    @Configuration(key = ServerHostKey.class)
-    private String host;
+    Context context = tomcat.addContext(contextPath, "/");
 
-    @Inject
-    @Configuration(key = ServerPortKey.class)
-    private Integer port;
+    final RestApplicationXsystemsBackend applicationXsystemsBackend =
+        new RestApplicationXsystemsBackend("Foo");
+    Servlet servlet = new ServletContainer(applicationXsystemsBackend);
 
-    @Inject
-    @Configuration(key = ServerContextPathKey.class)
-    private String contextPath;
+    Wrapper wrapper = Tomcat.addServlet(context, name, servlet);
+    wrapper.addInitParameter("WELD_CONTEXT_ID_KEY", "Weld Context " + name);
 
-    private Tomcat tomcat;
+    context.addServletMapping( contextPath + "/*", name);
+    context.addApplicationListener(Listener.class.getName());
+  }
 
-
-    @PostConstruct
-    private void postConstruct () {
-        final RestApplicationXsystemsBackend applicationXsystemsBackend = new RestApplicationXsystemsBackend("Foo");
-        Servlet servlet = new ServletContainer(applicationXsystemsBackend);
-
-        tomcat = new Tomcat();
-        tomcat.setHostname(host);
-        tomcat.setPort(port);
-
-        Context context = tomcat.addContext(contextPath, "/");
-
-        Wrapper wrapper = Tomcat.addServlet(context, name, servlet);
-        wrapper.addInitParameter("WELD_CONTEXT_ID_KEY", "Weld Context " + name);
-
-        context.addServletMapping( contextPath + "/*", name);
-        context.addApplicationListener(Listener.class.getName());
+  @Override
+  public boolean start() {
+    try {
+      tomcat.start();
+    } catch (LifecycleException e) {
+      LOGGER.log(Level.SEVERE, "Unable to start web-container: " + name, e);
+      return false;
     }
 
-    @Override
-    public boolean start() {
-        try {
-            tomcat.start();
-        } catch (LifecycleException e) {
-            LOGGER.log(Level.SEVERE, "Unable to start web-container: " + name, e);
-            return false;
-        }
+    return true;
+  }
 
-        return true;
+  @Override
+  public boolean stop() {
+    try {
+      tomcat.stop();
+      tomcat.destroy();
+    } catch (LifecycleException e) {
+      LOGGER.log(Level.WARNING, "Unable to stop web-container: " + name, e);
+      return false;
     }
 
-    @Override
-    public boolean stop() {
-        try {
-            tomcat.stop();
-            tomcat.destroy();
-        } catch (LifecycleException e) {
-            LOGGER.log(Level.WARNING, "Unable to stop web-container: " + name, e);
-            return false;
-        }
-
-        return true;
-    }
+    return true;
+  }
 }

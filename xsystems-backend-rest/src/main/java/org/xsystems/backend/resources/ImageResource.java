@@ -16,11 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 package org.xsystems.backend.resources;
 
 import javax.ws.rs.Path;
 
 @Path(ImageResource.PATH)
 public class ImageResource {
-    public static final String PATH = ImagesResource.PATH + "/{id}";
+  public static final String PATH = ImagesResource.PATH + "/{id}";
 }

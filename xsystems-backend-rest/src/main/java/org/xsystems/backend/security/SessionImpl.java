@@ -16,28 +16,30 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 package org.xsystems.backend.security;
+
+import org.xsystems.backend.entity.User;
 
 import java.io.Serializable;
 
 import javax.enterprise.context.SessionScoped;
 
-import org.xsystems.backend.entity.User;
 
 @SessionScoped
 class SessionImpl implements Session, Serializable {
 
-    private static final long serialVersionUID = -5923651906582528513L;
+  private static final long serialVersionUID = -5923651906582528513L;
 
-    private User user;
+  private User user;
 
-    @Override
-    public User getUser() {
-        return this.user;
-    }
+  @Override
+  public User getUser() {
+    return this.user;
+  }
 
-    @Override
-    public void setUser(final User user) {
-        this.user = user;
-    }
+  @Override
+  public void setUser(final User user) {
+    this.user = user;
+  }
 }

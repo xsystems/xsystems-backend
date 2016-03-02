@@ -16,7 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 package org.xsystems.backend.security;
+
+import org.xsystems.backend.configuration.Configuration;
+import org.xsystems.backend.configuration.key.SecurityRealmKey;
+import org.xsystems.backend.entity.User;
 
 import java.io.IOException;
 import java.net.URI;
@@ -32,52 +37,50 @@ import javax.ws.rs.core.SecurityContext;
 import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.ext.Provider;
 
-import org.xsystems.backend.configuration.Configuration;
-import org.xsystems.backend.configuration.key.SecurityRealmKey;
-import org.xsystems.backend.entity.User;
 
 @Provider
 @PreMatching
 @Priority(Priorities.AUTHENTICATION)
 public class BasicAuthenticationFilter implements ContainerRequestFilter {
 
-    @Inject
-    @Configuration(key = SecurityRealmKey.class)
-    String realm;
+  @Inject
+  @Configuration(key = SecurityRealmKey.class)
+  String realm;
 
-    @Inject
-    AuthenticationService authenticationService;
+  @Inject
+  AuthenticationService authenticationService;
 
-    @Inject
-    Session session;
+  @Inject
+  Session session;
 
 
-    @Override
-    public void filter(final ContainerRequestContext containerRequestContext) throws IOException {
-        SecurityContext securityContext;
-        try {
-            final User user;
-            if (this.session.getUser() == null) {
-                final String authorizationHeaderString = containerRequestContext.getHeaderString(HttpHeaders.AUTHORIZATION);
-                user = this.authenticationService.authenticate(authorizationHeaderString);
-                this.session.setUser(user);
-            } else {
-                user = this.session.getUser();
-            }
+  @Override
+  public void filter(final ContainerRequestContext containerRequestContext) throws IOException {
+    SecurityContext securityContext;
+    try {
+      final User user;
+      if (this.session.getUser() == null) {
+        final String authorizationHeaderString = containerRequestContext
+            .getHeaderString(HttpHeaders.AUTHORIZATION);
+        user = this.authenticationService.authenticate(authorizationHeaderString);
+        this.session.setUser(user);
+      } else {
+        user = this.session.getUser();
+      }
 
-            final boolean isSecure = isSecure(containerRequestContext);
-            securityContext = new AuthenticatedSecurityContext(user, isSecure);
-        } catch (final AuthenticationException e) {
-            final String challenge = SecurityContext.BASIC_AUTH + " realm=\"" + this.realm + "\"";
-            securityContext = new NotAuthenticatedSecurityContext(e.getMessage(), challenge);
-        }
-
-        containerRequestContext.setSecurityContext(securityContext);
+      final boolean isSecure = isSecure(containerRequestContext);
+      securityContext = new AuthenticatedSecurityContext(user, isSecure);
+    } catch (final AuthenticationException e) {
+      final String challenge = SecurityContext.BASIC_AUTH + " realm=\"" + this.realm + "\"";
+      securityContext = new NotAuthenticatedSecurityContext(e.getMessage(), challenge);
     }
 
-    boolean isSecure(final ContainerRequestContext containerRequestContext) {
-        final UriInfo uriInfo = containerRequestContext.getUriInfo();
-        final URI requestUri = uriInfo.getRequestUri();
-        return "https".equals(requestUri.getScheme());
-    }
+    containerRequestContext.setSecurityContext(securityContext);
+  }
+
+  boolean isSecure(final ContainerRequestContext containerRequestContext) {
+    final UriInfo uriInfo = containerRequestContext.getUriInfo();
+    final URI requestUri = uriInfo.getRequestUri();
+    return "https".equals(requestUri.getScheme());
+  }
 }

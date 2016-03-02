@@ -16,37 +16,39 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.xsystems.backend.dto.mapper;
 
-import javax.enterprise.context.ApplicationScoped;
+package org.xsystems.backend.dto.mapper;
 
 import org.xsystems.backend.dto.UserDto;
 import org.xsystems.backend.entity.EntityMapper;
 import org.xsystems.backend.entity.User;
 import org.xsystems.backend.entity.UserImpl;
 
+import javax.enterprise.context.ApplicationScoped;
+
+
 @ApplicationScoped
 class UserMapper implements EntityMapper<User, UserDto> {
 
-    @Override
-    public User toEntity(final UserDto userDto) {
-        if (userDto == null) {
-            return null;
-        }
-
-        final UserImpl user = new UserImpl();
-        user.setId(userDto.getId());
-        user.setEmail(userDto.getEmail());
-        user.setRole(userDto.getRole());
-        return user;
+  @Override
+  public User toEntity(final UserDto userDto) {
+    if (userDto == null) {
+      return null;
     }
 
-    @Override
-    public UserDto fromEntity(final User user) {
-        final UserDto userDto = new UserDto();
-        userDto.setId(user.getId());
-        userDto.setEmail(user.getEmail());
-        userDto.setRole(user.getRole());
-        return userDto;
-    }
+    final UserImpl user = new UserImpl();
+    user.setId(userDto.getId());
+    user.setEmail(userDto.getEmail());
+    user.setRole(userDto.getRole());
+    return user;
+  }
+
+  @Override
+  public UserDto fromEntity(final User user) {
+    final UserDto userDto = new UserDto();
+    userDto.setId(user.getId());
+    userDto.setEmail(user.getEmail());
+    userDto.setRole(user.getRole());
+    return userDto;
+  }
 }

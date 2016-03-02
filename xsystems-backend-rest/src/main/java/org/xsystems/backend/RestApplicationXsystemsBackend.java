@@ -16,34 +16,41 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.xsystems.backend;
 
-import javax.ws.rs.ApplicationPath;
+package org.xsystems.backend;
 
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.server.ResourceConfig;
 import org.glassfish.jersey.server.filter.RolesAllowedDynamicFeature;
 
+import javax.ws.rs.ApplicationPath;
+
+
 @ApplicationPath(RestApplicationXsystemsBackend.PATH)
 public class RestApplicationXsystemsBackend extends ResourceConfig {
 
-    public static final String PATH = "/";
+  public static final String PATH = "/";
 
-    String name;
+  private String name;
 
+  /**
+   * Constructs {@link javax.ws.rs.core.Application} subclass for the xSystems back-end REST
+   * application.
+   *
+   * @param name of the xSystems back-end REST application.
+   */
+  public RestApplicationXsystemsBackend(String name) {
+    super();
 
-    public RestApplicationXsystemsBackend(String name) {
-        super();
+    this.name = name;
 
-        this.name = name;
+    packages("org.xsystems.backend");
+    register(JacksonFeature.class);
+    register(RolesAllowedDynamicFeature.class);
+    setApplicationName(name);
+  }
 
-        packages("org.xsystems.backend");
-        register(JacksonFeature.class);
-        register(RolesAllowedDynamicFeature.class);
-        setApplicationName(name);
-    }
-
-    public String getName() {
-        return name;
-    }
+  public String getName() {
+    return name;
+  }
 }

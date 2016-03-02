@@ -16,12 +16,14 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 package org.xsystems.backend.dto;
 
 import java.io.Serializable;
 
+
 public class ImageDto extends FileDto implements Serializable {
 
-    private static final long serialVersionUID = -6555118753137756584L;
+  private static final long serialVersionUID = -6555118753137756584L;
 
 }

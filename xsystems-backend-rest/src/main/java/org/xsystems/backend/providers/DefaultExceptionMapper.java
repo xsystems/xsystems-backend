@@ -16,38 +16,41 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 package org.xsystems.backend.providers;
 
 import org.xsystems.backend.configuration.Configuration;
 import org.xsystems.backend.configuration.key.ServerNameKey;
 import org.xsystems.backend.dto.ErrorDto;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import javax.inject.Inject;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.ExceptionMapper;
 import javax.ws.rs.ext.Provider;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 
 @Provider
-public class DefaultExceptionMapper implements ExceptionMapper<Exception> {
+class DefaultExceptionMapper implements ExceptionMapper<Exception> {
 
-    private static final Logger LOGGER = Logger.getLogger(DefaultExceptionMapper.class.getName());
+  private static final Logger LOGGER = Logger.getLogger(DefaultExceptionMapper.class.getName());
 
-    @Inject
-    @Configuration(key = ServerNameKey.class)
-    private String name;
+  @Inject
+  @Configuration(key = ServerNameKey.class)
+  private String name;
 
 
-    @Override
-    public Response toResponse(Exception exception) {
-        LOGGER.log(Level.WARNING, "Exception caught that propagated to the top of web-application: " + name, exception);
+  @Override
+  public Response toResponse(Exception exception) {
+    LOGGER.log(Level.WARNING, "Exception caught that propagated to the top of web-application: "
+        + name, exception);
 
-        final ErrorDto errorDto = new ErrorDto();
-        errorDto.setMessage("Oops, something went wrong :/");
+    final ErrorDto errorDto = new ErrorDto();
+    errorDto.setMessage("Oops, something went wrong :/");
 
-        return Response.serverError().entity(errorDto).type(MediaType.APPLICATION_JSON).build();
-    }
+    return Response.serverError().entity(errorDto).type(MediaType.APPLICATION_JSON).build();
+  }
 }

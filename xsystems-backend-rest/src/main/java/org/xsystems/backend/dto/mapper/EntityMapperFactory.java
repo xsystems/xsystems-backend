@@ -16,24 +16,26 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.xsystems.backend.dto.mapper;
 
-import javax.enterprise.context.ApplicationScoped;
-import javax.enterprise.inject.Produces;
-import javax.inject.Inject;
+package org.xsystems.backend.dto.mapper;
 
 import org.xsystems.backend.dto.ImageDto;
 import org.xsystems.backend.entity.EntityMapper;
 import org.xsystems.backend.entity.Image;
 
+import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.inject.Produces;
+import javax.inject.Inject;
+
+
 class EntityMapperFactory {
 
-    @Inject
-    EntityMapper<Image, ImageDto> imageMapper;
+  @Inject
+  EntityMapper<Image, ImageDto> imageMapper;
 
-    @Produces
-    @ApplicationScoped
-    public CollectionMapper<Image, ImageDto> produceImageCollectionMapper() {
-        return new CollectionMapper<>(this.imageMapper);
-    }
+  @Produces
+  @ApplicationScoped
+  public CollectionMapper<Image, ImageDto> produceImageCollectionMapper() {
+    return new CollectionMapper<>(this.imageMapper);
+  }
 }

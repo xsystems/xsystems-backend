@@ -16,7 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 package org.xsystems.backend.resources;
+
+import org.xsystems.backend.dto.ImageDto;
+import org.xsystems.backend.entity.EntityMapper;
+import org.xsystems.backend.entity.Image;
+import org.xsystems.backend.entity.Representation;
+import org.xsystems.backend.entity.Role;
+import org.xsystems.backend.io.UriService;
+import org.xsystems.backend.repository.Repository;
 
 import java.net.URI;
 import java.util.Map;
@@ -31,49 +40,42 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.xsystems.backend.dto.ImageDto;
-import org.xsystems.backend.entity.EntityMapper;
-import org.xsystems.backend.entity.Image;
-import org.xsystems.backend.entity.Representation;
-import org.xsystems.backend.entity.Role;
-import org.xsystems.backend.io.UriService;
-import org.xsystems.backend.repository.Repository;
 
 @Path(ImagesResource.PATH)
-public class ImagesResource {
+class ImagesResource {
 
-    public static final String PATH = "/images";
+  public static final String PATH = "/images";
 
-    @Inject
-    EntityMapper<Image, ImageDto> imageMapper;
+  @Inject
+  EntityMapper<Image, ImageDto> imageMapper;
 
-    @Inject
-    Repository<Image> imageRepository;
+  @Inject
+  Repository<Image> imageRepository;
 
-    @Inject
-    UriService uriService;
+  @Inject
+  UriService uriService;
 
-    @POST
-    @RolesAllowed(Role.Values.ADMIN)
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response post(final ImageDto imageDto) {
-        Image image = this.imageMapper.toEntity(imageDto);
+  @POST
+  @RolesAllowed(Role.Values.ADMIN)
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  Response post(final ImageDto imageDto) {
+    Image image = this.imageMapper.toEntity(imageDto);
 
-        image = this.imageRepository.add(image);
+    image = this.imageRepository.add(image);
 
-        this.uriService.createDataUris(image);
+    this.uriService.createDataUris(image);
 
-        this.imageRepository.update(image);
+    this.imageRepository.update(image);
 
-        imageDto.setId(image.getId());
-        final Map<Representation, URI> representations = new ConcurrentHashMap<>();
-        for (final Representation representation : image.getRepresentations()) {
-            representations.put(representation, image.getUri(representation));
-        }
-        imageDto.setRepresentations(representations);
-
-        final URI imageUri = this.uriService.createEntityUri(image);
-        return Response.created(imageUri).entity(imageDto).build();
+    imageDto.setId(image.getId());
+    final Map<Representation, URI> representations = new ConcurrentHashMap<>();
+    for (final Representation representation : image.getRepresentations()) {
+      representations.put(representation, image.getUri(representation));
     }
+    imageDto.setRepresentations(representations);
+
+    final URI imageUri = this.uriService.createEntityUri(image);
+    return Response.created(imageUri).entity(imageDto).build();
+  }
 }

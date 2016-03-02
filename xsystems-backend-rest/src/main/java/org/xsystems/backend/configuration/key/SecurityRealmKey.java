@@ -16,14 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 package org.xsystems.backend.configuration.key;
 
 public class SecurityRealmKey implements ConfigurationKey {
 
-    static final String KEY = "security.realm";
+  static final String KEY = "security.realm";
 
-    @Override
-    public String getKey() {
-        return KEY;
-    }
+  @Override
+  public String getKey() {
+    return KEY;
+  }
 }

@@ -16,21 +16,22 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 package org.xsystems.backend.dto;
 
 import java.io.Serializable;
 
 public class ErrorDto implements Serializable {
 
-    private static final long serialVersionUID = -8926054870697103367L;
+  private static final long serialVersionUID = -8926054870697103367L;
 
-    private String message;
+  private String message;
 
-    public String getMessage() {
-        return this.message;
-    }
+  public String getMessage() {
+    return this.message;
+  }
 
-    public void setMessage(final String message) {
-        this.message = message;
-    }
+  public void setMessage(final String message) {
+    this.message = message;
+  }
 }

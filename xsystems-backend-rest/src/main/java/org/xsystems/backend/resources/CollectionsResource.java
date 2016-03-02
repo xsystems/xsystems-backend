@@ -16,7 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 package org.xsystems.backend.resources;
+
+import org.xsystems.backend.dto.CollectionDto;
+import org.xsystems.backend.dto.ImageDto;
+import org.xsystems.backend.entity.Collection;
+import org.xsystems.backend.entity.EntityMapper;
+import org.xsystems.backend.entity.Image;
+import org.xsystems.backend.io.FileService;
+import org.xsystems.backend.io.UriService;
+import org.xsystems.backend.repository.Repository;
 
 import java.net.URI;
 
@@ -29,46 +39,39 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.xsystems.backend.dto.CollectionDto;
-import org.xsystems.backend.dto.ImageDto;
-import org.xsystems.backend.entity.Collection;
-import org.xsystems.backend.entity.EntityMapper;
-import org.xsystems.backend.entity.Image;
-import org.xsystems.backend.io.FileService;
-import org.xsystems.backend.io.UriService;
-import org.xsystems.backend.repository.Repository;
 
 @Path(CollectionsResource.PATH)
-public class CollectionsResource {
+class CollectionsResource {
 
-    public static final String PATH = "/collections";
+  public static final String PATH = "/collections";
 
-    @Inject
-    EntityMapper<Collection<Image>, CollectionDto<ImageDto>> imageCollectionMapper;
+  @Inject
+  EntityMapper<Collection<Image>, CollectionDto<ImageDto>> imageCollectionMapper;
 
-    @Inject
-    FileService<Image> imageFileService;
+  @Inject
+  FileService<Image> imageFileService;
 
-    @Inject
-    Repository<Collection<Image>> imageCollectionRepository;
+  @Inject
+  Repository<Collection<Image>> imageCollectionRepository;
 
-    @Inject
-    UriService uriService;
+  @Inject
+  UriService uriService;
 
-    @POST
-    @Consumes(MediaType.APPLICATION_JSON)
-    @Produces(MediaType.APPLICATION_JSON)
-    public Response post(final CollectionDto<ImageDto> imageCollectionDto) {
-        final Collection<Image> imageCollection = this.imageCollectionMapper.toEntity(imageCollectionDto);
+  @POST
+  @Consumes(MediaType.APPLICATION_JSON)
+  @Produces(MediaType.APPLICATION_JSON)
+  Response post(final CollectionDto<ImageDto> imageCollectionDto) {
+    final Collection<Image> imageCollection = this.imageCollectionMapper
+        .toEntity(imageCollectionDto);
 
-        if (!this.imageFileService.hasOnlyExistingElements(imageCollection, Image.class)) {
-            throw new BadRequestException("One or more elements in the collection do not exist.");
-        }
-
-        this.imageCollectionRepository.add(imageCollection);
-
-        final URI collectionUri = this.uriService.createEntityUri(imageCollection);
-
-        return Response.created(collectionUri).build();
+    if (!this.imageFileService.hasOnlyExistingElements(imageCollection, Image.class)) {
+      throw new BadRequestException("One or more elements in the collection do not exist.");
     }
+
+    this.imageCollectionRepository.add(imageCollection);
+
+    final URI collectionUri = this.uriService.createEntityUri(imageCollection);
+
+    return Response.created(collectionUri).build();
+  }
 }
