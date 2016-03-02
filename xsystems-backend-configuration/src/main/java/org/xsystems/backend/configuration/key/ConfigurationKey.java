@@ -16,12 +16,13 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 package org.xsystems.backend.configuration.key;
 
 public interface ConfigurationKey {
 
-    String getKey();
+  String getKey();
 
-    // TODO Implement Description
-    // String getDescription();
+  // TODO Implement Description
+  // String getDescription();
 }

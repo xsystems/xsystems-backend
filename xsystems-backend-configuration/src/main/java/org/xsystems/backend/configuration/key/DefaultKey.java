@@ -16,14 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 package org.xsystems.backend.configuration.key;
 
 import org.xsystems.backend.configuration.Configuration;
 
 public class DefaultKey implements ConfigurationKey {
 
-    @Override
-    public String getKey() {
-        throw new IllegalStateException("The " + Configuration.class.getSimpleName() + " annotation requires a key element.");
-    }
+  @Override
+  public String getKey() {
+    throw new IllegalStateException("The " + Configuration.class.getSimpleName()
+        + " annotation requires a key element.");
+  }
 }

@@ -16,17 +16,18 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
-package org.xsystems.backend.configuration;
 
-import java.util.List;
+package org.xsystems.backend.configuration;
 
 import org.xsystems.backend.configuration.key.ConfigurationKey;
 
+import java.util.List;
+
 public interface ConfigurationService {
 
-    void configure();
+  void configure();
 
-    String getValue(Class<? extends ConfigurationKey> configurationKeyClass);
+  String getValue(Class<? extends ConfigurationKey> configurationKeyClass);
 
-    List<ConfigurationKey> getConfigurationKeys();
+  List<ConfigurationKey> getConfigurationKeys();
 }

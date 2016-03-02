@@ -16,7 +16,11 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 package org.xsystems.backend.configuration;
+
+import org.xsystems.backend.configuration.key.ConfigurationKey;
+import org.xsystems.backend.configuration.key.LoggingLevelKey;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -29,49 +33,47 @@ import javax.enterprise.inject.Any;
 import javax.enterprise.inject.Instance;
 import javax.inject.Inject;
 
-import org.xsystems.backend.configuration.key.ConfigurationKey;
-import org.xsystems.backend.configuration.key.LoggingLevelKey;
 
 @ApplicationScoped
-public class ConfigurationServiceImpl implements ConfigurationService {
+class ConfigurationServiceImpl implements ConfigurationService {
 
-    private static final Logger LOGGER = Logger.getLogger(ConfigurationServiceImpl.class.getName());
+  private static final Logger LOGGER = Logger.getLogger(ConfigurationServiceImpl.class.getName());
 
-    @Inject
-    @Configuration(key = LoggingLevelKey.class)
-    String level;
+  @Inject
+  @Configuration(key = LoggingLevelKey.class)
+  String level;
 
-    @Inject
-    ConfigurationFactory configurationFactory;
+  @Inject
+  ConfigurationFactory configurationFactory;
 
-    @Inject
-    @Any
-    Instance<ConfigurationKey> configurationKeyInstances;
+  @Inject
+  @Any
+  Instance<ConfigurationKey> configurationKeyInstances;
 
-    @Override
-    public void configure() {
-        Logger.getLogger("").setLevel(Level.parse(this.level));
+  @Override
+  public void configure() {
+    Logger.getLogger("").setLevel(Level.parse(this.level));
+  }
+
+  @Override
+  public String getValue(final Class<? extends ConfigurationKey> configurationKeyClass) {
+    try {
+      return this.configurationFactory.getValue(configurationKeyClass);
+    } catch (NoSuchMethodException | SecurityException | InstantiationException
+        | IllegalAccessException | IllegalArgumentException | InvocationTargetException exception) {
+      LOGGER.log(Level.WARNING, "Failed to get value for configuration key.", exception);
+      return null;
+    }
+  }
+
+  @Override
+  public List<ConfigurationKey> getConfigurationKeys() {
+    final List<ConfigurationKey> configurationKeys = new ArrayList<>();
+
+    for (final ConfigurationKey configurationKey : this.configurationKeyInstances) {
+      configurationKeys.add(configurationKey);
     }
 
-    @Override
-    public String getValue(final Class<? extends ConfigurationKey> configurationKeyClass) {
-        try {
-            return this.configurationFactory.getValue(configurationKeyClass);
-        } catch (NoSuchMethodException | SecurityException | InstantiationException | IllegalAccessException
-                | IllegalArgumentException | InvocationTargetException e) {
-            LOGGER.log(Level.WARNING, "Failed to get value for configuration key.", e);
-            return null;
-        }
-    }
-
-    @Override
-    public List<ConfigurationKey> getConfigurationKeys() {
-        final List<ConfigurationKey> configurationKeys = new ArrayList<>();
-
-        for (final ConfigurationKey configurationKey : this.configurationKeyInstances) {
-            configurationKeys.add(configurationKey);
-        }
-
-        return configurationKeys;
-    }
+    return configurationKeys;
+  }
 }
