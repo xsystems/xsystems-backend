@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 package org.xsystems.backend.naming;
 
 import java.util.Hashtable;
@@ -26,10 +27,9 @@ import javax.naming.spi.InitialContextFactory;
 
 public class InMemoryInitialContextFactory implements InitialContextFactory {
 
-
-    @Override
-    public Context getInitialContext(final Hashtable<?, ?> environment)
-            throws NamingException {
-        return InMemoryContext.getInstance();
-    }
+  @Override
+  public Context getInitialContext(final Hashtable<?, ?> environment)
+          throws NamingException {
+    return InMemoryContext.getInstance();
+  }
 }
