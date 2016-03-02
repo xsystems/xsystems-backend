@@ -16,7 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 package org.xsystems.backend.io;
+
+import org.xsystems.backend.configuration.Configuration;
+import org.xsystems.backend.configuration.key.IoFilePathKey;
+import org.xsystems.backend.entity.Collection;
+import org.xsystems.backend.entity.File;
+import org.xsystems.backend.repository.NotFoundException;
+import org.xsystems.backend.repository.Repository;
+import org.xsystems.backend.specification.FileHasId;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -29,70 +38,63 @@ import java.util.logging.Logger;
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 
-import org.xsystems.backend.configuration.Configuration;
-import org.xsystems.backend.configuration.key.IoFilePathKey;
-import org.xsystems.backend.entity.Collection;
-import org.xsystems.backend.entity.File;
-import org.xsystems.backend.repository.NotFoundException;
-import org.xsystems.backend.repository.Repository;
-import org.xsystems.backend.specification.FileHasId;
-
 @Dependent
 class FileServiceImpl<T extends File> implements FileService<T> {
 
-    private static final Logger LOGGER = Logger.getLogger(FileServiceImpl.class.getName());
+  private static final Logger LOGGER = Logger.getLogger(FileServiceImpl.class.getName());
 
-    @Inject
-    @Configuration(key = IoFilePathKey.class)
-    Path filePath;
+  @Inject
+  @Configuration(key = IoFilePathKey.class)
+  Path filePath;
 
-    @Inject
-    Repository<T> fileRepository;
+  @Inject
+  Repository<T> fileRepository;
 
-    @Override
-    public boolean hasOnlyExistingElements(final Collection<T> collection, final Class<T> entityClazz) {
-        final List<T> elements = collection.getElements();
-        for (final T element : elements) {
-            try {
-                this.fileRepository.find(new FileHasId<T>(entityClazz, element.getId()), entityClazz);
-            } catch (final NotFoundException e) {
-                return false;
-            }
-        }
-        return true;
+  @Override
+  public boolean hasOnlyExistingElements(final Collection<T> collection,
+                                         final Class<T> entityClazz) {
+    final List<T> elements = collection.getElements();
+    for (final T element : elements) {
+      try {
+        this.fileRepository.find(new FileHasId<T>(entityClazz, element.getId()), entityClazz);
+      } catch (final NotFoundException e) {
+        return false;
+      }
     }
+    return true;
+  }
 
-    @Override
-    public boolean storeData(final java.io.File data, final String... id) {
-        final Path path = createPath(this.filePath, id);
-        try {
-            moveFile(data, path);
-        } catch (final IOException e) {
-            LOGGER.log(Level.INFO, "Unable to move file to upload directory.", e);
-            return false;
-        }
-        return true;
+  @Override
+  public boolean storeData(final java.io.File data, final String... id) {
+    final Path path = createPath(this.filePath, id);
+    try {
+      moveFile(data, path);
+    } catch (final IOException e) {
+      LOGGER.log(Level.INFO, "Unable to move file to upload directory.", e);
+      return false;
     }
+    return true;
+  }
 
-    @Override
-    public java.io.File retrieveData(final String... id) {
-        final Path path = createPath(this.filePath, id);
-        return path.toFile();
-    }
+  @Override
+  public java.io.File retrieveData(final String... id) {
+    final Path path = createPath(this.filePath, id);
+    return path.toFile();
+  }
 
-    private Path createPath(final Path path, final String... id) {
-        Path fullPath = path;
-        for (final String subPath : id) {
-            fullPath = fullPath.resolve(subPath);
-        }
-        return fullPath;
+  private Path createPath(final Path path, final String... id) {
+    Path fullPath = path;
+    for (final String subPath : id) {
+      fullPath = fullPath.resolve(subPath);
     }
+    return fullPath;
+  }
 
-    private void moveFile(final java.io.File file, final Path path) throws IOException {
-        final Path parent = path.getParent();
-        if (!Files.exists(parent)) {
-            Files.createDirectories(parent);
-        }
-        Files.move(file.toPath(), path, StandardCopyOption.REPLACE_EXISTING);
+  private void moveFile(final java.io.File file, final Path path) throws IOException {
+    final Path parent = path.getParent();
+    if (!Files.exists(parent)) {
+      Files.createDirectories(parent);
     }
+    Files.move(file.toPath(), path, StandardCopyOption.REPLACE_EXISTING);
+  }
 }
