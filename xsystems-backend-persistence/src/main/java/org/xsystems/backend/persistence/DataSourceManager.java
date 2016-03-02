@@ -16,7 +16,16 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 package org.xsystems.backend.persistence;
+
+import org.flywaydb.core.Flyway;
+import org.xsystems.backend.configuration.Configuration;
+import org.xsystems.backend.configuration.key.PersistenceMigrationOutOfOrderKey;
+import org.xsystems.backend.configuration.key.PersistenceMigrationPrefixKey;
+import org.xsystems.backend.configuration.key.PersistenceMigrationSeparatorKey;
+import org.xsystems.backend.configuration.key.PersistenceSchemaPathKey;
+import org.xsystems.backend.configuration.key.PersistenceUnitNameKey;
 
 import java.io.File;
 import java.sql.Connection;
@@ -30,86 +39,90 @@ import javax.inject.Inject;
 import javax.persistence.Persistence;
 import javax.sql.DataSource;
 
-import org.flywaydb.core.Flyway;
-import org.xsystems.backend.configuration.Configuration;
-import org.xsystems.backend.configuration.key.PersistenceMigrationOutOfOrderKey;
-import org.xsystems.backend.configuration.key.PersistenceMigrationPrefixKey;
-import org.xsystems.backend.configuration.key.PersistenceMigrationSeparatorKey;
-import org.xsystems.backend.configuration.key.PersistenceSchemaPathKey;
-import org.xsystems.backend.configuration.key.PersistenceUnitNameKey;
 
 @ApplicationScoped
 public class DataSourceManager {
 
-    @Inject
-    @Configuration(key = PersistenceMigrationOutOfOrderKey.class)
-    boolean migrationOutOfOrder;
+  @Inject
+  @Configuration(key = PersistenceMigrationOutOfOrderKey.class)
+  boolean migrationOutOfOrder;
 
-    @Inject
-    @Configuration(key = PersistenceMigrationPrefixKey.class)
-    String migrationPrefix;
+  @Inject
+  @Configuration(key = PersistenceMigrationPrefixKey.class)
+  String migrationPrefix;
 
-    @Inject
-    @Configuration(key = PersistenceMigrationSeparatorKey.class)
-    String migrationSeparator;
+  @Inject
+  @Configuration(key = PersistenceMigrationSeparatorKey.class)
+  String migrationSeparator;
 
-    @Inject
-    @Configuration(key = PersistenceUnitNameKey.class)
-    String persistenceUnitName;
+  @Inject
+  @Configuration(key = PersistenceUnitNameKey.class)
+  String persistenceUnitName;
 
-    @Inject
-    @Configuration(key = PersistenceSchemaPathKey.class)
-    String schemaPath;
+  @Inject
+  @Configuration(key = PersistenceSchemaPathKey.class)
+  String schemaPath;
 
-    public void generateSchema(final DataSource dataSource) throws SQLException {
-        String productName;
-        int majorVersion;
-        int minorVersion;
+  /**
+   * Generate the  schema for this project based on JPA annotations.
+   *
+   * @param dataSource to determine the kind of database the schema is to be generated for.
+   * @throws SQLException indicates failure to create the database schema.
+   */
+  public void generateSchema(final DataSource dataSource) throws SQLException {
+    String productName;
+    int majorVersion;
+    int minorVersion;
 
-        try (final Connection connection = dataSource.getConnection()) {
-            final DatabaseMetaData databaseMetaData = connection.getMetaData();
-            productName = databaseMetaData.getDatabaseProductName();
-            majorVersion = databaseMetaData.getDatabaseMajorVersion();
-            minorVersion = databaseMetaData.getDatabaseMinorVersion();
-        }
-
-        final Map<String, String> properties = new ConcurrentHashMap<>();
-        properties.put("javax.persistence.schema-generation.scripts.action",
-                "drop-and-create");
-        properties.put(
-                "javax.persistence.schema-generation.scripts.create-target",
-                buildFilePath("schema-create.sql"));
-        properties.put(
-                "javax.persistence.schema-generation.scripts.drop-target",
-                buildFilePath("schema-drop.sql"));
-        properties.put("javax.persistence.database-product-name", productName);
-        properties.put("javax.persistence.database-major-version",
-                String.valueOf(majorVersion));
-        properties.put("javax.persistence.database-minor-version",
-                String.valueOf(minorVersion));
-
-        Persistence.generateSchema(persistenceUnitName, properties);
+    try (final Connection connection = dataSource.getConnection()) {
+      final DatabaseMetaData databaseMetaData = connection.getMetaData();
+      productName = databaseMetaData.getDatabaseProductName();
+      majorVersion = databaseMetaData.getDatabaseMajorVersion();
+      minorVersion = databaseMetaData.getDatabaseMinorVersion();
     }
 
-    String buildFilePath(final String fileName) {
-        final String homePath = System.getProperty("user.home");
-        String filePath = schemaPath.replaceFirst("^~", homePath);
+    final Map<String, String> properties = new ConcurrentHashMap<>();
+    properties.put("javax.persistence.schema-generation.scripts.action",
+            "drop-and-create");
+    properties.put(
+            "javax.persistence.schema-generation.scripts.create-target",
+            buildFilePath("schema-create.sql"));
+    properties.put(
+            "javax.persistence.schema-generation.scripts.drop-target",
+            buildFilePath("schema-drop.sql"));
+    properties.put("javax.persistence.database-product-name", productName);
+    properties.put("javax.persistence.database-major-version",
+            String.valueOf(majorVersion));
+    properties.put("javax.persistence.database-minor-version",
+            String.valueOf(minorVersion));
 
-        if (!filePath.endsWith(File.separator)) {
-            filePath += File.separator;
-        }
+    Persistence.generateSchema(persistenceUnitName, properties);
+  }
 
-        filePath += fileName;
+  String buildFilePath(final String fileName) {
+    final String homePath = System.getProperty("user.home");
+    String filePath = schemaPath.replaceFirst("^~", homePath);
 
-        return filePath;
+    if (!filePath.endsWith(File.separator)) {
+      filePath += File.separator;
     }
 
-    public void migrate(final DataSource dataSource) {
-        final Flyway flyway = new Flyway();
-        flyway.setOutOfOrder(migrationOutOfOrder);
-        flyway.setSqlMigrationPrefix(migrationPrefix);
-        flyway.setSqlMigrationSeparator(migrationSeparator);
-        flyway.setDataSource(dataSource);
-        flyway.migrate();
-    }
+    filePath += fileName;
+
+    return filePath;
+  }
+
+  /**
+   * Migrate the database schema to a newer version.
+   *
+   * @param dataSource to access the database for which the schema is to be updated.
+   */
+  public void migrate(final DataSource dataSource) {
+    final Flyway flyway = new Flyway();
+    flyway.setOutOfOrder(migrationOutOfOrder);
+    flyway.setSqlMigrationPrefix(migrationPrefix);
+    flyway.setSqlMigrationSeparator(migrationSeparator);
+    flyway.setDataSource(dataSource);
+    flyway.migrate();
+  }
 }

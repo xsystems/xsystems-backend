@@ -16,14 +16,15 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 package org.xsystems.backend.configuration.key;
 
 public class PersistencePasswordKey implements ConfigurationKey {
 
-    static final String KEY = "persistence.password";
+  static final String KEY = "persistence.password";
 
-    @Override
-    public String getKey() {
-        return KEY;
-    }
+  @Override
+  public String getKey() {
+    return KEY;
+  }
 }

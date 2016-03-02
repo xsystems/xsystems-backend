@@ -16,7 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 package org.xsystems.backend.persistence;
+
+import org.xsystems.backend.naming.InMemoryInitialContextFactory;
 
 import java.util.Properties;
 
@@ -27,34 +30,35 @@ import javax.persistence.EntityManager;
 import javax.persistence.Persistence;
 import javax.sql.DataSource;
 
-import org.xsystems.backend.naming.InMemoryInitialContextFactory;
 
 public class PersistenceUtil {
 
-    public static synchronized EntityManager createEntityManager(
-            final DataSource dataSource, final String jndiDataSourceName,
-            final String persistenceUnitName) throws NamingException {
+  /**
+   * Create an {@link EntityManager} based on a {@link DataSource} and persistence-unit name.
+   */
+  public static synchronized EntityManager createEntityManager(
+          final DataSource dataSource, final String jndiDataSourceName,
+          final String persistenceUnitName) throws NamingException {
 
-        final EntityManager entityManager;
-        try {
-            System.setProperty(Context.INITIAL_CONTEXT_FACTORY,
-                    InMemoryInitialContextFactory.class.getName());
+    final EntityManager entityManager;
+    try {
+      System.setProperty(Context.INITIAL_CONTEXT_FACTORY,
+          InMemoryInitialContextFactory.class.getName());
 
-            final Context context = new InitialContext();
-            context.bind(jndiDataSourceName, dataSource);
+      final Context context = new InitialContext();
+      context.bind(jndiDataSourceName, dataSource);
 
-            final Properties properties = new Properties();
-            properties.put("javax.persistence.nonJtaDataSource",
-                    jndiDataSourceName);
+      final Properties properties = new Properties();
+      properties.put("javax.persistence.nonJtaDataSource", jndiDataSourceName);
 
-            entityManager = Persistence.createEntityManagerFactory(
-                    persistenceUnitName, properties).createEntityManager();
+      entityManager = Persistence.createEntityManagerFactory(
+              persistenceUnitName, properties).createEntityManager();
 
-            context.unbind(jndiDataSourceName);
-        } finally {
-            System.clearProperty(Context.INITIAL_CONTEXT_FACTORY);
-        }
-
-        return entityManager;
+      context.unbind(jndiDataSourceName);
+    } finally {
+      System.clearProperty(Context.INITIAL_CONTEXT_FACTORY);
     }
+
+    return entityManager;
+  }
 }

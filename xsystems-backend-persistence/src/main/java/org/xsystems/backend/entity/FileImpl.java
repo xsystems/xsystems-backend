@@ -16,9 +16,12 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 package org.xsystems.backend.entity;
 
 import static javax.persistence.GenerationType.SEQUENCE;
+
+import org.xsystems.backend.converter.UriConverter;
 
 import java.io.Serializable;
 import java.net.URI;
@@ -43,90 +46,90 @@ import javax.persistence.MapKeyColumn;
 import javax.persistence.MapKeyEnumerated;
 import javax.persistence.SequenceGenerator;
 
-import org.xsystems.backend.converter.UriConverter;
 
 @Entity(name = "File")
 @DiscriminatorColumn(name = "TYPE")
 @Inheritance(strategy = InheritanceType.JOINED)
-public abstract class FileImpl extends BaseEntity<Long> implements File, Serializable {
+abstract class FileImpl extends BaseEntity<Long> implements File, Serializable {
 
-    private static final long serialVersionUID = -5889211240420435044L;
+  private static final long serialVersionUID = -5889211240420435044L;
 
-    @Id
-    @GeneratedValue(strategy = SEQUENCE, generator = "FILE_ID_SEQ")
-    @SequenceGenerator(name = "FILE_ID_SEQ", sequenceName = "FILE_ID_SEQ")
-    private Long id;
-    private String name;
-    private String description;
+  @Id
+  @GeneratedValue(strategy = SEQUENCE, generator = "FILE_ID_SEQ")
+  @SequenceGenerator(name = "FILE_ID_SEQ", sequenceName = "FILE_ID_SEQ")
+  private Long id;
+  private String name;
+  private String description;
 
-    @ManyToOne(targetEntity = UserImpl.class)
-    private User user;
+  @ManyToOne(targetEntity = UserImpl.class)
+  private User user;
 
-    @ElementCollection
-    @Column(name = "URI")
-    @MapKeyEnumerated(EnumType.STRING)
-    @MapKeyColumn(name = "REPRESENTATION")
-    @Convert(converter = UriConverter.class)
-    @CollectionTable(name = "REPRESENTATION", joinColumns = @JoinColumn(name = "FILE_ID") )
-    private final Map<Representation, URI> representations;
+  @ElementCollection
+  @Column(name = "URI")
+  @MapKeyEnumerated(EnumType.STRING)
+  @MapKeyColumn(name = "REPRESENTATION")
+  @Convert(converter = UriConverter.class)
+  @CollectionTable(name = "REPRESENTATION", joinColumns = @JoinColumn(name = "FILE_ID") )
+  private final Map<Representation, URI> representations;
 
-    public FileImpl() {
-        this.representations = new ConcurrentHashMap<>();
+  public FileImpl() {
+    this.representations = new ConcurrentHashMap<>();
+  }
+
+  @Override
+  public Long getId() {
+    return this.id;
+  }
+
+  public void setId(final Long id) {
+    this.id = id;
+  }
+
+  @Override
+  public String getName() {
+    return this.name;
+  }
+
+  public void setName(final String name) {
+    this.name = name;
+  }
+
+  @Override
+  public String getDescription() {
+    return this.description;
+  }
+
+  public void setDescription(final String description) {
+    this.description = description;
+  }
+
+  @Override
+  public User getUser() {
+    return this.user;
+  }
+
+  public void setUser(final User user) {
+    this.user = user;
+  }
+
+  @Override
+  public Set<Representation> getRepresentations() {
+    return this.representations.keySet();
+  }
+
+  @Override
+  public URI getUri(final Representation representation) {
+    return this.representations.get(representation);
+  }
+
+  @Override
+  public void setUri(final Representation representation, final URI uri) {
+    if (representation.isApplicableFor(getType())) {
+      this.representations.put(representation, uri);
+    } else {
+      throw new UnsupportedOperationException("The representation '"
+          + representation.getDisplayName() + "' is not applicable for a file type of '"
+          + getType() + "'.");
     }
-
-    @Override
-    public Long getId() {
-        return this.id;
-    }
-
-    public void setId(final Long id) {
-        this.id = id;
-    }
-
-    @Override
-    public String getName() {
-        return this.name;
-    }
-
-    public void setName(final String name) {
-        this.name = name;
-    }
-
-    @Override
-    public String getDescription() {
-        return this.description;
-    }
-
-    public void setDescription(final String description) {
-        this.description = description;
-    }
-
-    @Override
-    public User getUser() {
-        return this.user;
-    }
-
-    public void setUser(final User user) {
-        this.user = user;
-    }
-
-    @Override
-    public Set<Representation> getRepresentations() {
-        return this.representations.keySet();
-    }
-
-    @Override
-    public URI getUri(final Representation representation) {
-        return this.representations.get(representation);
-    }
-
-    @Override
-    public void setUri(final Representation representation, final URI uri) {
-        if (representation.isApplicableFor(getType())) {
-            this.representations.put(representation, uri);
-        } else {
-            throw new UnsupportedOperationException("The representation '" + representation.getDisplayName()
-                    + "' is not applicable for a file type of '" + getType() + "'.");
-        }
-    }
+  }
 }

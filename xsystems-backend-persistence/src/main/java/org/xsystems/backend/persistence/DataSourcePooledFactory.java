@@ -16,7 +16,17 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 package org.xsystems.backend.persistence;
+
+import com.mchange.v2.c3p0.ComboPooledDataSource;
+import com.mchange.v2.c3p0.DataSources;
+
+import org.xsystems.backend.configuration.Configuration;
+import org.xsystems.backend.configuration.key.PersistenceDriverKey;
+import org.xsystems.backend.configuration.key.PersistencePasswordKey;
+import org.xsystems.backend.configuration.key.PersistenceUrlKey;
+import org.xsystems.backend.configuration.key.PersistenceUserKey;
 
 import java.beans.PropertyVetoException;
 import java.sql.SQLException;
@@ -29,59 +39,50 @@ import javax.enterprise.inject.Produces;
 import javax.inject.Inject;
 import javax.sql.DataSource;
 
-import org.xsystems.backend.configuration.Configuration;
-import org.xsystems.backend.configuration.key.PersistenceDriverKey;
-import org.xsystems.backend.configuration.key.PersistencePasswordKey;
-import org.xsystems.backend.configuration.key.PersistenceUrlKey;
-import org.xsystems.backend.configuration.key.PersistenceUserKey;
 
-import com.mchange.v2.c3p0.ComboPooledDataSource;
-import com.mchange.v2.c3p0.DataSources;
+class DataSourcePooledFactory {
 
-public class DataSourcePooledFactory {
+  private static final Logger LOGGER = Logger.getLogger(DataSourcePooledFactory.class.getName());
 
-    private static final Logger LOGGER = Logger
-            .getLogger(DataSourcePooledFactory.class.getName());
+  @Inject
+  @Configuration(key = PersistenceDriverKey.class)
+  String driver;
 
-    @Inject
-    @Configuration(key = PersistenceDriverKey.class)
-    String driver;
+  @Inject
+  @Configuration(key = PersistenceUrlKey.class)
+  String url;
 
-    @Inject
-    @Configuration(key = PersistenceUrlKey.class)
-    String url;
+  @Inject
+  @Configuration(key = PersistenceUserKey.class)
+  String user;
 
-    @Inject
-    @Configuration(key = PersistenceUserKey.class)
-    String user;
+  @Inject
+  @Configuration(key = PersistencePasswordKey.class)
+  String password;
 
-    @Inject
-    @Configuration(key = PersistencePasswordKey.class)
-    String password;
-
-    @Produces
-    @ApplicationScoped
-    public DataSource produce() {
-        ComboPooledDataSource comboPooledDataSource = null;
-        try {
-            comboPooledDataSource = new ComboPooledDataSource();
-            comboPooledDataSource.setDriverClass(driver);
-            comboPooledDataSource.setJdbcUrl(url);
-            comboPooledDataSource.setUser(user);
-            comboPooledDataSource.setPassword(password);
-        } catch (final PropertyVetoException e) {
-            LOGGER.log(Level.SEVERE, "Unable to create DataSource.", e);
-            throw new IllegalStateException(e);
-        }
-
-        return comboPooledDataSource;
+  @Produces
+  @ApplicationScoped
+  public DataSource produce() {
+    ComboPooledDataSource comboPooledDataSource = null;
+    try {
+      comboPooledDataSource = new ComboPooledDataSource();
+      comboPooledDataSource.setDriverClass(driver);
+      comboPooledDataSource.setJdbcUrl(url);
+      comboPooledDataSource.setUser(user);
+      comboPooledDataSource.setPassword(password);
+    } catch (final PropertyVetoException e) {
+      LOGGER.log(Level.SEVERE, "Unable to create DataSource.", e);
+      throw new IllegalStateException(e);
     }
 
-    public void dispose(@Disposes final DataSource instance) {
-        try {
-            DataSources.destroy(instance);
-        } catch (final SQLException e) {
-            LOGGER.log(Level.WARNING, "Unable to destroy DataSource.", e);
-        }
+    return comboPooledDataSource;
+  }
+
+  public void dispose(@Disposes final DataSource instance) {
+    try {
+      DataSources.destroy(instance);
+    } catch (final SQLException e) {
+      LOGGER.log(Level.WARNING, "Unable to destroy DataSource.", e);
     }
+  }
 }

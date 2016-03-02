@@ -16,6 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 package org.xsystems.backend.converter;
 
 import java.net.URI;
@@ -27,13 +28,13 @@ import javax.persistence.Converter;
 @Converter(autoApply = true)
 public class UriConverter implements AttributeConverter<URI, String> {
 
-    @Override
-    public String convertToDatabaseColumn(final URI attribute) {
-        return attribute == null ? null : attribute.toASCIIString();
-    }
+  @Override
+  public String convertToDatabaseColumn(final URI attribute) {
+    return attribute == null ? null : attribute.toASCIIString();
+  }
 
-    @Override
-    public URI convertToEntityAttribute(final String dbData) {
-        return dbData == null ? null : URI.create(dbData);
-    }
+  @Override
+  public URI convertToEntityAttribute(final String dbData) {
+    return dbData == null ? null : URI.create(dbData);
+  }
 }

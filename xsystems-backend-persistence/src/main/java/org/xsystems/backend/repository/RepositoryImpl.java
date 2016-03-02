@@ -16,7 +16,10 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 package org.xsystems.backend.repository;
+
+import org.xsystems.backend.specification.Specification;
 
 import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
@@ -24,47 +27,47 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceException;
 import javax.persistence.TypedQuery;
 
-import org.xsystems.backend.specification.Specification;
 
 @Dependent
 class RepositoryImpl<T> implements Repository<T> {
 
-    @Inject
-    EntityManager entityManager;
+  @Inject
+  EntityManager entityManager;
 
-    @Override
-    public T add(final T t) {
-        this.entityManager.getTransaction().begin();
-        this.entityManager.persist(t);
-        this.entityManager.getTransaction().commit();
-        return t;
-    }
+  @Override
+  public T add(final T type) {
+    this.entityManager.getTransaction().begin();
+    this.entityManager.persist(type);
+    this.entityManager.getTransaction().commit();
+    return type;
+  }
 
-    @Override
-    public T remove(final T t) {
-        this.entityManager.getTransaction().begin();
-        this.entityManager.remove(t);
-        this.entityManager.getTransaction().commit();
-        return t;
-    }
+  @Override
+  public T remove(final T type) {
+    this.entityManager.getTransaction().begin();
+    this.entityManager.remove(type);
+    this.entityManager.getTransaction().commit();
+    return type;
+  }
 
-    @Override
-    public T update(final T t) {
-        this.entityManager.getTransaction().begin();
-        this.entityManager.merge(t);
-        this.entityManager.getTransaction().commit();
-        return t;
-    }
+  @Override
+  public T update(final T type) {
+    this.entityManager.getTransaction().begin();
+    this.entityManager.merge(type);
+    this.entityManager.getTransaction().commit();
+    return type;
+  }
 
-    @Override
-    public T find(final Specification<T> specification, final Class<T> clazz) throws NotFoundException {
-        try {
-            final String query = specification.toQuery();
-            final TypedQuery<T> typedQuery = this.entityManager.createQuery(query, clazz);
-            final T t = typedQuery.getSingleResult();
-            return t;
-        } catch (final PersistenceException e) {
-            throw new NotFoundException(clazz);
-        }
+  @Override
+  public T find(final Specification<T> specification, final Class<T> clazz) throws
+      NotFoundException {
+    try {
+      final String query = specification.toQuery();
+      final TypedQuery<T> typedQuery = this.entityManager.createQuery(query, clazz);
+      final T t = typedQuery.getSingleResult();
+      return t;
+    } catch (final PersistenceException e) {
+      throw new NotFoundException(clazz);
     }
+  }
 }

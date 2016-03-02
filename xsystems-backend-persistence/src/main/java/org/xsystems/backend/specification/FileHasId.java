@@ -16,27 +16,29 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  *
  */
+
 package org.xsystems.backend.specification;
 
 import org.xsystems.backend.entity.File;
 
 public class FileHasId<T extends File> implements Specification<T> {
 
-    Class<? extends File> clazz;
-    Long id;
+  Class<? extends File> clazz;
+  Long id;
 
-    public FileHasId(final Class<? extends File> clazz, final Long id) {
-        this.clazz = clazz;
-        this.id = id;
-    }
+  public FileHasId(final Class<? extends File> clazz, final Long id) {
+    this.clazz = clazz;
+    this.id = id;
+  }
 
-    @Override
-    public boolean isSatisfiedBy(final T t) {
-        return this.id.equals(t.getId());
-    }
+  @Override
+  public boolean isSatisfiedBy(final T type) {
+    return this.id.equals(type.getId());
+  }
 
-    @Override
-    public String toQuery() {
-        return "select entity from " + this.clazz.getSimpleName() + " entity where entity.id=\"" + this.id + "\"";
-    }
+  @Override
+  public String toQuery() {
+    return "select entity from " + this.clazz.getSimpleName() + " entity where entity.id=\""
+        + this.id + "\"";
+  }
 }
