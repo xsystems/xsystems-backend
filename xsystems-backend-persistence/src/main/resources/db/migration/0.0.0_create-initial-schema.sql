@@ -1,6 +1,6 @@
 --
 -- The persistence module of the backend of the xSystems web-application.
--- Copyright (C) 2015  xSystems
+-- Copyright (C) 2015-2016  xSystems
 --
 -- This program is free software: you can redistribute it and/or modify
 -- it under the terms of the GNU General Public License as published by
@@ -14,7 +14,6 @@
 --
 -- You should have received a copy of the GNU General Public License
 -- along with this program.  If not, see <http://www.gnu.org/licenses/>.
---
 --
 
 CREATE TABLE FILE (ID BIGINT NOT NULL, TYPE VARCHAR(31), DESCRIPTION VARCHAR(255), NAME VARCHAR(255), URI BYTEA, USER_ID BIGINT, DTYPE VARCHAR(31), PRIMARY KEY (ID));

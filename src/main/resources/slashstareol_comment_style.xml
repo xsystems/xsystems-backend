@@ -1,7 +1,7 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="ISO-8859-1"?>
 <!--
 
-    The persistence module of the backend of the xSystems web-application.
+    The backend of the xSystems web-application.
     Copyright (C) 2015-2016  xSystems
 
     This program is free software: you can redistribute it and/or modify
@@ -18,4 +18,14 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 -->
-<beans/>
+<additionalHeaders>
+  <slashstareol_style>
+    <firstLine>/*</firstLine>
+    <beforeEachLine> * </beforeEachLine>
+    <endLine> */EOL</endLine>
+    <firstLineDetectionPattern>^/\*$</firstLineDetectionPattern>
+    <lastLineDetectionPattern>^ \*/$</lastLineDetectionPattern>
+    <allowBlankLines>true</allowBlankLines>
+    <isMultiline>true</isMultiline>
+  </slashstareol_style>
+</additionalHeaders>

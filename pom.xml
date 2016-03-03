@@ -16,7 +16,6 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -223,6 +222,7 @@
 								<configLocation>google_checks.xml</configLocation>
 								<consoleOutput>true</consoleOutput>
 								<failsOnError>true</failsOnError>
+                <failOnViolation>true</failOnViolation>
 							</configuration>
 							<phase>validate</phase>
 							<goals>
@@ -237,11 +237,14 @@
 					<version>${license-maven-plugin.version}</version>
 					<configuration>
 						<header>src/main/resources/gpl-3.0-header-template.txt</header>
+            <headerDefinitions>
+              <headerDefinition>src/main/resources/slashstareol_comment_style.xml</headerDefinition>
+            </headerDefinitions>
 						<properties>
 							<organization>xSystems</organization>
 						</properties>
 						<mapping>
-							<java>SLASHSTAR_STYLE</java>
+							<java>SLASHSTAREOL_STYLE</java>
 						</mapping>
 					</configuration>
 					<dependencies>
