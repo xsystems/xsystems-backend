@@ -90,10 +90,15 @@ class FileServiceImpl<T extends File> implements FileService<T> {
   }
 
   private void moveFile(final java.io.File file, final Path path) throws IOException {
-    final Path parent = path.getParent();
-    if (!Files.exists(parent)) {
+    if (file == null || path == null) {
+      throw new NullPointerException("The parameter file, path or both were found to be null.");
+    }
+
+    Path parent = path.getParent();
+    if (parent != null && !Files.exists(parent)) {
       Files.createDirectories(parent);
     }
+    
     Files.move(file.toPath(), path, StandardCopyOption.REPLACE_EXISTING);
   }
 }

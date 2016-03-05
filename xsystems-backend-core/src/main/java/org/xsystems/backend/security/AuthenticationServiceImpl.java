@@ -27,6 +27,8 @@ import org.xsystems.backend.repository.NotFoundException;
 import org.xsystems.backend.repository.Repository;
 import org.xsystems.backend.specification.HasEmail;
 
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.security.spec.InvalidKeySpecException;
@@ -106,7 +108,7 @@ public class AuthenticationServiceImpl implements AuthenticationService {
               + "' header its value contains an invalid base64 encoded string.");
     }
 
-    final String decodedString = new String(decodedByteArray);
+    final String decodedString = new String(decodedByteArray, StandardCharsets.UTF_8);
     final String[] values = decodedString.split(":");
 
     if (values.length != 2) {

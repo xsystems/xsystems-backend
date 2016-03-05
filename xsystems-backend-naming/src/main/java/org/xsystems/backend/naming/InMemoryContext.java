@@ -34,8 +34,6 @@ public class InMemoryContext implements Context {
 
   static final String MESSAGE_NOT_IMPLEMENTED = "This method has not been implemented, yet.";
 
-  Hashtable<?, ?> environment;
-
   Map<String, Object> bindings = new ConcurrentHashMap<>();
 
   /**
@@ -199,7 +197,7 @@ public class InMemoryContext implements Context {
 
   @Override
   public Hashtable<?, ?> getEnvironment() throws NamingException {
-    return environment;
+    return new Hashtable<>();
   }
 
   @Override

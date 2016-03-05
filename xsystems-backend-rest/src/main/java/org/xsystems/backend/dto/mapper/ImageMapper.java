@@ -50,11 +50,14 @@ class ImageMapper implements EntityMapper<Image, ImageDto> {
     image.setDescription(imageDto.getDescription());
     image.setUser(this.userMapper.toEntity(imageDto.getUserDto()));
 
-    final Map<Representation, URI> representationMap = imageDto.getRepresentations();
-    final Set<Representation> representations = representationMap == null ? Collections.emptySet()
-            : representationMap.keySet();
-    for (final Representation representation : representations) {
-      image.setUri(representation, representationMap.get(representation));
+    final Map<Representation, URI> representationUriMap = imageDto.getRepresentations();
+
+    if (representationUriMap == null) {
+      return image;
+    }
+
+    for (Map.Entry<Representation, URI> entry: representationUriMap.entrySet()) {
+      image.setUri(entry.getKey(), entry.getValue());
     }
 
     return image;
