@@ -60,24 +60,24 @@
 	</developers>
 
     <modules>
-        <module>xsystems-backend-api</module>
-        <module>xsystems-backend-configuration</module>
-        <module>xsystems-backend-core</module>
-        <module>xsystems-backend-application</module>
-        <module>xsystems-backend-naming</module>
-        <module>xsystems-backend-persistence</module>
-        <module>xsystems-backend-rest</module>
+      <module>xsystems-backend-api</module>
+      <module>xsystems-backend-configuration</module>
+      <module>xsystems-backend-core</module>
+      <module>xsystems-backend-application</module>
+      <module>xsystems-backend-naming</module>
+      <module>xsystems-backend-persistence</module>
+      <module>xsystems-backend-rest</module>
     </modules>
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 
-        <license-maven-plugin.version>2.11</license-maven-plugin.version>
+    <license-maven-plugin.version>2.11</license-maven-plugin.version>
 
 		<org.xsystems.backend.version>0.0.1-SNAPSHOT</org.xsystems.backend.version>
 		
-        <org.glassfish.grizzly.version>2.3.24</org.glassfish.grizzly.version>
-        <org.glassfish.jersey.version>2.22.2</org.glassfish.jersey.version>
+    <org.glassfish.grizzly.version>2.3.24</org.glassfish.grizzly.version>
+    <org.glassfish.jersey.version>2.22.2</org.glassfish.jersey.version>
 		<org.jboss.weld.version>2.3.3.Final</org.jboss.weld.version>
 		<org.apache.tomcat.embed.version>9.0.0.M3</org.apache.tomcat.embed.version>
 	</properties>
@@ -180,103 +180,108 @@
 	</dependencyManagement>
 
     <build>
-        <plugins>
-            <plugin>
-							<groupId>com.mycila</groupId>
-							<artifactId>license-maven-plugin</artifactId>
-            </plugin>
-						<plugin>
-							<groupId>org.apache.maven.plugins</groupId>
-							<artifactId>maven-checkstyle-plugin</artifactId>
-						</plugin>
-            <plugin>
-              <groupId>org.codehaus.mojo</groupId>
-              <artifactId>findbugs-maven-plugin</artifactId>
-            </plugin>
-        </plugins>    
-		<pluginManagement>
-			<plugins>
-				<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-compiler-plugin</artifactId>
-						<version>3.3</version>
-						<configuration>
-								<source>1.8</source>
-								<target>1.8</target>
-						</configuration>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-jar-plugin</artifactId>
-          <version>2.6</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-assembly-plugin</artifactId>
-					<version>2.6</version>
-				</plugin>
-				<plugin>
-					<groupId>org.apache.maven.plugins</groupId>
-					<artifactId>maven-checkstyle-plugin</artifactId>
-					<version>2.17</version>
-					<executions>
-						<execution>
-							<configuration>
-								<configLocation>google_checks.xml</configLocation>
-								<consoleOutput>true</consoleOutput>
-								<failsOnError>true</failsOnError>
-                <failOnViolation>true</failOnViolation>
-							</configuration>
-							<goals>
-								<goal>check</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
+      <plugins>
+        <plugin>
+          <groupId>com.mycila</groupId>
+          <artifactId>license-maven-plugin</artifactId>
+        </plugin>
+        <plugin>
+          <groupId>org.apache.maven.plugins</groupId>
+          <artifactId>maven-checkstyle-plugin</artifactId>
+        </plugin>
         <plugin>
           <groupId>org.codehaus.mojo</groupId>
           <artifactId>findbugs-maven-plugin</artifactId>
-          <version>3.0.3</version>
-          <executions>
-            <execution>
-              <goals>
-                <goal>check</goal>
-              </goals>
-            </execution>
-          </executions>
         </plugin>
-				<plugin>
-					<groupId>com.mycila</groupId>
-					<artifactId>license-maven-plugin</artifactId>
-					<version>${license-maven-plugin.version}</version>
-					<configuration>
-						<header>src/main/resources/gpl-3.0-header-template.txt</header>
-            <headerDefinitions>
-              <headerDefinition>src/main/resources/slashstareol_comment_style.xml</headerDefinition>
-            </headerDefinitions>
-						<properties>
-							<organization>xSystems</organization>
-						</properties>
-						<mapping>
-							<java>SLASHSTAREOL_STYLE</java>
-						</mapping>
-					</configuration>
-					<dependencies>
-						<dependency>
-							<groupId>com.mycila</groupId>
-							<artifactId>license-maven-plugin-git</artifactId>
-							<version>${license-maven-plugin.version}</version>
-						</dependency>
-					</dependencies>
-					<executions>
-						<execution>
-							<goals>
-								<goal>check</goal>
-							</goals>
-						</execution>
-					</executions>
-				</plugin>
-			</plugins>
-		</pluginManagement>
+      </plugins>
+      <pluginManagement>
+        <plugins>
+          <plugin>
+              <groupId>org.apache.maven.plugins</groupId>
+              <artifactId>maven-compiler-plugin</artifactId>
+              <version>3.3</version>
+              <configuration>
+                  <source>1.8</source>
+                  <target>1.8</target>
+              </configuration>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+            <version>2.6</version>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-assembly-plugin</artifactId>
+            <version>2.6</version>
+          </plugin>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-checkstyle-plugin</artifactId>
+            <version>2.17</version>
+            <executions>
+              <execution>
+                <configuration>
+                  <configLocation>google_checks.xml</configLocation>
+                  <consoleOutput>true</consoleOutput>
+                  <failsOnError>true</failsOnError>
+                  <failOnViolation>true</failOnViolation>
+                </configuration>
+                <goals>
+                  <goal>check</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>findbugs-maven-plugin</artifactId>
+            <version>3.0.3</version>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>check</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>com.mycila</groupId>
+            <artifactId>license-maven-plugin</artifactId>
+            <version>${license-maven-plugin.version}</version>
+            <configuration>
+              <header>src/main/resources/gpl-3.0-header-template.txt</header>
+              <headerDefinitions>
+                <headerDefinition>src/main/resources/slashstareol_comment_style.xml</headerDefinition>
+              </headerDefinitions>
+              <properties>
+                <organization>xSystems</organization>
+              </properties>
+              <mapping>
+                <java>SLASHSTAREOL_STYLE</java>
+              </mapping>
+            </configuration>
+            <dependencies>
+              <dependency>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin-git</artifactId>
+                <version>${license-maven-plugin.version}</version>
+              </dependency>
+            </dependencies>
+            <executions>
+              <execution>
+                <goals>
+                  <goal>check</goal>
+                </goals>
+              </execution>
+            </executions>
+          </plugin>
+          <plugin>
+            <groupId>com.spotify</groupId>
+            <artifactId>docker-maven-plugin</artifactId>
+            <version>0.4.2</version>
+          </plugin>
+        </plugins>
+      </pluginManagement>
     </build>
 </project>
