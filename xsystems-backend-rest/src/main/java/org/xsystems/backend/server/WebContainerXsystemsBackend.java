@@ -88,6 +88,7 @@ class WebContainerXsystemsBackend implements WebContainer {
   public boolean start() {
     try {
       tomcat.start();
+      tomcat.getServer().await();
     } catch (LifecycleException e) {
       LOGGER.log(Level.SEVERE, "Unable to start web-container: " + name, e);
       return false;

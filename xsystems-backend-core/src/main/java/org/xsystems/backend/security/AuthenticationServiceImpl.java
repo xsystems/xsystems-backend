@@ -38,11 +38,12 @@ import java.util.Base64.Encoder;
 
 import javax.crypto.SecretKeyFactory;
 import javax.crypto.spec.PBEKeySpec;
+import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.core.HttpHeaders;
 
-@RequestScoped
+@ApplicationScoped
 public class AuthenticationServiceImpl implements AuthenticationService {
 
   private static final String BASIC = "Basic ";

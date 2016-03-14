@@ -50,9 +50,17 @@ public class DataResource {
   @Inject
   private Repository<File> fileRepository;
 
+  /**
+   * Allow file data to be uploaded and to be stored.
+   *
+   * @param id that identifies the file that the uploaded data belongs to.
+   * @param representation identifies what representation of the data is being uploaded.
+   * @param data the data that has been uploaded.
+   * @return if successful, an HTTP response with status code 200 (OK).
+   */
   @PUT
   @Consumes(MediaType.APPLICATION_OCTET_STREAM)
-  Response put(@PathParam("id") final Long id,
+  public Response put(@PathParam("id") final Long id,
                       @PathParam("representation") final Representation representation,
                       final java.io.File data) {
     File file;
@@ -75,9 +83,17 @@ public class DataResource {
     }
   }
 
+  /**
+   * Allow stored file data to be downloaded.
+   *
+   * @param id that identifies the file of which the data is to be downloaded.
+   * @param representation identifies what representation of the data is to be downloaded.
+   * @return if successful, an HTTP response with status code 200 (OK) with as body the data that is
+   *     to be downloaded.
+   */
   @GET
   @Produces(MediaType.APPLICATION_OCTET_STREAM)
-  Response get(@PathParam("id") final String id,
+  public Response get(@PathParam("id") final String id,
                       @PathParam("representation") final Representation representation) {
     final java.io.File data;
     try {

@@ -71,14 +71,21 @@
         <groupId>com.spotify</groupId>
         <artifactId>docker-maven-plugin</artifactId>
         <configuration>
+          <baseImage>java:openjdk-8u72-jre</baseImage>
           <imageName>xsystems-backend</imageName>
           <imageTags>
             <imageTag>${project.version}</imageTag>
             <imageTag>latest</imageTag>
           </imageTags>
-          <baseImage>java:openjdk-8u72-jre</baseImage>
           <workdir>/opt/xsystems</workdir>
           <entryPoint>["java", "-jar", "${project.build.finalName}.jar"]</entryPoint>
+          <cmd>["normal"]</cmd>
+          <env>
+            <XSYSTEMS_DATABASE_URL>jdbc:postgresql://xsystems-database/postgres</XSYSTEMS_DATABASE_URL>
+          </env>
+          <exposes>
+            <expose>8080</expose>
+          </exposes>
           <resources>
             <resource>
               <targetPath>/opt/xsystems</targetPath>

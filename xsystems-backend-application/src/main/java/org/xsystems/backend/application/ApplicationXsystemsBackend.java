@@ -126,8 +126,13 @@ public class ApplicationXsystemsBackend {
   static void startApplication() throws IOException {
     WebContainer webContainer = WELD_CONTAINER.instance().select(WebContainer.class).get();
     webContainer.start();
-    System.in.read();
-    webContainer.stop();
+
+    Runtime.getRuntime().addShutdownHook(new Thread() {
+      @Override
+      public void run() {
+        webContainer.stop();
+      }
+    });
   }
 
   static void populateDatabaseWithDummyData() throws NoSuchAlgorithmException,

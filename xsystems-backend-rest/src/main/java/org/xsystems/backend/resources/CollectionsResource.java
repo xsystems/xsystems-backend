@@ -40,7 +40,7 @@ import javax.ws.rs.core.Response;
 
 
 @Path(CollectionsResource.PATH)
-class CollectionsResource {
+public class CollectionsResource {
 
   public static final String PATH = "/collections";
 
@@ -56,10 +56,17 @@ class CollectionsResource {
   @Inject
   UriService uriService;
 
+  /**
+   * Create a collection of files having type image.
+   *
+   * @param imageCollectionDto a collection of files having type image.
+   * @return if successful, an HTTP response with status code 201 (Created) and location of the
+   *     created file collection resource.
+   */
   @POST
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  Response post(final CollectionDto<ImageDto> imageCollectionDto) {
+  public Response post(final CollectionDto<ImageDto> imageCollectionDto) {
     final Collection<Image> imageCollection = this.imageCollectionMapper
         .toEntity(imageCollectionDto);
 

@@ -26,6 +26,8 @@ import org.xsystems.backend.configuration.key.PersistenceDriverKey;
 import org.xsystems.backend.configuration.key.PersistencePasswordKey;
 import org.xsystems.backend.configuration.key.PersistenceUrlKey;
 import org.xsystems.backend.configuration.key.PersistenceUserKey;
+import org.xsystems.backend.environment.Environment;
+import org.xsystems.backend.environment.key.PersistenceUrlEnvironmentKey;
 
 import java.beans.PropertyVetoException;
 import java.sql.SQLException;
@@ -59,6 +61,11 @@ class DataSourcePooledFactory {
   @Configuration(key = PersistencePasswordKey.class)
   String password;
 
+  @Inject
+  @Environment(key = PersistenceUrlEnvironmentKey.class)
+  String environmentUrl;
+
+
   @Produces
   @ApplicationScoped
   public DataSource produce() {
@@ -66,7 +73,7 @@ class DataSourcePooledFactory {
     try {
       comboPooledDataSource = new ComboPooledDataSource();
       comboPooledDataSource.setDriverClass(driver);
-      comboPooledDataSource.setJdbcUrl(url);
+      comboPooledDataSource.setJdbcUrl(environmentUrl == null ? url : environmentUrl);
       comboPooledDataSource.setUser(user);
       comboPooledDataSource.setPassword(password);
     } catch (final PropertyVetoException e) {

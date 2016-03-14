@@ -41,7 +41,7 @@ import javax.ws.rs.core.Response;
 
 
 @Path(ImagesResource.PATH)
-class ImagesResource {
+public class ImagesResource {
 
   public static final String PATH = "/images";
 
@@ -54,11 +54,18 @@ class ImagesResource {
   @Inject
   UriService uriService;
 
+  /**
+   * Create a new file of type image.
+   *
+   * @param imageDto the image file metadata.
+   * @return if successful, an HTTP response with status code 201 (Created) and location of the
+   *     created file resource.
+   */
   @POST
   @RolesAllowed(Role.Values.ADMIN)
   @Consumes(MediaType.APPLICATION_JSON)
   @Produces(MediaType.APPLICATION_JSON)
-  Response post(final ImageDto imageDto) {
+  public Response post(final ImageDto imageDto) {
     Image image = this.imageMapper.toEntity(imageDto);
 
     image = this.imageRepository.add(image);

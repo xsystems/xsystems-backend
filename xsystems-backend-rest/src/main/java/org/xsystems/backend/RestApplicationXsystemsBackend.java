@@ -42,11 +42,12 @@ public class RestApplicationXsystemsBackend extends ResourceConfig {
     super();
 
     this.name = name;
+    setApplicationName(name);
 
     packages("org.xsystems.backend");
+
     register(JacksonFeature.class);
     register(RolesAllowedDynamicFeature.class);
-    setApplicationName(name);
   }
 
   public String getName() {

@@ -27,21 +27,24 @@ import javax.ws.rs.ext.Provider;
 
 
 @Provider
-class ObjectMapperProvider implements ContextResolver<ObjectMapper> {
+public class ObjectMapperProvider implements ContextResolver<ObjectMapper> {
 
-  final ObjectMapper objectMapper;
+  private final ObjectMapper objectMapper;
 
+  /**
+   * Create a configured ObjectMapper that will be returned by the getContext(...) method.
+   */
   public ObjectMapperProvider() {
-    this.objectMapper = new ObjectMapper();
-    this.objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
-    this.objectMapper.enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);
-    this.objectMapper.enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);
-    this.objectMapper.enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING);
-    this.objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
+    objectMapper = new ObjectMapper();
+    objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+    objectMapper.enable(SerializationFeature.ORDER_MAP_ENTRIES_BY_KEYS);
+    objectMapper.enable(SerializationFeature.WRITE_ENUMS_USING_TO_STRING);
+    objectMapper.enable(DeserializationFeature.READ_ENUMS_USING_TO_STRING);
+    objectMapper.disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES);
   }
 
   @Override
   public ObjectMapper getContext(final Class<?> type) {
-    return this.objectMapper;
+    return objectMapper;
   }
 }
